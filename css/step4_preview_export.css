@@ -1,0 +1,232 @@
+/* ==========================================================================
+   Step 4: Preview, Deployment Guides & Exporter CSS (Min Font 16px, Pure Text)
+   ========================================================================== */
+
+.step4-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  margin: 0 auto;
+  padding: 48px 0 80px 0;
+  box-sizing: border-box;
+  gap: 36px;
+}
+
+/* Top Preview Launcher Section */
+.preview-launcher-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .preview-launcher-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.preview-launcher-btn {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  color: inherit;
+}
+
+.preview-launcher-btn:hover {
+  background: var(--bg-card);
+  border-color: var(--text-primary);
+}
+
+.preview-btn-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.preview-btn-title {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.preview-btn-desc {
+  font-size: 16px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.preview-btn-arrow {
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 18px;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+}
+
+.preview-launcher-btn:hover .preview-btn-arrow {
+  background: var(--text-primary);
+  color: var(--text-inverse);
+  border-color: var(--text-primary);
+}
+
+/* Guides Section */
+.guide-box-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.guide-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.guide-box-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 14px;
+}
+
+.guide-box-title {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.guide-box-body {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.guide-step-card-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 14px;
+}
+
+@media (max-width: 900px) {
+  .guide-step-card-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+.guide-step-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.guide-step-num {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--accent-blue);
+  letter-spacing: 0.05em;
+}
+
+.guide-step-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.guide-step-desc {
+  font-size: 16px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Bottom Single Download Box */
+.download-action-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  padding: 44px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 24px;
+}
+
+.download-action-title {
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.download-action-desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 680px;
+  line-height: 1.7;
+}
+
+.btn-download-hero {
+  padding: 18px 48px;
+  font-size: 18px;
+  font-weight: 700;
+  background: var(--text-primary);
+  color: var(--text-inverse);
+  border: 1px solid var(--text-primary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  transition: all var(--transition-fast);
+}
+
+.btn-download-hero:hover {
+  background: #e2e8f0;
+  border-color: #e2e8f0;
+}
+
+.btn-download-hero:active {
+  transform: translateY(0);
+}
+
+.bundle-specs-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  font-size: 16px;
+  color: var(--text-secondary);
+  padding-top: 16px;
+  border-top: 1px solid var(--border-subtle);
+  width: 100%;
+}
+
+.bundle-spec-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

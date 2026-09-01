@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MY WEBSITE</title>
+  <link rel="stylesheet" href="css/import.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/template_components.js"></script>
+  <script src="js/history_editor.js"></script>
+</head>
+<body class="sub-page">
+  <!-- Header (Main 1:1 Unified Style) -->
+  <header class="layout-padding">
+    <h1>
+      <a href="user_preview.html">
+        <img id="header-logo-img" src="https://placehold.co/280x64" alt="MY WEBSITE">
+      </a>
+    </h1>
+    <nav>
+      <ul id="desktop-gnb-list">
+        <li><a href="sub_page.html?cat=0&sub=0">회사 소개</a></li>
+        <li><a href="sub_page.html?cat=1&sub=0">사업 분야</a></li>
+        <li><a href="sub_page.html?cat=2&sub=0">홍보 센터</a></li>
+        <li><a href="sub_page.html?cat=3&sub=0">고객 지원</a></li>
+      </ul>
+
+      <!-- Single Persistent Sub-Bar (배경 깜빡임 없는 단일 서브바) -->
+      <div id="desktop-sub-bar" class="desktop-sub-bar">
+        <div class="layout-padding">
+          <div id="desktop-sub-bar-content" class="desktop-sub-bar-content"></div>
+        </div>
+      </div>
+    </nav>
+    <div class="mui">
+      <button type="button" class="material-symbols-outlined" id="openButton">menu</button>
+      <div id="menuPanel" class="">
+        <button type="button" class="material-symbols-outlined" id="closeButton">close</button>
+        <ul id="mobile-gnb-list" class="panel-menu-root">
+          <li><a href="sub_page.html?cat=0&sub=0">회사 소개</a></li>
+          <li><a href="sub_page.html?cat=1&sub=0">사업 분야</a></li>
+          <li><a href="sub_page.html?cat=2&sub=0">홍보 센터</a></li>
+          <li><a href="sub_page.html?cat=3&sub=0">고객 지원</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sub Visual (메인과 동일한 height: 100dvh 풀스크린 비주얼) -->
+  <section id="home" class="layout-padding">
+    <div class="sub-bg-layer" id="sub-bg-layer"></div>
+    <div class="sub-visual-content">
+      <div>
+        <!-- Breadcrumb Navigation (홈 아이콘 + 대메뉴까지만 표시) -->
+        <nav class="sub-breadcrumb" aria-label="브레드크럼">
+          <a href="user_preview.html" aria-label="홈으로 이동">
+            <span class="material-symbols-outlined" style="font-size:20px; vertical-align:middle;">home</span>
+          </a>
+          <span class="bc-sep">/</span>
+          <span id="bc-cat-name">대메뉴</span>
+        </nav>
+
+        <h2>
+          <mark id="sub-page-title-mark">메뉴명</mark>
+        </h2>
+        <p id="sub-page-desc" class="sub-page-editable-desc" contenteditable="true" title="수정하기">기업개요 페이지에 들어갈 문구를 입력해주세요.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sub Page Dynamic Body Container (메인 템플릿의 고유 섹션 및 모듈 100% 적용) -->
+  <div id="sub-body-container">
+    <!-- Rendered dynamically based on Page Type using template modules -->
+  </div>
+
+  <!-- Footer (Main 1:1 Unified Style) -->
+  <footer class="layout-padding">
+    <h2>
+      <img src="https://placehold.co/100x100" alt="">
+    </h2>
+    <div>
+      <span id="footer-brand-name">MY WEBSITE</span>
+      <ol>
+        <li><p id="footer-address">서울특별시 강남구 테헤란로 123</p></li>
+        <li><p id="footer-owner">대표 : 대표자</p></li>
+        <li><p>TEL : <a id="footer-phone-link" href="tel:0200000000">02-0000-0000</a></p></li>
+        <li><p id="footer-biznum">사업자등록번호 : 000-00-00000</p></li>
+      </ol>
+      <p id="footer-copyright">Copyright © MY WEBSITE ALL RIGHTS RESERVED</p>
+    </div>
+    <button type="button">비급여수가 안내</button>
+  </footer>
+
+  <!-- Sub Page Controller Script -->
+  <script>
+    (function() {
+      const STORAGE_KEY = 'WEB_BUILDER_STUDIO_STATE_V3';
+
+      function getState() {
+        if (window.opener && window.opener.builderStore && typeof window.opener.builderStore.getState === 'function') {
+          return window.opener.builderStore.getState();
+        }
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('WEB_BUILDER_STUDIO_STATE_V1');
+          if (raw) return JSON.parse(raw);
+        } catch (e) {
+          console.warn('Storage parse error:', e);
+        }
+        return null;
+      }
+
+      function getUrlParams() {
+        const params = new URLSearchParams(window.location.search);
+        const cat = parseInt(params.get('cat') || '0', 10);
+        const sub = parseInt(params.get('sub') || '0', 10);
+        const menuId = params.get('menu') || '';
+        const subId = params.get('subId') || '';
+        return { cat: isNaN(cat) ? 0 : cat, sub: isNaN(sub) ? 0 : sub, menuId, subId };
+      }
+
+      function renderTemplateSections(pageType, catName, subName, siteTitle, address, phone) {
+        const container = document.getElementById('sub-body-container');
+        if (!container) return;
+
+        switch (pageType) {
+          case 'history':
+            if (window.HistoryEditor) {
+              window.HistoryEditor.init(container);
+            } else if (window.TemplateComponents) {
+              container.innerHTML = window.TemplateComponents.history(siteTitle, subName);
+            }
+            if (typeof initTimelineScrollAnimation === 'function') {
+              setTimeout(initTimelineScrollAnimation, 50);
+            }
+            break;
+
+          case 'map':
+            container.innerHTML = window.TemplateComponents ? window.TemplateComponents.location() : '';
+            break;
+
+          case 'gallery':
+            container.innerHTML = window.TemplateComponents ? window.TemplateComponents.gallery() : '';
+            // Initialize Slick Slider
+            if (typeof slickSlide === 'function') {
+              slickSlide();
+            } else if ($.fn.slick) {
+              $(".slideContent").slick({
+                arrows: true,
+                prevArrow: $('.prevButton'),
+                nextArrow: $('.nextButton')
+              });
+            }
+            break;
+
+          case 'board':
+            container.innerHTML = `
+              <section class="sub-page-section">
+                <div class="titleBox align-center color-black">
+                  <mark>SEOUL MAEUM DENTAL CLINIC</mark>
+                  <h2>
+                    서울마음치과 <b>${subName || '게시판'}</b>
+                  </h2>
+                  <p>서울마음치과의 주요 소식과 안내사항을 신속하게 전해드립니다.</p>
+                </div>
+                <div class="layout-max layout-padding">
+                  <div class="sub-board-search-bar">
+                    <div style="font-family:'Pretendard'; font-size:16px; color:#555; font-weight:500;">전체 총 <b style="color:#FBA518;">15</b>건의 게시글이 있습니다.</div>
+                    <form class="sub-board-search-form" onsubmit="event.preventDefault(); alert('검색 기능은 준비 중입니다.');">
+                      <select class="sub-board-select">
+                        <option value="title">제목</option>
+                        <option value="content">내용</option>
+                        <option value="writer">작성자</option>
+                      </select>
+                      <input type="text" class="sub-board-input" placeholder="검색어를 입력하세요">
+                      <button type="submit" class="sub-board-btn-search">검색</button>
+                    </form>
+                  </div>
+                  <div class="sub-board-table-wrap">
+                    <table class="sub-board-table">
+                      <thead>
+                        <tr>
+                          <th style="width:80px;">번호</th>
+                          <th>제목</th>
+                          <th style="width:120px;">작성자</th>
+                          <th style="width:120px;">작성일</th>
+                          <th style="width:90px;">조회수</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><span class="badge-notice">공지</span></td>
+                          <td class="col-title"><a href="javascript:void(0)" onclick="alert('게시글 상세 화면은 준비 중입니다.')">서울마음치과 ${subName || '이용'} 안내 및 진료 시간 변경 공지</a></td>
+                          <td>관리자</td>
+                          <td>2026.08.20</td>
+                          <td>1,420</td>
+                        </tr>
+                        <tr>
+                          <td><span class="badge-notice">공지</span></td>
+                          <td class="col-title"><a href="javascript:void(0)" onclick="alert('게시글 상세 화면은 준비 중입니다.')">2026년 하반기 주요 일정 및 예약 시스템 개선 안내</a></td>
+                          <td>운영팀</td>
+                          <td>2026.08.15</td>
+                          <td>980</td>
+                        </tr>
+                        <tr>
+                          <td>13</td>
+                          <td class="col-title"><a href="javascript:void(0)" onclick="alert('게시글 상세 화면은 준비 중입니다.')">${subName || '진료'} 관련 자주 묻는 질문 및 상담 가이드</a></td>
+                          <td>관리자</td>
+                          <td>2026.08.10</td>
+                          <td>432</td>
+                        </tr>
+                        <tr>
+                          <td>12</td>
+                          <td class="col-title"><a href="javascript:void(0)" onclick="alert('게시글 상세 화면은 준비 중입니다.')">첨단 디지털 진료 장비 도입 및 환자 편의성 향상 소식</a></td>
+                          <td>진료팀</td>
+                          <td>2026.08.05</td>
+                          <td>610</td>
+                        </tr>
+                        <tr>
+                          <td>11</td>
+                          <td class="col-title"><a href="javascript:void(0)" onclick="alert('게시글 상세 화면은 준비 중입니다.')">정기 감염 관리 및 철저한 멸균 소독 완료 안내</a></td>
+                          <td>운영팀</td>
+                          <td>2026.07.28</td>
+                          <td>290</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="sub-pagination">
+                    <button type="button" class="sub-page-btn material-symbols-outlined" style="font-size:18px;">chevron_left</button>
+                    <button type="button" class="sub-page-btn active">1</button>
+                    <button type="button" class="sub-page-btn">2</button>
+                    <button type="button" class="sub-page-btn">3</button>
+                    <button type="button" class="sub-page-btn material-symbols-outlined" style="font-size:18px;">chevron_right</button>
+                  </div>
+                </div>
+              </section>
+            `;
+            break;
+
+          case 'contact':
+            container.innerHTML = `
+              <section class="sub-page-section">
+                <div class="titleBox align-center color-black">
+                  <mark>SEOUL MAEUM DENTAL CLINIC</mark>
+                  <h2>
+                    서울마음치과 <b>${subName || '온라인 문의'}</b>
+                  </h2>
+                  <p>궁금하신 사항을 남겨주시면 정성을 다해 신속하게 답변드리겠습니다.</p>
+                </div>
+                <div class="layout-max layout-padding">
+                  <div class="sub-contact-card">
+                    <form class="sub-contact-form" onsubmit="event.preventDefault(); alert('문의가 성공적으로 접수되었습니다. 담당자가 확인 후 빠른 시일 내에 연락드리겠습니다.'); this.reset();">
+                      <div class="sub-form-group">
+                        <label class="sub-form-label">문의 유형<span class="req">*</span></label>
+                        <select class="sub-form-select" required>
+                          <option value="">문의 유형을 선택해주세요</option>
+                          <option value="service">진료 및 예약 상담 문의</option>
+                          <option value="quote">비용 및 보험 혜택 문의</option>
+                          <option value="tech">온라인 이용 관련 문의</option>
+                          <option value="other">기타 일반 문의</option>
+                        </select>
+                      </div>
+                      <div class="sub-form-row-2">
+                        <div class="sub-form-group">
+                          <label class="sub-form-label">성함 / 환자명<span class="req">*</span></label>
+                          <input type="text" class="sub-form-input" placeholder="성함을 입력하세요" required>
+                        </div>
+                        <div class="sub-form-group">
+                          <label class="sub-form-label">연락처<span class="req">*</span></label>
+                          <input type="tel" class="sub-form-input" placeholder="010-0000-0000" required>
+                        </div>
+                      </div>
+                      <div class="sub-form-group">
+                        <label class="sub-form-label">이메일 주소<span class="req">*</span></label>
+                        <input type="email" class="sub-form-input" placeholder="example@email.com" required>
+                      </div>
+                      <div class="sub-form-group">
+                        <label class="sub-form-label">문의 제목<span class="req">*</span></label>
+                        <input type="text" class="sub-form-input" placeholder="문의 제목을 입력하세요" required>
+                      </div>
+                      <div class="sub-form-group">
+                        <label class="sub-form-label">문의 내용<span class="req">*</span></label>
+                        <textarea class="sub-form-textarea" placeholder="문의하실 내용을 상세히 기재해 주세요." required></textarea>
+                      </div>
+                      <div class="sub-agree-box">
+                        <input type="checkbox" id="agree-privacy" required>
+                        <label for="agree-privacy">개인정보 수집 및 이용 목적에 동의합니다. (상담 안내 목적 외 사용되지 않습니다.)</label>
+                      </div>
+                      <button type="submit" class="sub-btn-submit">온라인 문의 접수하기</button>
+                    </form>
+                  </div>
+                </div>
+              </section>
+            `;
+            break;
+
+          case 'calendar':
+            container.innerHTML = `
+              <section class="sub-page-section">
+                <div class="titleBox align-center color-black">
+                  <mark>SEOUL MAEUM DENTAL CLINIC</mark>
+                  <h2>
+                    서울마음치과 <b>${subName || '진료일정'}</b>
+                  </h2>
+                  <p>월간 진료 일정과 주요 클리닉 일정을 확인하실 수 있습니다.</p>
+                </div>
+                <div class="layout-max layout-padding">
+                  <div class="sub-cal-wrap">
+                    <div class="sub-cal-header">
+                      <div class="sub-cal-title-group">
+                        <button type="button" class="sub-cal-btn-nav material-symbols-outlined" onclick="alert('이전 달 일정은 준비 중입니다.')">chevron_left</button>
+                        <span class="sub-cal-current-month">2026.08</span>
+                        <button type="button" class="sub-cal-btn-nav material-symbols-outlined" onclick="alert('다음 달 일정은 준비 중입니다.')">chevron_right</button>
+                      </div>
+                      <div style="display:flex; gap:12px; font-size:13px;">
+                        <span style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:10px; border-radius:2px; background:#FEF3C7; border:1px solid #92400E;"></span> 주요진료</span>
+                        <span style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:10px; border-radius:2px; background:#DBEAFE; border:1px solid #1E40AF;"></span> 야간진료</span>
+                      </div>
+                    </div>
+                    <table class="sub-cal-table">
+                      <thead>
+                        <tr>
+                          <th class="sun">SUN</th>
+                          <th>MON</th>
+                          <th>TUE</th>
+                          <th>WED</th>
+                          <th>THU</th>
+                          <th>FRI</th>
+                          <th class="sat">SAT</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="dim"><div class="sub-cal-day-num">26</div></td>
+                          <td class="dim"><div class="sub-cal-day-num">27</div></td>
+                          <td class="dim"><div class="sub-cal-day-num">28</div></td>
+                          <td class="dim"><div class="sub-cal-day-num">29</div></td>
+                          <td class="dim"><div class="sub-cal-day-num">30</div></td>
+                          <td class="dim"><div class="sub-cal-day-num">31</div></td>
+                          <td><div class="sub-cal-day-num" style="color:#3B82F6;">1</div></td>
+                        </tr>
+                        <tr>
+                          <td><div class="sub-cal-day-num" style="color:#EF4444;">2</div></td>
+                          <td><div class="sub-cal-day-num">3</div></td>
+                          <td>
+                            <div class="sub-cal-day-num">4</div>
+                            <span class="sub-cal-event-pill blue">화요 야간진료</span>
+                          </td>
+                          <td><div class="sub-cal-day-num" style="color:#3B82F6;">5</div></td>
+                          <td><div class="sub-cal-day-num">6</div></td>
+                          <td><div class="sub-cal-day-num">7</div></td>
+                          <td><div class="sub-cal-day-num" style="color:#3B82F6;">8</div></td>
+                        </tr>
+                        <tr>
+                          <td><div class="sub-cal-day-num" style="color:#EF4444;">9</div></td>
+                          <td><div class="sub-cal-day-num">10</div></td>
+                          <td>
+                            <div class="sub-cal-day-num">11</div>
+                            <span class="sub-cal-event-pill blue">화요 야간진료</span>
+                          </td>
+                          <td><div class="sub-cal-day-num" style="color:#3B82F6;">12</div></td>
+                          <td><div class="sub-cal-day-num">13</div></td>
+                          <td><div class="sub-cal-day-num">14</div></td>
+                          <td>
+                            <div class="sub-cal-day-num" style="color:#3B82F6;">15</div>
+                            <span class="sub-cal-event-pill">광복절 휴진</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><div class="sub-cal-day-num" style="color:#EF4444;">16</div></td>
+                          <td><div class="sub-cal-day-num">17</div></td>
+                          <td>
+                            <div class="sub-cal-day-num">18</div>
+                            <span class="sub-cal-event-pill blue">화요 야간진료</span>
+                          </td>
+                          <td>
+                            <div class="sub-cal-day-num">19</div>
+                            <span class="sub-cal-event-pill">정기 멸균소독</span>
+                          </td>
+                          <td><div class="sub-cal-day-num" style="color:#3B82F6;">20</div></td>
+                          <td><div class="sub-cal-day-num">21</div></td>
+                          <td><div class="sub-cal-day-num" style="color:#3B82F6;">22</div></td>
+                        </tr>
+                        <tr>
+                          <td><div class="sub-cal-day-num" style="color:#EF4444;">23</div></td>
+                          <td><div class="sub-cal-day-num">24</div></td>
+                          <td>
+                            <div class="sub-cal-day-num">25</div>
+                            <span class="sub-cal-event-pill blue">화요 야간진료</span>
+                          </td>
+                          <td>
+                            <div class="sub-cal-day-num" style="font-weight:900; color:#FBA518;">26 (오늘)</div>
+                            <span class="sub-cal-event-pill">정상 진료</span>
+                          </td>
+                          <td><div class="sub-cal-day-num" style="color:#3B82F6;">27</div></td>
+                          <td><div class="sub-cal-day-num">28</div></td>
+                          <td><div class="sub-cal-day-num" style="color:#3B82F6;">29</div></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
+            `;
+            break;
+
+          case 'faq':
+            container.innerHTML = `
+              <section class="sub-page-section">
+                <div class="titleBox align-center color-black">
+                  <mark>SEOUL MAEUM DENTAL CLINIC</mark>
+                  <h2>
+                    서울마음치과 <b>${subName || '자주 묻는 질문'}</b>
+                  </h2>
+                  <p>자주 묻는 질문을 확인하시고 궁금한 사항을 빠르게 해결하세요.</p>
+                </div>
+                <div class="layout-max layout-padding">
+                  <div class="sub-faq-list">
+                    ${[
+                      { q: `서울마음치과의 초진 예약은 어떻게 진행되나요?`, a: '온라인 문의 접수 또는 대표전화(02-1234-5678)를 통해 원하시는 날짜와 시간을 사전 예약하시면 대기 시간을 최소화하여 편안하게 진료받으실 수 있습니다.' },
+                      { q: '야간 진료나 주말 진료도 가능한가요?', a: '네, 매주 화요일은 오후 7시 30분까지 야간 진료를 운영하며, 토요일은 점심시간 없이 오후 2시까지 진료하고 있습니다.' },
+                      { q: '과잉진료 없이 투명하게 치료 계획을 안내받을 수 있나요?', a: '저희는 1인 1기구 원칙과 디지털 정밀 진료를 바탕으로 과잉진료 없이 꼭 필요한 치료만을 정직하게 설명드리고 진행합니다.' },
+                      { q: '주차 공간이 마련되어 있나요?', a: '건물 전용 주차장을 이용하실 수 있으며, 방문 고객께 무료 주차권을 제공해 드립니다.' },
+                      { q: '치료 후 사후 관리 및 보증 제도가 있나요?', a: '임플란트 및 보철 치료 등 주요 진료에 대해 책임 진료 보증제를 실시하여 사후 정기 검진을 체계적으로 지원합니다.' }
+                    ].map((item, idx) => `
+                      <div class="sub-faq-item ${idx === 0 ? 'open' : ''}">
+                        <div class="sub-faq-question">
+                          <span class="sub-faq-q-text">
+                            <span class="sub-faq-q-badge">Q.</span>
+                            ${item.q}
+                          </span>
+                          <span class="material-symbols-outlined sub-faq-chevron">expand_more</span>
+                        </div>
+                        <div class="sub-faq-answer">
+                          ${item.a}
+                        </div>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              </section>
+            `;
+            // Bind FAQ accordion click
+            $(container).find('.sub-faq-question').on('click', function() {
+              const $item = $(this).closest('.sub-faq-item');
+              $item.toggleClass('open');
+            });
+            break;
+
+          case 'about':
+          default:
+            container.innerHTML = window.TemplateComponents ? window.TemplateComponents.about() : '';
+            break;
+        }
+
+        // Attach GSAP Smooth Curtain Motion to newly rendered components
+        if (typeof initGsapCurtainMotion === 'function') {
+          setTimeout(initGsapCurtainMotion, 50);
+        }
+      }
+
+      function applySubPageState() {
+        const state = getState();
+        if (!state) return;
+
+        const siteTitle = state.siteInfo?.siteTitle || 'MY WEBSITE';
+        const companyName = state.siteInfo?.companyName || siteTitle;
+        const companyNameEn = state.siteInfo?.companyNameEn || (state.siteInfo?.siteTitle || 'MY COMPANY INC.');
+        const ownerName = state.siteInfo?.ownerName || '대표자명';
+        const address = state.siteInfo?.address || '서울특별시 강남구 테헤란로 123, 4층';
+        const phone = state.siteInfo?.phone || '02-1234-5678';
+        const bizNum = state.siteInfo?.bizNum || '123-45-67890';
+        const menus = state.menus || [];
+        const pageOptions = state.pageOptions || {};
+
+        const { cat: catIdx, sub: subIdx } = getUrlParams();
+
+        const currentCat = menus[catIdx] || menus[0] || { name: '회사소개', id: 'm1', submenus: [] };
+        const currentCatName = currentCat.name || '회사소개';
+        const subList = currentCat.submenus || [];
+        const currentSub = subList[subIdx] || subList[0] || { name: currentCatName, id: currentCat.id };
+        const currentSubName = currentSub.name || currentCatName;
+        const currentMenuId = currentSub.id || currentCat.id;
+
+        // Determine Page Type from pageOptions or intelligent fallback
+        let pageType = pageOptions[currentMenuId]?.type;
+        if (!pageType) {
+          const subLower = currentSubName.toLowerCase();
+          if (subLower.includes('연혁') || subLower.includes('발자취') || subLower.includes('히스토리') || subLower.includes('history')) pageType = 'history';
+          else if (subLower.includes('갤러리') || subLower.includes('사진') || subLower.includes('둘러보기') || subLower.includes('진료과목')) pageType = 'gallery';
+          else if (subLower.includes('공지') || subLower.includes('게시판') || subLower.includes('자료실') || subLower.includes('소식')) pageType = 'board';
+          else if (subLower.includes('일정') || subLower.includes('캘린더') || subLower.includes('행사')) pageType = 'calendar';
+          else if (subLower.includes('오시는길') || subLower.includes('지도') || subLower.includes('위치') || subLower.includes('진료시간')) pageType = 'map';
+          else if (subLower.includes('문의') || subLower.includes('상담') || subLower.includes('신청') || subLower.includes('예약')) pageType = 'contact';
+          else if (subLower.includes('faq') || subLower.includes('자주')) pageType = 'faq';
+          else pageType = 'about';
+        }
+
+        // 1. Page Title & Meta (항상 사이트명으로 유지)
+        document.title = siteTitle;
+
+        const logoImg = document.getElementById('header-logo-img');
+        if (logoImg) logoImg.alt = siteTitle;
+
+        // 2. Breadcrumbs (홈 아이콘 + 대메뉴명)
+        const bcCat = document.getElementById('bc-cat-name');
+        if (bcCat) bcCat.textContent = currentCatName;
+
+        // 3. Sub Visual Title & Description (각 하위 메뉴명 노출)
+        const markTitle = document.getElementById('sub-page-title-mark');
+        const pageDesc = document.getElementById('sub-page-desc');
+
+        if (markTitle) {
+          markTitle.textContent = currentSubName;
+        }
+
+        const customDesc = state.subPageDescriptions?.[currentMenuId] || pageOptions[currentMenuId]?.desc;
+        const defaultDesc = `${currentSubName} 페이지에 들어갈 문구를 입력해주세요.`;
+
+        if (pageDesc) {
+          pageDesc.textContent = customDesc || defaultDesc;
+          pageDesc.title = '수정하기';
+
+          // 사용자가 미리보기에서 직접 수정한 문구를 실시간 저장
+          pageDesc.onblur = function() {
+            const updatedText = this.textContent.trim();
+            const curState = getState() || {};
+            if (!curState.subPageDescriptions) curState.subPageDescriptions = {};
+            curState.subPageDescriptions[currentMenuId] = updatedText;
+
+            try {
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(curState));
+              if (window.opener && window.opener.builderStore) {
+                window.opener.builderStore.updateState({ subPageDescriptions: curState.subPageDescriptions });
+              }
+            } catch (err) {
+              console.warn('Desc save error:', err);
+            }
+          };
+        }
+
+        // 4. 대메뉴별 서브 비주얼 배경 이미지 일원화 (확정된 4종 1:1 매핑)
+        const CATEGORY_BACKGROUNDS = {
+          0: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=2000&q=80', // 대메뉴 1: 회사 소개 (만년필과 가죽 노트)
+          1: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=2000&q=80', // 대메뉴 2: 사업 분야 (정돈된 북 & 오브제)
+          2: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=2000&q=80', // 대메뉴 3: 홍보 센터 (쾌적한 오피스 데스크 & 통창 자연광)
+          3: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=2000&q=80'  // 대메뉴 4: 고객 지원 (광활한 모던 비즈니스 라운지)
+        };
+
+        const bgUrl = CATEGORY_BACKGROUNDS[catIdx] || CATEGORY_BACKGROUNDS[0];
+        const bgLayer = document.getElementById('sub-bg-layer');
+        if (bgLayer) {
+          bgLayer.style.backgroundImage = `url("${bgUrl}")`;
+        }
+        const homeSection = document.getElementById('home');
+        if (homeSection) {
+          homeSection.style.backgroundImage = `url("${bgUrl}")`;
+        }
+
+        // 5. Render Body Content with Template Modules
+        renderTemplateSections(pageType, currentCatName, currentSubName, companyName, address, phone);
+
+        // 5. Desktop GNB Main Bar & Single Persistent Sub-Bar
+        const desktopList = document.getElementById('desktop-gnb-list');
+        const subBarContent = document.getElementById('desktop-sub-bar-content');
+        const $subBar = $('#desktop-sub-bar');
+        const $header = $('header');
+
+        if (desktopList && subBarContent) {
+          const subBarMap = {};
+          menus.forEach((cat, idx) => {
+            if (cat.submenus && cat.submenus.length > 0) {
+              subBarMap[idx] = `
+                <ul class="sub-bar-list">
+                  ${cat.submenus.map((sub, sIdx) => {
+                    const subUrl = `sub_page.html?cat=${idx}&sub=${sIdx}`;
+                    const isSubActive = (idx === catIdx && sIdx === subIdx);
+                    return `<li><a href="${subUrl}" class="${isSubActive ? 'active' : ''}">${sub.name}</a></li>`;
+                  }).join('')}
+                </ul>
+              `;
+            } else {
+              subBarMap[idx] = '';
+            }
+          });
+
+          // Render Desktop GNB
+          desktopList.innerHTML = menus.map((cat, idx) => {
+            const mainUrl = `sub_page.html?cat=${idx}&sub=0`;
+            const name = cat.name || `메뉴 ${idx + 1}`;
+            const isCatActive = (idx === catIdx);
+            return `
+              <li class="gnb-nav-li ${isCatActive ? 'current-page' : ''}" data-idx="${idx}">
+                <a href="${mainUrl}">${name}</a>
+              </li>
+            `;
+          }).join('');
+
+          let hideTimer = null;
+
+          function showSubBar(idx) {
+            if (hideTimer) clearTimeout(hideTimer);
+            const html = subBarMap[idx];
+            if (html) {
+              subBarContent.innerHTML = html;
+              $header.addClass('sub-open menu-hovered');
+              $subBar.addClass('open');
+              $(desktopList).find('.gnb-nav-li').removeClass('active-menu');
+              $(desktopList).find(`.gnb-nav-li[data-idx="${idx}"]`).addClass('active-menu');
+            } else {
+              hideSubBarImmediately();
+            }
+          }
+
+          function hideSubBarImmediately() {
+            if (hideTimer) clearTimeout(hideTimer);
+            $header.removeClass('sub-open menu-hovered');
+            $subBar.removeClass('open');
+            $(desktopList).find('.gnb-nav-li').removeClass('active-menu');
+          }
+
+          function scheduleHideSubBar() {
+            if (hideTimer) clearTimeout(hideTimer);
+            hideTimer = setTimeout(function() {
+              hideSubBarImmediately();
+            }, 200);
+          }
+
+          $(desktopList).find('.gnb-nav-li').on('mouseenter', function() {
+            const idx = parseInt($(this).attr('data-idx'), 10);
+            showSubBar(idx);
+          });
+
+          $subBar.on('mouseenter', function() {
+            if (hideTimer) clearTimeout(hideTimer);
+          }).on('mouseleave', function() {
+            scheduleHideSubBar();
+          });
+
+          $header.off('mouseleave.gnb mouseenter.gnb').on('mouseleave.gnb', function() {
+            scheduleHideSubBar();
+          }).on('mouseenter.gnb', function() {
+            if (hideTimer) clearTimeout(hideTimer);
+          });
+        }
+
+        // 6. Mobile Menu Panel
+        const mobileList = document.getElementById('mobile-gnb-list');
+        if (mobileList) {
+          mobileList.innerHTML = menus.map((cat, cIdx) => {
+            const mainUrl = `sub_page.html?cat=${cIdx}&sub=0`;
+            const catName = cat.name || `메뉴 ${cIdx + 1}`;
+            const hasSub = cat.submenus && cat.submenus.length > 0;
+            const isCurrentCat = (cIdx === catIdx);
+
+            const subHtml = hasSub
+              ? `
+                <ul class="panel-sub-list">
+                  ${cat.submenus.map((sub, sIdx) => {
+                    const subUrl = `sub_page.html?cat=${cIdx}&sub=${sIdx}`;
+                    const isSubCurrent = (cIdx === catIdx && sIdx === subIdx);
+                    return `
+                      <li><a href="${subUrl}" class="panel-sub-link ${isSubCurrent ? 'active' : ''}" style="${isSubCurrent ? 'color:#FBA518; font-weight:700;' : ''}">${sub.name}</a></li>
+                    `;
+                  }).join('')}
+                </ul>
+              `
+              : '';
+
+            return `
+              <li class="panel-menu-item ${isCurrentCat ? 'open' : ''}" data-cat-idx="${cIdx}">
+                <div class="panel-item-header">
+                  <span class="panel-main-title" style="${isCurrentCat ? 'color:#FBA518;' : ''}">${catName}</span>
+                  ${hasSub ? `
+                    <button type="button" class="panel-sub-btn material-symbols-outlined" aria-label="${catName} 하위메뉴 열기">
+                      expand_more
+                    </button>
+                  ` : `
+                    <a href="${mainUrl}" style="text-decoration:none; color:inherit; display:flex; align-items:center;">
+                      <span class="material-symbols-outlined" style="font-size:24px; color:#999;">chevron_right</span>
+                    </a>
+                  `}
+                </div>
+                ${subHtml}
+              </li>
+            `;
+          }).join('');
+
+          $(mobileList).find('.panel-item-header').off('click').on('click', function(e) {
+            const $item = $(this).closest('.panel-menu-item');
+            const hasSub = $item.find('.panel-sub-list').length > 0;
+            if (hasSub) {
+              e.preventDefault();
+              e.stopPropagation();
+              $item.toggleClass('open');
+            }
+          });
+
+          $(mobileList).find('.panel-sub-link').off('click').on('click', function() {
+            if (typeof activeRemove === 'function') {
+              activeRemove("#menuPanel", "active");
+            } else {
+              $("#menuPanel").removeClass("active");
+            }
+          });
+        }
+
+        // 7. Footer Info
+        const footerBrand = document.getElementById('footer-brand-name');
+        if (footerBrand) footerBrand.textContent = companyName;
+
+        const footerAddress = document.getElementById('footer-address');
+        if (footerAddress) footerAddress.textContent = address;
+
+        const footerOwner = document.getElementById('footer-owner');
+        if (footerOwner) footerOwner.textContent = '대표 : ' + ownerName;
+
+        const footerPhoneLink = document.getElementById('footer-phone-link');
+        if (footerPhoneLink) {
+          footerPhoneLink.textContent = phone;
+          footerPhoneLink.href = 'tel:' + phone.replace(/[^0-9]/g, '');
+        }
+
+        const footerBizNum = document.getElementById('footer-biznum');
+        if (footerBizNum) footerBizNum.textContent = '사업자등록번호 : ' + bizNum;
+
+        const footerCopy = document.getElementById('footer-copyright');
+        if (footerCopy) footerCopy.textContent = `Copyright © ${companyNameEn} ALL RIGHTS RESERVED`;
+      }
+
+      // Global Continuous Smooth Scroll (Lenis + GSAP ScrollTrigger) - 끝까지 유지되는 전역 "스륵 스륵" 물리 스크롤
+      let lenisInstance = null;
+
+      function initGlobalSmoothScroll() {
+        if (typeof Lenis === 'undefined') return;
+
+        if (lenisInstance) {
+          lenisInstance.destroy();
+        }
+
+        lenisInstance = new Lenis({
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          orientation: 'vertical',
+          gestureOrientation: 'vertical',
+          smoothWheel: true,
+          wheelMultiplier: 1.0,
+          touchMultiplier: 1.5,
+          infinite: false
+        });
+
+        lenisInstance.on('scroll', ScrollTrigger.update);
+
+        gsap.ticker.add((time) => {
+          lenisInstance.raf(time * 1000);
+        });
+
+        gsap.ticker.lagSmoothing(0);
+      }
+
+      // GSAP ScrollTrigger "스륵 스르륵" Velvet-Smooth Curtain Motion
+      function initGsapCurtainMotion() {
+        if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Kill previous triggers if any
+        ScrollTrigger.getAll().forEach(t => t.kill());
+
+        // 1. Whole White Container smoothly glides and covers ("스륵 스륵")
+        gsap.fromTo("#sub-body-container",
+          {
+            y: 100
+          },
+          {
+            y: 0,
+            ease: "none",
+            scrollTrigger: {
+              trigger: "#home",
+              start: "top top",
+              end: "bottom top",
+              scrub: 1.0 // Lenis와 완벽 연동되는 최적의 1.0s 스크럽
+            }
+          }
+        );
+      }
+
+      // History Scroll Animation Controller (연도 블록별 부드러운 스크롤 등장)
+      function initTimelineScrollAnimation() {
+        const sections = document.querySelectorAll('.history-year-block.scroll-reveal');
+        if (!sections.length) return;
+
+        if ('IntersectionObserver' in window) {
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+              }
+            });
+          }, {
+            rootMargin: '0px 0px -8% 0px',
+            threshold: 0.1
+          });
+
+          sections.forEach(el => observer.observe(el));
+        } else {
+          sections.forEach(el => el.classList.add('in-view'));
+        }
+      }
+
+      // Smart Header: 서브비주얼(#home) 구간은 항상 노출, 본문 진입 이후 스크롤 다운 시 숨김 / 업 시 등장
+      function initSmartHeader() {
+        const header = document.querySelector('header');
+        if (!header) return;
+
+        let lastScrollY = window.scrollY || 0;
+        let isHidden = false;
+
+        const onScroll = (currentY) => {
+          const scrollY = typeof currentY === 'number' ? currentY : (window.scrollY || 0);
+
+          // 1. 서브비주얼(#home)이 화면에 보이는 동안에는 헤더를 항상 100% 노출
+          const homeEl = document.getElementById('home');
+          const visualThreshold = homeEl ? (homeEl.offsetHeight - 120) : 600;
+
+          if (scrollY < visualThreshold || header.classList.contains('sub-open') || header.classList.contains('menu-hovered')) {
+            if (isHidden) {
+              header.classList.remove('header-hidden');
+              isHidden = false;
+            }
+            lastScrollY = scrollY;
+            return;
+          }
+
+          const delta = scrollY - lastScrollY;
+
+          // 2. 본문 컨텐츠 영역에서 스크롤 방향에 따른 스마트 제어
+          if (delta > 8 && !isHidden) {
+            // 아래로 스크롤: 헤더를 위로 부드럽게 숨김
+            header.classList.add('header-hidden');
+            isHidden = true;
+          } else if (delta < -8 && isHidden) {
+            // 위로 스크롤: 헤더가 부드럽게 내려오며 노출
+            header.classList.remove('header-hidden');
+            isHidden = false;
+          }
+
+          lastScrollY = scrollY;
+        };
+
+        if (lenisInstance) {
+          lenisInstance.on('scroll', (e) => onScroll(e.scroll));
+        } else {
+          window.addEventListener('scroll', () => onScroll(window.scrollY), { passive: true });
+        }
+      }
+
+      // Initialize on load
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          applySubPageState();
+          initGlobalSmoothScroll();
+          initSmartHeader();
+          setTimeout(initGsapCurtainMotion, 100);
+        });
+      } else {
+        applySubPageState();
+        initGlobalSmoothScroll();
+        initSmartHeader();
+        setTimeout(initGsapCurtainMotion, 100);
+      }
+
+      // Realtime cross-tab synchronization
+      window.addEventListener('storage', (e) => {
+        if (e.key === STORAGE_KEY || e.key === 'WEB_BUILDER_STUDIO_STATE_V1') {
+          applySubPageState();
+        }
+      });
+
+      window.addEventListener('message', (e) => {
+        if (e.data && e.data.type === 'BUILDER_STATE_UPDATE') {
+          applySubPageState();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

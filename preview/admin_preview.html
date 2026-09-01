@@ -1,0 +1,2487 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="admin-title">통합 관리자 콘솔 - ADMIN STUDIO</title>
+  
+  <!-- Premium Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap">
+  
+  <style>
+    :root {
+      /* Colors */
+      --bg-body: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-elevated: #f1f5f9;
+      --sidebar-bg: #0f172a;
+      --sidebar-subtle: #1e293b;
+      --sidebar-border: #334155;
+      
+      --border-color: #e2e8f0;
+      --border-subtle: #f1f5f9;
+      --border-strong: #cbd5e1;
+      
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --text-white: #ffffff;
+      
+      /* Primary Brand & Accents */
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-light: #eef2ff;
+      --primary-border: #c7d2fe;
+      
+      --success: #10b981;
+      --success-bg: #ecfdf5;
+      --success-border: #a7f3d0;
+      --success-text: #065f46;
+      
+      --warning: #f59e0b;
+      --warning-bg: #fffbeb;
+      --warning-border: #fde68a;
+      --warning-text: #92400e;
+      
+      --danger: #ef4444;
+      --danger-bg: #fef2f2;
+      --danger-border: #fecaca;
+      --danger-text: #991b1b;
+      
+      --info: #0284c7;
+      --info-bg: #f0f9ff;
+      --info-border: #bae6fd;
+      --info-text: #075985;
+      
+      --font-family: 'Pretendard', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --transition-fast: 0.15s ease;
+      --transition-normal: 0.25s ease;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-family);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-size: 15px;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-body);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* ==========================================================================
+       1. Top Header
+       ========================================================================== */
+    .admin-header {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .admin-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .admin-brand-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+    }
+
+    .admin-logo-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .admin-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      background: var(--primary-light);
+      color: var(--primary);
+      border: 1px solid var(--primary-border);
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .admin-user-nav {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .user-profile-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 10px;
+      background: var(--bg-elevated);
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+    }
+
+    .user-avatar {
+      width: 26px;
+      height: 26px;
+      background: #4f46e5;
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .user-name {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      height: 38px;
+      padding: 0 16px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: 8px;
+      border: 1.5px solid transparent;
+      transition: all var(--transition-fast);
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .btn-sm {
+      height: 32px;
+      padding: 0 12px;
+      font-size: 13px;
+      border-radius: 6px;
+    }
+
+    .btn-xs {
+      height: 28px;
+      padding: 0 9px;
+      font-size: 12px;
+      border-radius: 5px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 2px 6px rgba(79, 70, 229, 0.2);
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      border-color: var(--primary-hover);
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+    }
+
+    .btn-secondary {
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      border-color: var(--border-color);
+      box-shadow: var(--shadow-sm);
+    }
+    .btn-secondary:hover {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: #ffffff;
+      border-color: var(--success);
+    }
+    .btn-success:hover {
+      background: #059669;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: #ffffff;
+      border-color: var(--danger);
+    }
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+
+    .btn-ghost-danger {
+      background: transparent;
+      color: var(--danger-text);
+      border-color: var(--danger-border);
+    }
+    .btn-ghost-danger:hover {
+      background: var(--danger-bg);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+      border-color: transparent;
+    }
+    .btn-ghost:hover {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+    }
+
+    /* ==========================================================================
+       2. Body & Sidebar Layout
+       ========================================================================== */
+    .admin-body {
+      display: flex;
+      flex: 1;
+      min-height: calc(100vh - 64px);
+    }
+
+    .admin-sidebar {
+      width: 260px;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--sidebar-border);
+      padding: 20px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-group {
+      margin-bottom: 16px;
+    }
+
+    .sidebar-section-title {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #64748b;
+      letter-spacing: 0.8px;
+      padding: 8px 12px 6px 12px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sidebar-menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      color: #94a3b8;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all var(--transition-fast);
+      user-select: none;
+    }
+
+    .sidebar-menu-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-menu-icon {
+      width: 18px;
+      height: 18px;
+      opacity: 0.8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .sidebar-menu-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: #f1f5f9;
+    }
+
+    .sidebar-menu-item.active {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
+    }
+    .sidebar-menu-item.active .sidebar-menu-icon {
+      opacity: 1;
+    }
+
+    .sidebar-counter {
+      padding: 2px 6px;
+      background: #334155;
+      color: #f1f5f9;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 10px;
+    }
+    .sidebar-menu-item.active .sidebar-counter {
+      background: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+    }
+
+    /* Submenu Item */
+    .sidebar-submenu-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px 8px 38px;
+      color: #94a3b8;
+      font-size: 13.5px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: all var(--transition-fast);
+      position: relative;
+    }
+    .sidebar-submenu-item::before {
+      content: '';
+      position: absolute;
+      left: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #475569;
+      transition: all var(--transition-fast);
+    }
+    .sidebar-submenu-item:hover {
+      background: rgba(255, 255, 255, 0.04);
+      color: #f1f5f9;
+    }
+    .sidebar-submenu-item:hover::before {
+      background: #94a3b8;
+    }
+    .sidebar-submenu-item.active {
+      background: rgba(79, 70, 229, 0.2);
+      color: #818cf8;
+      font-weight: 700;
+    }
+    .sidebar-submenu-item.active::before {
+      background: #818cf8;
+      width: 6px;
+      height: 6px;
+    }
+
+    /* ==========================================================================
+       3. Main Workspace & Cards
+       ========================================================================== */
+    .admin-workspace {
+      flex: 1;
+      padding: 32px 36px 60px 36px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .workspace-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .workspace-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .workspace-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .workspace-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.4px;
+    }
+
+    .workspace-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* Stat KPI Cards */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .kpi-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all var(--transition-fast);
+    }
+    .kpi-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .kpi-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .kpi-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .kpi-value {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.5px;
+    }
+
+    .kpi-icon-wrap {
+      width: 46px;
+      height: 46px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .kpi-icon-primary { background: #eef2ff; color: #4f46e5; }
+    .kpi-icon-amber { background: #fffbeb; color: #d97706; }
+    .kpi-icon-emerald { background: #ecfdf5; color: #059669; }
+    .kpi-icon-sky { background: #f0f9ff; color: #0284c7; }
+
+    /* Calendar Interactive Month Grid */
+    .admin-cal-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .cal-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .cal-month-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .cal-grid-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+    .cal-grid-table th {
+      background: #f8fafc;
+      padding: 12px 8px;
+      text-align: center;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #64748b;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .cal-grid-table th.th-sun { color: #ef4444; }
+    .cal-grid-table th.th-sat { color: #3b82f6; }
+    .cal-grid-table td {
+      border: 1px solid #f1f5f9;
+      height: 96px;
+      vertical-align: top;
+      padding: 8px;
+      background: #ffffff;
+      transition: background 0.15s ease;
+      cursor: pointer;
+    }
+    .cal-grid-table td:hover {
+      background: #f8fafc;
+    }
+    .cal-grid-table td.empty-cell {
+      background: #fafafa;
+      cursor: default;
+    }
+    .cal-date-num {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 6px;
+      display: inline-block;
+    }
+    .cal-date-num.is-sun { color: #ef4444; }
+    .cal-date-num.is-sat { color: #3b82f6; }
+    .cal-date-num.is-today {
+      background: var(--primary);
+      color: #ffffff;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 22px;
+    }
+    .cal-event-chip {
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+    }
+    .cal-event-blue { background: #e0f2fe; color: #0284c7; }
+    .cal-event-indigo { background: #e0e7ff; color: #4338ca; }
+    .cal-event-emerald { background: #dcfce7; color: #15803d; }
+    .cal-event-amber { background: #fef3c7; color: #b45309; }
+    .cal-event-rose { background: #ffe4e6; color: #e11d48; }
+
+    /* Card Container */
+    .card-container {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .card-title {
+      font-size: 16.5px;
+      font-weight: 800;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-body {
+      padding: 24px;
+    }
+
+    /* Filter & Search Bar */
+    .control-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      padding: 16px 24px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .control-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .control-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Form Controls */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .form-input, .form-select, .form-textarea {
+      height: 38px;
+      padding: 0 14px;
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border-color);
+      color: var(--text-primary);
+      font-size: 14px;
+      border-radius: 8px;
+      outline: none;
+      transition: all var(--transition-fast);
+    }
+
+    .form-textarea {
+      height: auto;
+      padding: 10px 14px;
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+    }
+
+    /* Table Styles */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .admin-table th {
+      background: #f8fafc;
+      color: var(--text-secondary);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-color);
+      letter-spacing: -0.1px;
+      white-space: nowrap;
+    }
+
+    .admin-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-primary);
+      vertical-align: middle;
+    }
+
+    .admin-table tbody tr {
+      transition: background-color var(--transition-fast);
+    }
+
+    .admin-table tbody tr:hover {
+      background: #f8fafc;
+    }
+
+    /* Status Pill Badges */
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .status-wait {
+      background: var(--warning-bg);
+      color: var(--warning-text);
+      border: 1px solid var(--warning-border);
+    }
+    .status-wait .status-dot { background: var(--warning); }
+
+    .status-approved {
+      background: var(--success-bg);
+      color: var(--success-text);
+      border: 1px solid var(--success-border);
+    }
+    .status-approved .status-dot { background: var(--success); }
+
+    .status-complete {
+      background: var(--info-bg);
+      color: var(--info-text);
+      border: 1px solid var(--info-border);
+    }
+    .status-complete .status-dot { background: var(--info); }
+
+    .status-cancelled {
+      background: var(--danger-bg);
+      color: var(--danger-text);
+      border: 1px solid var(--danger-border);
+    }
+    .status-cancelled .status-dot { background: var(--danger); }
+
+    .status-rejected {
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-strong);
+    }
+    .status-rejected .status-dot { background: var(--text-muted); }
+
+    /* Table Footer & Pagination */
+    .table-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 24px;
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border-color);
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* Program Cards Grid (For Program Manage Section) */
+    .programs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+    }
+
+    .program-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 22px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: all var(--transition-fast);
+    }
+    .program-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--primary-border);
+    }
+
+    .program-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .program-tag {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .program-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.4;
+    }
+
+    .program-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .program-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .quota-bar-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .quota-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: var(--bg-elevated);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 4px;
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+      animation: fadeIn 0.15s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      box-shadow: var(--shadow-lg);
+      padding: 28px 32px;
+      width: 100%;
+      max-width: 540px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 10px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    /* Login Box Overlay */
+    .login-overlay {
+      position: fixed;
+      inset: 0;
+      background: #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 20px;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 420px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      padding: 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .login-header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .login-icon-box {
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+      margin-bottom: 4px;
+    }
+
+    /* Toast Notification */
+    .admin-toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 10px;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      z-index: 9999;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .admin-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .admin-toast-success {
+      border-left: 4px solid var(--success);
+    }
+
+    /* Toggle Switch */
+    .switch-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #cbd5e1;
+      transition: .3s;
+      border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: var(--primary);
+    }
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. Login Modal -->
+  <div class="login-overlay" id="admin-login-overlay" style="display:none;">
+    <div class="login-box">
+      <div class="login-header">
+        <div class="login-icon-box">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <h2 style="font-size:20px; font-weight:800; color:var(--text-primary);">통합 관리자 로그인</h2>
+        <p style="font-size:13.5px; color:var(--text-secondary);">시스템 관리를 위해 인증 정보를 입력해주세요.</p>
+      </div>
+
+      <form id="admin-login-form" style="display:flex; flex-direction:column; gap:16px;">
+        <div class="form-group">
+          <label class="form-label" for="login-id">관리자 아이디</label>
+          <input type="text" id="login-id" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="login-pw">비밀번호</label>
+          <input type="password" id="login-pw" class="form-input" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="height:44px; margin-top:8px; font-size:15px;">관리자 로그인</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Admin Header -->
+  <header class="admin-header">
+    <div class="admin-logo-wrap">
+      <div class="admin-brand-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+      </div>
+      <div class="admin-logo-title">
+        <span id="admin-site-title">ADMIN STUDIO</span>
+        <span class="admin-badge">Console</span>
+      </div>
+    </div>
+
+    <div class="admin-user-nav">
+      <div class="user-profile-badge">
+        <div class="user-avatar">A</div>
+        <span class="user-name" id="admin-display-name">최고관리자 (admin)</span>
+      </div>
+      <a href="user_preview.html" target="_blank" class="btn btn-secondary btn-sm">
+        <span>사용자 사이트</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          <polyline points="15 3 21 3 21 9"></polyline>
+          <line x1="10" y1="14" x2="21" y2="3"></line>
+        </svg>
+      </a>
+      <button class="btn btn-ghost-danger btn-sm" id="btn-admin-logout">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        <span>로그아웃</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 3. Body Layout -->
+  <div class="admin-body">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="admin-dynamic-sidebar">
+      <!-- Injected by JS -->
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="admin-workspace" id="admin-workspace-root">
+      <!-- Injected by JS -->
+    </main>
+  </div>
+
+  <!-- Modal Mount Root -->
+  <div id="admin-modal-root"></div>
+
+  <!-- Toast Notification -->
+  <div id="admin-toast" class="admin-toast admin-toast-success">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+    </svg>
+    <span id="toast-text">처리가 완료되었습니다.</span>
+  </div>
+
+  <!-- Logic Script -->
+  <script>
+    (function() {
+      const STORAGE_KEY = 'WEB_BUILDER_STUDIO_STATE_V3';
+      const LOCAL_APPLIES_KEY = 'WEB_BUILDER_LOCAL_APPLIES_V1';
+
+      function getBuilderState() {
+        try {
+          if (window.opener && window.opener.builderStore) {
+            const st = window.opener.builderStore.getState();
+            if (st && st.siteInfo) return st;
+          }
+          const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('WEB_BUILDER_STUDIO_STATE_V1');
+          if (saved) return JSON.parse(saved);
+        } catch (e) {}
+        return null;
+      }
+
+      let state = getBuilderState() || {
+        siteInfo: { siteTitle: 'MY WEBSITE', companyName: 'MY COMPANY' },
+        adminAuth: { adminId: 'admin', adminPw: 'admin1234' },
+        menus: [],
+        pageOptions: {},
+        features: {}
+      };
+
+      // Realtime cross-tab synchronization with builder
+      window.addEventListener('storage', (e) => {
+        if (e.key === STORAGE_KEY) {
+          const fresh = getBuilderState();
+          if (fresh) {
+            state = fresh;
+            initAdmin();
+          }
+        }
+      });
+
+      let activeSection = 'dashboard';
+
+      function showToast(message) {
+        const toast = document.getElementById('admin-toast');
+        const text = document.getElementById('toast-text');
+        if (toast && text) {
+          text.textContent = message;
+          toast.classList.add('show');
+          setTimeout(() => {
+            toast.classList.remove('show');
+          }, 2400);
+        }
+      }
+
+      function seedDummyApplies() {
+        let applies = JSON.parse(localStorage.getItem(LOCAL_APPLIES_KEY) || '[]');
+        if (applies.length === 0) {
+          applies = [
+            { id: 'REG-2609-001', program: '2026 주간 활동 맞춤 프로그램', name: '김철수', phone: '010-1234-5678', count: 1, status: '접수대기', date: '2026-08-19' },
+            { id: 'REG-2609-002', program: '2026 주간 활동 맞춤 프로그램', name: '이영희', phone: '010-9876-5432', count: 2, status: '승인완료', date: '2026-08-18' },
+            { id: 'REG-2609-003', program: '주말 특별 문화체험 교실', name: '박민수', phone: '010-5555-4444', count: 1, status: '신청취소', date: '2026-08-17' },
+            { id: 'REG-2609-004', program: '2026 주간 활동 맞춤 프로그램', name: '최동훈', phone: '010-7777-8888', count: 1, status: '대기자', date: '2026-08-19' }
+          ];
+          localStorage.setItem(LOCAL_APPLIES_KEY, JSON.stringify(applies));
+        }
+      }
+
+      function initAdmin() {
+        seedDummyApplies();
+        
+        // Update Brand Title
+        const siteTitle = state.siteInfo?.siteTitle || 'ADMIN STUDIO';
+        document.getElementById('admin-site-title').textContent = siteTitle;
+        document.getElementById('admin-title').textContent = `${siteTitle} - 통합 관리자 콘솔`;
+        document.getElementById('admin-display-name').textContent = `최고관리자 (${state.adminAuth?.adminId || 'admin'})`;
+
+        document.getElementById('login-id').value = state.adminAuth.adminId || 'admin';
+        document.getElementById('login-pw').value = state.adminAuth.adminPw || 'admin1234';
+
+        renderSidebar();
+        renderWorkspace(activeSection);
+      }
+
+      document.getElementById('admin-login-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const id = document.getElementById('login-id').value.trim();
+        const pw = document.getElementById('login-pw').value.trim();
+
+        if (id === (state.adminAuth.adminId || 'admin') && pw === (state.adminAuth.adminPw || 'admin1234')) {
+          document.getElementById('admin-login-overlay').style.display = 'none';
+          showToast('성공적으로 로그인되었습니다.');
+          renderSidebar();
+          renderWorkspace(activeSection);
+        } else {
+          alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+        }
+      });
+
+      document.getElementById('btn-admin-logout').addEventListener('click', () => {
+        document.getElementById('admin-login-overlay').style.display = 'flex';
+      });
+
+      function renderSidebar() {
+        const sidebar = document.getElementById('admin-dynamic-sidebar');
+        const pageOptions = state.pageOptions || {};
+
+        const contentMenus = [];
+        const programMenus = [];
+
+        (state.menus || []).forEach(main => {
+          (main.submenus || []).forEach(sub => {
+            const opt = pageOptions[sub.id] || {};
+            const pType = opt.type || (
+              sub.name.includes('프로그램') ? 'program' :
+              sub.name.includes('갤러리') || sub.name.includes('사진') ? 'gallery' :
+              sub.name.includes('캘린더') || sub.name.includes('일정') ? 'calendar' :
+              sub.name.includes('연혁') || sub.name.includes('히스토리') ? 'history' :
+              sub.name.includes('자료') ? 'archive' :
+              sub.name.includes('FAQ') || sub.name.includes('질문') ? 'faq' :
+              sub.name.includes('소개') ? 'about' :
+              sub.name.includes('문의') || sub.name.includes('상담') ? 'contact' :
+              sub.name.includes('오시는길') || sub.name.includes('지도') ? 'map' : 'board'
+            );
+
+            const item = {
+              id: sub.id,
+              name: sub.name,
+              mainName: main.name,
+              type: pType
+            };
+
+            if (pType === 'program') {
+              programMenus.push(item);
+            } else {
+              contentMenus.push(item);
+            }
+          });
+        });
+
+        const applies = JSON.parse(localStorage.getItem(LOCAL_APPLIES_KEY) || '[]');
+        const pendingCount = applies.filter(a => a.status === '접수대기').length;
+
+        const getIconForType = (type) => {
+          switch(type) {
+            case 'history':
+              return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`;
+            case 'gallery':
+              return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>`;
+            case 'archive':
+              return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`;
+            case 'faq':
+              return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`;
+            case 'calendar':
+              return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>`;
+            case 'about':
+              return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`;
+            case 'contact':
+              return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>`;
+            case 'map':
+              return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>`;
+            default:
+              return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>`;
+          }
+        };
+
+        const typeLabels = {
+          history: '연혁',
+          calendar: '캘린더',
+          board: '게시판',
+          gallery: '갤러리',
+          archive: '자료실',
+          faq: 'FAQ',
+          program: '프로그램',
+          about: '소개',
+          contact: '온라인상담',
+          map: '오시는길'
+        };
+
+        sidebar.innerHTML = `
+          <!-- 1. Dashboard -->
+          <div class="sidebar-group">
+            <div class="sidebar-section-title">Overview</div>
+            <a class="sidebar-menu-item ${activeSection === 'dashboard' ? 'active' : ''}" data-sec="dashboard">
+              <div class="sidebar-menu-left">
+                <span class="sidebar-menu-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                </span>
+                <span>메인 대시보드</span>
+              </div>
+            </a>
+          </div>
+
+          <!-- 2. Site Menus & Content Pages (Strict 1:1 Mirror of Step 1 & Step 2) -->
+          <div class="sidebar-group">
+            <div class="sidebar-section-title">Site Menus (${contentMenus.length + programMenus.length})</div>
+            ${[...programMenus, ...contentMenus].length > 0 ? [...programMenus, ...contentMenus].map(m => `
+              <a class="sidebar-menu-item ${activeSection === 'menu_' + m.id || activeSection === 'board_' + m.id ? 'active' : ''}" data-sec="menu_${m.id}">
+                <div class="sidebar-menu-left">
+                  <span class="sidebar-menu-icon">
+                    ${getIconForType(m.type)}
+                  </span>
+                  <span>${m.name}</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <span style="font-size:11px; padding:2px 6px; border-radius:4px; background:#f1f5f9; color:#475569; font-weight:700;">${typeLabels[m.type] || '게시판'}</span>
+                  ${m.type === 'program' && pendingCount > 0 ? `<span class="sidebar-counter" style="background:#f59e0b; color:#fff;">${pendingCount}</span>` : ''}
+                </div>
+              </a>
+            `).join('') : `
+              <a class="sidebar-menu-item ${activeSection === 'board_default' ? 'active' : ''}" data-sec="board_default">
+                <div class="sidebar-menu-left">
+                  <span class="sidebar-menu-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
+                  </span>
+                  <span>공지사항 관리</span>
+                </div>
+              </a>
+            `}
+          </div>
+
+          <!-- 3. Operations & Settings -->
+          <div class="sidebar-group">
+            <div class="sidebar-section-title">Settings & Operations</div>
+            <a class="sidebar-menu-item ${activeSection === 'popup_manage' ? 'active' : ''}" data-sec="popup_manage">
+              <div class="sidebar-menu-left">
+                <span class="sidebar-menu-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                </span>
+                <span>팝업 / 띠배너 관리</span>
+              </div>
+            </a>
+            <a class="sidebar-menu-item ${activeSection === 'settings' ? 'active' : ''}" data-sec="settings">
+              <div class="sidebar-menu-left">
+                <span class="sidebar-menu-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                </span>
+                <span>환경 설정</span>
+              </div>
+            </a>
+          </div>
+        `;
+
+        sidebar.querySelectorAll('[data-sec]').forEach(el => {
+          el.addEventListener('click', () => {
+            activeSection = el.getAttribute('data-sec');
+            renderSidebar();
+            renderWorkspace(activeSection);
+          });
+        });
+      }
+
+      // =========================================================================
+      // Dynamic Calendar System for Admin
+      // =========================================================================
+      let adminCalYear = 2026;
+      let adminCalMonth = 9;
+      let currentAdminCalTitle = '월간 캘린더';
+
+      const ADMIN_CALENDAR_EVENTS = {
+        '2026-08': [
+          { day: 1, title: '하반기 정기교육 1회차', type: 'blue', label: '정기교육', time: '10:00 - 12:00' },
+          { day: 15, title: '광복절 (센터 휴관)', type: 'amber', label: '공휴일', time: '종일' },
+          { day: 20, title: '여름 특별 문화체험', type: 'emerald', label: '체험교실', time: '14:00 - 16:00' },
+          { day: 28, title: '정기 시스템 점검', type: 'rose', label: '점검', time: '02:00 - 06:00' }
+        ],
+        '2026-09': [
+          { day: 1, title: '정기 교육 과정 1회차', type: 'blue', label: '정기교육', time: '10:00 - 12:00' },
+          { day: 8, title: '정기 교육 과정 2회차', type: 'blue', label: '정기교육', time: '10:00 - 12:00' },
+          { day: 15, title: '실무자 현장 세미나', type: 'indigo', label: '세미나', time: '14:00 - 17:00' },
+          { day: 22, title: '특별 문화체험 교실', type: 'emerald', label: '체험교실', time: '13:00 - 15:00' },
+          { day: 25, title: '센터 정기 시설 점검일', type: 'amber', label: '휴관', time: '종일' },
+          { day: 30, title: '월간 성과보고회', type: 'rose', label: '보고회', time: '16:00 - 18:00' }
+        ],
+        '2026-10': [
+          { day: 3, title: '개천절 (센터 휴관)', type: 'amber', label: '공휴일', time: '종일' },
+          { day: 9, title: '한글날 (센터 휴관)', type: 'amber', label: '공휴일', time: '종일' },
+          { day: 14, title: '가을 특별 워크숍', type: 'indigo', label: '워크숍', time: '13:00 - 16:00' },
+          { day: 21, title: '10월 정기 네트워킹 데이', type: 'blue', label: '네트워킹', time: '15:00 - 18:00' }
+        ],
+        '2026-11': [
+          { day: 5, title: '겨울 시즌 대비 특강', type: 'blue', label: '특강', time: '10:00 - 12:00' },
+          { day: 12, title: '정기 멘토링 프로그램', type: 'indigo', label: '멘토링', time: '14:00 - 17:00' },
+          { day: 18, title: '코칭 & 피드백 세션', type: 'emerald', label: '코칭', time: '14:00 - 17:00' }
+        ],
+        '2026-12': [
+          { day: 3, title: '연말 결산 워크숍', type: 'indigo', label: '워크숍', time: '10:00 - 16:00' },
+          { day: 15, title: '수료식 및 발표회', type: 'blue', label: '수료식', time: '14:00 - 17:00' },
+          { day: 25, title: '성탄절 (센터 휴관)', type: 'amber', label: '공휴일', time: '종일' },
+          { day: 31, title: '종무식 (단축 운영)', type: 'rose', label: '종무식', time: '09:00 - 12:00' }
+        ]
+      };
+
+      function generateAdminCalendarHtml(year, month, calTitle) {
+        const monthKey = `${year}-${String(month).padStart(2, '0')}`;
+        const events = ADMIN_CALENDAR_EVENTS[monthKey] || [
+          { day: 5, title: `${calTitle} 정기 교육`, type: 'blue', label: '교육', time: '10:00 - 12:00' },
+          { day: 15, title: `${calTitle} 실무 세미나`, type: 'indigo', label: '세미나', time: '14:00 - 17:00' },
+          { day: 25, title: `${calTitle} 시설 점검일`, type: 'amber', label: '휴관', time: '종일' }
+        ];
+
+        const firstDayOfWeek = new Date(year, month - 1, 1).getDay(); // 0 = Sun
+        const totalDays = new Date(year, month, 0).getDate();
+
+        let rowsHtml = '<tr>';
+        let currentCellIndex = 0;
+
+        for (let i = 0; i < firstDayOfWeek; i++) {
+          rowsHtml += '<td class="empty-cell"></td>';
+          currentCellIndex++;
+        }
+
+        for (let day = 1; day <= totalDays; day++) {
+          const dayOfWeek = (firstDayOfWeek + day - 1) % 7;
+          const isSun = dayOfWeek === 0;
+          const isSat = dayOfWeek === 6;
+          const isToday = year === 2026 && month === 9 && day === 15;
+
+          const dayEvents = events.filter(e => e.day === day);
+          const eventsChipsHtml = dayEvents.map(e => `
+            <span class="cal-event-chip cal-event-${e.type}" title="${e.title} (${e.time})">${e.title}</span>
+          `).join('');
+
+          const clickAction = dayEvents.length > 0
+            ? `showToast('${month}월 ${day}일 [${dayEvents[0].title}] 일정을 수정합니다.')`
+            : `showToast('${month}월 ${day}일 새 일정을 등록합니다.')`;
+
+          rowsHtml += `
+            <td onclick="${clickAction}">
+              <span class="cal-date-num ${isToday ? 'is-today' : isSun ? 'is-sun' : isSat ? 'is-sat' : ''}">${day}</span>
+              ${eventsChipsHtml}
+            </td>
+          `;
+          currentCellIndex++;
+
+          if (currentCellIndex % 7 === 0 && day < totalDays) {
+            rowsHtml += '</tr><tr>';
+          }
+        }
+
+        while (currentCellIndex % 7 !== 0) {
+          rowsHtml += '<td class="empty-cell"></td>';
+          currentCellIndex++;
+        }
+        rowsHtml += '</tr>';
+
+        const prevMonth = month === 1 ? 12 : month - 1;
+        const nextMonth = month === 12 ? 1 : month + 1;
+
+        const tableRowsHtml = events.map(e => `
+          <tr>
+            <td><strong>${year}-${String(month).padStart(2, '0')}-${String(e.day).padStart(2, '0')}</strong></td>
+            <td><span class="status-pill ${e.type === 'blue' || e.type === 'emerald' ? 'status-approved' : e.type === 'amber' || e.type === 'rose' ? 'status-cancelled' : 'status-wait'}">${e.label}</span></td>
+            <td><strong>${e.title}</strong></td>
+            <td>${e.time}</td>
+            <td style="text-align:center;">
+              <button class="btn btn-secondary btn-xs" onclick="showToast('${month}월 ${e.day}일 일정을 수정합니다.')">수정</button>
+              <button class="btn btn-ghost-danger btn-xs" onclick="showToast('${month}월 ${e.day}일 일정이 삭제되었습니다.')">삭제</button>
+            </td>
+          </tr>
+        `).join('');
+
+        return `
+          <div class="workspace-header">
+            <div class="workspace-title-wrap">
+              <div class="workspace-breadcrumb">운영 관리 > ${calTitle} 관리</div>
+              <h1 class="workspace-title">${calTitle} 일정 관리</h1>
+              <p class="workspace-desc">월별 교육 일정, 행사 및 휴무일을 달력 화면에서 직관적으로 등록하고 관리합니다.</p>
+            </div>
+            <button class="btn btn-primary" onclick="showToast('${year}년 ${month}월 새 일정 등록 창을 엽니다.')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              <span>새 일정 등록</span>
+            </button>
+          </div>
+
+          <!-- Calendar Interactive Month Card -->
+          <div class="admin-cal-card" style="margin-bottom:24px;">
+            <div class="cal-header-bar">
+              <div class="cal-month-title">
+                <button class="btn btn-secondary btn-xs" style="cursor:pointer;" onclick="window.navigateAdminCalendar(-1)">◀ ${prevMonth}월</button>
+                <span style="font-size:18px; font-weight:800; min-width:130px; text-align:center;">${year}년 ${month}월</span>
+                <button class="btn btn-secondary btn-xs" style="cursor:pointer;" onclick="window.navigateAdminCalendar(1)">${nextMonth}월 ▶</button>
+              </div>
+              <div style="font-size:13px; color:var(--text-secondary);">
+                💡 달력의 날짜를 클릭하면 즉시 해당 날짜에 새 일정을 등록/수정할 수 있습니다.
+              </div>
+            </div>
+
+            <table class="cal-grid-table">
+              <thead>
+                <tr>
+                  <th class="th-sun">일 (SUN)</th>
+                  <th>월 (MON)</th>
+                  <th>화 (TUE)</th>
+                  <th>수 (WED)</th>
+                  <th>목 (THU)</th>
+                  <th>금 (FRI)</th>
+                  <th class="th-sat">토 (SAT)</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rowsHtml}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Schedule List Card -->
+          <div class="card-container">
+            <div class="card-header">
+              <div class="card-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span>${year}년 ${month}월 등록 일정 목록 (${events.length}건)</span>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th style="width:120px;">일자</th>
+                    <th style="width:110px;">구분</th>
+                    <th>일정명</th>
+                    <th style="width:160px;">시간</th>
+                    <th style="width:120px; text-align:center;">관리</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${tableRowsHtml || '<tr><td colspan="5" style="text-align:center; color:#64748b; padding:32px;">등록된 일정이 없습니다.</td></tr>'}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+
+      window.navigateAdminCalendar = function(direction) {
+        adminCalMonth += direction;
+        if (adminCalMonth < 1) {
+          adminCalMonth = 12;
+          adminCalYear -= 1;
+        } else if (adminCalMonth > 12) {
+          adminCalMonth = 1;
+          adminCalYear += 1;
+        }
+        const root = document.getElementById('admin-workspace-root');
+        if (root) {
+          root.innerHTML = generateAdminCalendarHtml(adminCalYear, adminCalMonth, currentAdminCalTitle);
+        }
+      };
+
+      function renderWorkspace(section) {
+        const root = document.getElementById('admin-workspace-root');
+        const applies = JSON.parse(localStorage.getItem(LOCAL_APPLIES_KEY) || '[]');
+
+        if (section === 'dashboard') {
+          root.innerHTML = `
+            <div class="workspace-header">
+              <div class="workspace-title-wrap">
+                <div class="workspace-breadcrumb">홈 > 대시보드</div>
+                <h1 class="workspace-title">운영 현황 대시보드</h1>
+                <p class="workspace-desc">실시간 웹사이트 운영 지표 및 접수 현황을 한눈에 확인합니다.</p>
+              </div>
+            </div>
+
+            <!-- KPI Metric Cards -->
+            <div class="kpi-grid">
+              <div class="kpi-card">
+                <div class="kpi-info">
+                  <span class="kpi-label">총 프로그램 신청</span>
+                  <span class="kpi-value">${applies.length}건</span>
+                </div>
+                <div class="kpi-icon-wrap kpi-icon-primary">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                </div>
+              </div>
+
+              <div class="kpi-card">
+                <div class="kpi-info">
+                  <span class="kpi-label">접수 대기 (미처리)</span>
+                  <span class="kpi-value" style="color:#d97706;">${applies.filter(a => a.status === '접수대기').length}건</span>
+                </div>
+                <div class="kpi-icon-wrap kpi-icon-amber">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </div>
+              </div>
+
+              <div class="kpi-card">
+                <div class="kpi-info">
+                  <span class="kpi-label">온라인 상담 문의</span>
+                  <span class="kpi-value">2건</span>
+                </div>
+                <div class="kpi-icon-wrap kpi-icon-sky">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                </div>
+              </div>
+
+              <div class="kpi-card">
+                <div class="kpi-info">
+                  <span class="kpi-label">개설 프로그램 수</span>
+                  <span class="kpi-value" style="color:#059669;">2개</span>
+                </div>
+                <div class="kpi-icon-wrap kpi-icon-emerald">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent Table Card -->
+            <div class="card-container">
+              <div class="card-header">
+                <div class="card-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
+                  <span>최근 접수된 신청 내역</span>
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="activeSection='program_applicants'; renderSidebar(); renderWorkspace(activeSection);">전체보기</button>
+              </div>
+              <div class="table-responsive">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th style="width:140px;">접수번호</th>
+                      <th>프로그램명</th>
+                      <th style="width:110px;">신청자</th>
+                      <th style="width:140px;">연락처</th>
+                      <th style="width:100px; text-align:center;">상태</th>
+                      <th style="width:110px; text-align:center;">신청일시</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${applies.slice(0, 4).map(a => `
+                      <tr>
+                        <td><strong>${a.id}</strong></td>
+                        <td>${a.program}</td>
+                        <td>${a.name}</td>
+                        <td>${a.phone}</td>
+                        <td style="text-align:center;">${getStatusBadge(a.status)}</td>
+                        <td style="text-align:center; color:#64748b;">${a.date}</td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `;
+        } else if (section === 'program_applicants') {
+          root.innerHTML = `
+            <div class="workspace-header">
+              <div class="workspace-title-wrap">
+                <div class="workspace-breadcrumb">프로그램 관리 > 신청자 현황 관리</div>
+                <h1 class="workspace-title">신청자 현황 관리</h1>
+                <p class="workspace-desc">접수된 신청 내역을 검토하고 승인, 반려, 참여 상태를 실시간으로 변경합니다.</p>
+              </div>
+              <div style="display:flex; gap:10px;">
+                <button class="btn btn-primary" onclick="showNewProgramModal()">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  <span>신규 프로그램 개설</span>
+                </button>
+                <button class="btn btn-secondary" onclick="exportCSV()">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  <span>CSV 내보내기</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- KPI Metric Summary -->
+            <div class="kpi-grid">
+              <div class="kpi-card">
+                <div class="kpi-info">
+                  <span class="kpi-label">전체 접수건</span>
+                  <span class="kpi-value">${applies.length}건</span>
+                </div>
+                <div class="kpi-icon-wrap kpi-icon-primary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-info">
+                  <span class="kpi-label">접수 대기</span>
+                  <span class="kpi-value" style="color:#d97706;">${applies.filter(a => a.status === '접수대기').length}건</span>
+                </div>
+                <div class="kpi-icon-wrap kpi-icon-amber"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-info">
+                  <span class="kpi-label">승인 완료</span>
+                  <span class="kpi-value" style="color:#059669;">${applies.filter(a => a.status === '승인완료').length}건</span>
+                </div>
+                <div class="kpi-icon-wrap kpi-icon-emerald"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-info">
+                  <span class="kpi-label">대기자 / 취소</span>
+                  <span class="kpi-value" style="color:#64748b;">${applies.filter(a => ['대기자', '신청취소', '신청반려'].includes(a.status)).length}건</span>
+                </div>
+                <div class="kpi-icon-wrap kpi-icon-sky"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg></div>
+              </div>
+            </div>
+
+            <!-- Table Card -->
+            <div class="card-container">
+              <!-- Filter Controls -->
+              <div class="control-bar">
+                <div class="control-left">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <label class="form-label" style="font-size:13px; color:#64748b;">프로그램:</label>
+                    <select class="form-select" style="min-width:240px; height:36px; font-size:13.5px;">
+                      <option>전체 프로그램</option>
+                      <option selected>2026 주간 활동 맞춤 프로그램</option>
+                      <option>주말 특별 문화체험 교실</option>
+                    </select>
+                  </div>
+
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <label class="form-label" style="font-size:13px; color:#64748b;">상태 필터:</label>
+                    <select class="form-select" style="width:130px; height:36px; font-size:13.5px;">
+                      <option>전체 상태</option>
+                      <option>접수대기</option>
+                      <option>승인완료</option>
+                      <option>신청취소</option>
+                      <option>대기자</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="control-right">
+                  <input type="text" class="form-input" style="width:200px; height:36px; font-size:13.5px;" value="">
+                  <button class="btn btn-secondary btn-sm" onclick="showToast('검색 결과가 갱신되었습니다.')">검색</button>
+                </div>
+              </div>
+
+              <!-- Applicants Table -->
+              <div class="table-responsive">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th style="width:130px;">접수번호</th>
+                      <th style="width:100px;">신청자</th>
+                      <th style="width:140px;">연락처</th>
+                      <th style="width:90px; text-align:center;">신청인원</th>
+                      <th style="width:110px; text-align:center;">상태</th>
+                      <th style="width:100px; text-align:center;">접수일</th>
+                      <th style="width:190px; text-align:center;">관리 처리</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${applies.map(a => `
+                      <tr>
+                        <td><strong style="color:var(--primary);">${a.id}</strong></td>
+                        <td><strong style="color:var(--text-primary);">${a.name}</strong></td>
+                        <td>${a.phone}</td>
+                        <td style="text-align:center;"><strong>${a.count}</strong>명</td>
+                        <td style="text-align:center;">
+                          ${getStatusBadge(a.status)}
+                        </td>
+                        <td style="text-align:center; color:#64748b; font-size:13px;">${a.date}</td>
+                        <td style="text-align:center;">
+                          <div style="display:flex; justify-content:center; gap:6px;">
+                            ${a.status === '접수대기' ? `
+                              <button class="btn btn-primary btn-xs" onclick="updateStatus('${a.id}','승인완료')">승인</button>
+                              <button class="btn btn-ghost-danger btn-xs" onclick="updateStatus('${a.id}','신청반려')">반려</button>
+                            ` : a.status === '승인완료' ? `
+                              <button class="btn btn-success btn-xs" onclick="updateStatus('${a.id}','참여완료')">참여완료</button>
+                              <button class="btn btn-ghost-danger btn-xs" onclick="updateStatus('${a.id}','신청취소')">취소</button>
+                            ` : `
+                              <button class="btn btn-secondary btn-xs" onclick="showToast('${a.name} 님의 상세 신청서를 열람합니다.')">상세내역</button>
+                            `}
+                          </div>
+                        </td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Table Footer -->
+              <div class="table-footer">
+                <span>표시 중: 1-${applies.length} / 총 ${applies.length}건</span>
+                <div style="display:flex; gap:6px;">
+                  <button class="btn btn-secondary btn-xs" disabled>이전</button>
+                  <button class="btn btn-primary btn-xs">1</button>
+                  <button class="btn btn-secondary btn-xs" disabled>다음</button>
+                </div>
+              </div>
+            </div>
+          `;
+        } else if (section === 'program_list') {
+          root.innerHTML = `
+            <div class="workspace-header">
+              <div class="workspace-title-wrap">
+                <div class="workspace-breadcrumb">프로그램 관리 > 프로그램 개설 / 목록</div>
+                <h1 class="workspace-title">개설 프로그램 목록</h1>
+                <p class="workspace-desc">운영 중인 프로그램을 확인하고 신규 개설 및 정원 설정을 관리합니다.</p>
+              </div>
+              <button class="btn btn-primary" onclick="showNewProgramModal()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                <span>신규 프로그램 개설</span>
+              </button>
+            </div>
+
+            <div class="programs-grid">
+              <div class="program-card">
+                <div class="program-card-header">
+                  <span class="program-tag">정기 프로그램</span>
+                  <span class="status-pill status-approved"><span class="status-dot"></span>접수중</span>
+                </div>
+                <div class="program-title">2026 주간 활동 맞춤 프로그램</div>
+                <div class="program-meta">
+                  <div class="program-meta-row">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg>
+                    <span>접수기간: 2026-08-01 ~ 2026-08-31</span>
+                  </div>
+                  <div class="program-meta-row">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <span>교육일시: 매주 월, 수 10:00 - 12:00</span>
+                  </div>
+                </div>
+                <div class="quota-bar-wrap">
+                  <div class="quota-info">
+                    <span>모집 현황</span>
+                    <span><strong>18명</strong> / 20명 (90%)</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill" style="width: 90%;"></div>
+                  </div>
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:4px;">
+                  <button class="btn btn-secondary btn-sm" onclick="activeSection='program_applicants'; renderSidebar(); renderWorkspace(activeSection);">신청자 보기</button>
+                  <button class="btn btn-secondary btn-sm" onclick="showToast('프로그램 수정 화면을 로드합니다.')">수정</button>
+                </div>
+              </div>
+
+              <div class="program-card">
+                <div class="program-card-header">
+                  <span class="program-tag" style="background:#f0fdf4; color:#16a34a;">특별 강좌</span>
+                  <span class="status-pill status-approved"><span class="status-dot"></span>접수중</span>
+                </div>
+                <div class="program-title">주말 특별 문화체험 교실</div>
+                <div class="program-meta">
+                  <div class="program-meta-row">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg>
+                    <span>접수기간: 2026-08-10 ~ 2026-08-25</span>
+                  </div>
+                  <div class="program-meta-row">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <span>교육일시: 매주 토 14:00 - 16:00</span>
+                  </div>
+                </div>
+                <div class="quota-bar-wrap">
+                  <div class="quota-info">
+                    <span>모집 현황</span>
+                    <span><strong>12명</strong> / 15명 (80%)</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill" style="width: 80%; background:#10b981;"></div>
+                  </div>
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:4px;">
+                  <button class="btn btn-secondary btn-sm" onclick="activeSection='program_applicants'; renderSidebar(); renderWorkspace(activeSection);">신청자 보기</button>
+                  <button class="btn btn-secondary btn-sm" onclick="showToast('프로그램 수정 화면을 로드합니다.')">수정</button>
+                </div>
+              </div>
+            </div>
+          `;
+        } else if (section.startsWith('menu_') || section.startsWith('board_')) {
+          const subId = section.replace('menu_', '').replace('board_', '');
+          let subName = '게시판';
+          let mainName = '메뉴';
+          (state.menus || []).forEach(m => {
+            (m.submenus || []).forEach(s => {
+              if (s.id === subId) {
+                subName = s.name;
+                mainName = m.name;
+              }
+            });
+          });
+
+          const opt = pageOptions[subId] || {};
+          const pType = opt.type || (
+            subName.includes('프로그램') ? 'program' :
+            subName.includes('갤러리') || subName.includes('사진') ? 'gallery' :
+            subName.includes('캘린더') || subName.includes('일정') ? 'calendar' :
+            subName.includes('자료') ? 'archive' :
+            subName.includes('FAQ') || subName.includes('질문') ? 'faq' :
+            subName.includes('소개') ? 'about' :
+            subName.includes('문의') || subName.includes('상담') ? 'contact' :
+            subName.includes('오시는길') || subName.includes('지도') ? 'map' : 'board'
+          );
+
+          if (pType === 'calendar') {
+            currentAdminCalTitle = subName;
+            root.innerHTML = generateAdminCalendarHtml(adminCalYear, adminCalMonth, subName);
+          } else if (pType === 'gallery') {
+            root.innerHTML = `
+              <div class="workspace-header">
+                <div class="workspace-title-wrap">
+                  <div class="workspace-breadcrumb">${mainName} > ${subName} 관리</div>
+                  <h1 class="workspace-title">${subName} 갤러리 관리</h1>
+                  <p class="workspace-desc">사진 앨범을 생성하고 현장 활동 사진을 업로드 및 관리합니다.</p>
+                </div>
+                <button class="btn btn-primary" onclick="showToast('사진 등록 창을 엽니다.')">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  <span>새 사진 업로드</span>
+                </button>
+              </div>
+
+              <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:20px;">
+                ${[3, 2, 1].map(n => `
+                  <div class="card-container" style="overflow:hidden;">
+                    <div style="height:170px; background:#f1f5f9; display:flex; align-items:center; justify-content:center; font-size:42px; color:#94a3b8;">
+                      ${n % 2 === 0 ? '🏢' : '✨'}
+                    </div>
+                    <div style="padding:16px;">
+                      <div style="font-weight:700; font-size:16px; color:var(--text-primary);">${subName} 활동 사진 앨범 - ${n}</div>
+                      <div style="font-size:13px; color:var(--text-secondary); margin-top:6px;">등록일: 2026-08-1${n} | 조회 7${n}회</div>
+                      <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:12px;">
+                        <button class="btn btn-secondary btn-xs" onclick="showToast('사진을 수정합니다.')">수정</button>
+                        <button class="btn btn-ghost-danger btn-xs" onclick="showToast('사진이 삭제되었습니다.')">삭제</button>
+                      </div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            `;
+          } else if (pType === 'archive') {
+            root.innerHTML = `
+              <div class="workspace-header">
+                <div class="workspace-title-wrap">
+                  <div class="workspace-breadcrumb">${mainName} > ${subName} 관리</div>
+                  <h1 class="workspace-title">${subName} 자료실 관리</h1>
+                  <p class="workspace-desc">다운로드 가능한 문서 서식 및 관련 안내 자료를 등록/관리합니다.</p>
+                </div>
+                <button class="btn btn-primary" onclick="showToast('자료 등록 창을 엽니다.')">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  <span>새 자료 등록</span>
+                </button>
+              </div>
+
+              <div class="card-container">
+                <div class="table-responsive">
+                  <table class="admin-table">
+                    <thead>
+                      <tr>
+                        <th style="width:70px; text-align:center;">번호</th>
+                        <th>자료명 / 파일명</th>
+                        <th style="width:100px; text-align:center;">파일크기</th>
+                        <th style="width:110px; text-align:center;">등록일</th>
+                        <th style="width:100px; text-align:center;">다운로드</th>
+                        <th style="width:120px; text-align:center;">관리</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td style="text-align:center;">2</td>
+                        <td><strong>[서식] ${subName} 2026 참가 신청서 및 동의서 양식.pdf</strong></td>
+                        <td style="text-align:center; color:#64748b;">1.2 MB</td>
+                        <td style="text-align:center; color:#64748b;">2026-08-22</td>
+                        <td style="text-align:center;"><strong>142</strong>회</td>
+                        <td style="text-align:center;">
+                          <button class="btn btn-secondary btn-xs" onclick="showToast('자료를 수정합니다.')">수정</button>
+                          <button class="btn btn-ghost-danger btn-xs" onclick="showToast('자료가 삭제되었습니다.')">삭제</button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="text-align:center;">1</td>
+                        <td><strong>[안내서] ${subName} 운영 매뉴얼 및 가이드북.hwp</strong></td>
+                        <td style="text-align:center; color:#64748b;">4.8 MB</td>
+                        <td style="text-align:center; color:#64748b;">2026-08-15</td>
+                        <td style="text-align:center;"><strong>98</strong>회</td>
+                        <td style="text-align:center;">
+                          <button class="btn btn-secondary btn-xs" onclick="showToast('자료를 수정합니다.')">수정</button>
+                          <button class="btn btn-ghost-danger btn-xs" onclick="showToast('자료가 삭제되었습니다.')">삭제</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            `;
+          } else if (pType === 'faq') {
+            root.innerHTML = `
+              <div class="workspace-header">
+                <div class="workspace-title-wrap">
+                  <div class="workspace-breadcrumb">${mainName} > ${subName} 관리</div>
+                  <h1 class="workspace-title">${subName} 자주 묻는 질문(FAQ) 관리</h1>
+                  <p class="workspace-desc">자주 묻는 질문과 답변(Q&A)을 등록하고 노출 순서를 관리합니다.</p>
+                </div>
+                <button class="btn btn-primary" onclick="showToast('새 FAQ 등록 창을 엽니다.')">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  <span>새 FAQ 등록</span>
+                </button>
+              </div>
+
+              <div class="card-container">
+                <div class="table-responsive">
+                  <table class="admin-table">
+                    <thead>
+                      <tr>
+                        <th style="width:70px; text-align:center;">순서</th>
+                        <th>질문 (Question)</th>
+                        <th style="width:110px; text-align:center;">카테고리</th>
+                        <th style="width:100px; text-align:center;">상태</th>
+                        <th style="width:120px; text-align:center;">관리</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td style="text-align:center;">1</td>
+                        <td><strong>Q. ${subName} 관련 신청 및 이용 절차는 어떻게 되나요?</strong></td>
+                        <td style="text-align:center;"><span class="status-pill status-approved">이용안내</span></td>
+                        <td style="text-align:center; color:#16a34a; font-weight:700;">노출중</td>
+                        <td style="text-align:center;">
+                          <button class="btn btn-secondary btn-xs" onclick="showToast('FAQ를 수정합니다.')">수정</button>
+                          <button class="btn btn-ghost-danger btn-xs" onclick="showToast('FAQ가 삭제되었습니다.')">삭제</button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="text-align:center;">2</td>
+                        <td><strong>Q. 취소 및 환불 기준은 어디서 확인할 수 있나요?</strong></td>
+                        <td style="text-align:center;"><span class="status-pill status-wait">취소/환불</span></td>
+                        <td style="text-align:center; color:#16a34a; font-weight:700;">노출중</td>
+                        <td style="text-align:center;">
+                          <button class="btn btn-secondary btn-xs" onclick="showToast('FAQ를 수정합니다.')">수정</button>
+                          <button class="btn btn-ghost-danger btn-xs" onclick="showToast('FAQ가 삭제되었습니다.')">삭제</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            `;
+          } else if (pType === 'about' || pType === 'map' || pType === 'contact') {
+            root.innerHTML = `
+              <div class="workspace-header">
+                <div class="workspace-title-wrap">
+                  <div class="workspace-breadcrumb">${mainName} > ${subName} 관리</div>
+                  <h1 class="workspace-title">${subName} 페이지 콘텐츠 관리</h1>
+                  <p class="workspace-desc">${subName} 페이지에 표시되는 텍스트 및 상세 안내 정보를 편집합니다.</p>
+                </div>
+                <button class="btn btn-primary" onclick="showToast('페이지 콘텐츠가 저장되었습니다.')">콘텐츠 저장</button>
+              </div>
+
+              <div class="card-container">
+                <div class="card-header">
+                  <div class="card-title">${subName} 내용 편집기</div>
+                </div>
+                <div class="card-body" style="display:flex; flex-direction:column; gap:16px;">
+                  <div class="form-group">
+                    <label class="form-label">페이지 대제목</label>
+                    <input type="text" class="form-input" value="${subName} 소개 및 안내">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">상세 본문 콘텐츠</label>
+                    <textarea class="form-textarea" rows="6">${subName} 페이지에 오신 것을 환영합니다. 항상 최선을 다하는 서비스로 보답하겠습니다.</textarea>
+                  </div>
+                </div>
+              </div>
+            `;
+          } else {
+            root.innerHTML = `
+              <div class="workspace-header">
+                <div class="workspace-title-wrap">
+                  <div class="workspace-breadcrumb">${mainName} > ${subName} 목록</div>
+                  <h1 class="workspace-title">${subName} 게시판 관리</h1>
+                  <p class="workspace-desc">${subName}에 등록된 게시글을 작성, 수정, 관리합니다.</p>
+                </div>
+                <button class="btn btn-primary" onclick="showToast('${subName} 새 글 쓰기 에디터를 엽니다.')">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  <span>새 글 등록</span>
+                </button>
+              </div>
+
+              <div class="card-container">
+                <div class="table-responsive">
+                  <table class="admin-table">
+                    <thead>
+                      <tr>
+                        <th style="width:80px; text-align:center;">번호</th>
+                        <th>제목</th>
+                        <th style="width:110px; text-align:center;">작성자</th>
+                        <th style="width:120px; text-align:center;">등록일</th>
+                        <th style="width:90px; text-align:center;">조회수</th>
+                        <th style="width:130px; text-align:center;">관리</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td style="text-align:center;"><span style="background:#eef2ff; color:#4f46e5; font-weight:800; font-size:11px; padding:2px 6px; border-radius:4px;">공지</span></td>
+                        <td><strong>${subName} 운영 안내 - 3</strong></td>
+                        <td style="text-align:center;">관리자</td>
+                        <td style="text-align:center; color:#64748b;">2026-08-25</td>
+                        <td style="text-align:center;">142</td>
+                        <td style="text-align:center;">
+                          <button class="btn btn-secondary btn-xs" onclick="showToast('게시글을 수정합니다.')">수정</button>
+                          <button class="btn btn-ghost-danger btn-xs" onclick="showToast('게시글이 삭제되었습니다.')">삭제</button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="text-align:center;">2</td>
+                        <td><strong>${subName} 세부 안내 - 2</strong></td>
+                        <td style="text-align:center;">관리자</td>
+                        <td style="text-align:center; color:#64748b;">2026-08-20</td>
+                        <td style="text-align:center;">89</td>
+                        <td style="text-align:center;">
+                          <button class="btn btn-secondary btn-xs" onclick="showToast('게시글을 수정합니다.')">수정</button>
+                          <button class="btn btn-ghost-danger btn-xs" onclick="showToast('게시글이 삭제되었습니다.')">삭제</button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="text-align:center;">1</td>
+                        <td><strong>${subName} 첫 번째 게시글 - 1</strong></td>
+                        <td style="text-align:center;">관리자</td>
+                        <td style="text-align:center; color:#64748b;">2026-08-15</td>
+                        <td style="text-align:center;">54</td>
+                        <td style="text-align:center;">
+                          <button class="btn btn-secondary btn-xs" onclick="showToast('게시글을 수정합니다.')">수정</button>
+                          <button class="btn btn-ghost-danger btn-xs" onclick="showToast('게시글이 삭제되었습니다.')">삭제</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            `;
+          }
+        } else if (section === 'inquiry_manage') {
+          root.innerHTML = `
+            <div class="workspace-header">
+              <div class="workspace-title-wrap">
+                <div class="workspace-breadcrumb">운영 관리 > 온라인 상담 내역</div>
+                <h1 class="workspace-title">온라인 상담 문의 내역</h1>
+                <p class="workspace-desc">홈페이지를 통해 접수된 1:1 온라인 상담 문의를 확인하고 답변을 발송합니다.</p>
+              </div>
+            </div>
+
+            <div class="card-container">
+              <div class="table-responsive">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th style="width:120px;">접수번호</th>
+                      <th style="width:100px;">문의자</th>
+                      <th style="width:130px;">연락처</th>
+                      <th>문의 내용 요약</th>
+                      <th style="width:100px; text-align:center;">상태</th>
+                      <th style="width:110px; text-align:center;">접수일시</th>
+                      <th style="width:100px; text-align:center;">관리</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>INQ-2608-01</strong></td>
+                      <td><strong>정민우</strong></td>
+                      <td>010-3333-7777</td>
+                      <td>주간 활동 프로그램 신청 자격 및 서류 문의드립니다.</td>
+                      <td style="text-align:center;"><span class="status-pill status-wait"><span class="status-dot"></span>미답변</span></td>
+                      <td style="text-align:center; color:#64748b;">2026-08-19</td>
+                      <td style="text-align:center;">
+                        <button class="btn btn-primary btn-xs" onclick="showToast('답변 발송 모달을 엽니다.')">답변작성</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><strong>INQ-2608-02</strong></td>
+                      <td><strong>한지현</strong></td>
+                      <td>010-8888-2222</td>
+                      <td>단체 수강 할인 및 주차 공간 관련 문의</td>
+                      <td style="text-align:center;"><span class="status-pill status-approved"><span class="status-dot"></span>답변완료</span></td>
+                      <td style="text-align:center; color:#64748b;">2026-08-17</td>
+                      <td style="text-align:center;">
+                        <button class="btn btn-secondary btn-xs" onclick="showToast('이전 답변 내용을 확인합니다.')">내용확인</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `;
+        } else if (section === 'popup_manage') {
+          root.innerHTML = `
+            <div class="workspace-header">
+              <div class="workspace-title-wrap">
+                <div class="workspace-breadcrumb">운영 관리 > 팝업 / 띠배너 관리</div>
+                <h1 class="workspace-title">팝업 및 띠배너 노출 설정</h1>
+                <p class="workspace-desc">메인 화면에 노출되는 공지 팝업창 및 상단 띠배너의 활성화 여부를 설정합니다.</p>
+              </div>
+              <button class="btn btn-primary" onclick="showToast('팝업 / 배너 설정이 저장되었습니다.')">설정 저장</button>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+              <div class="card-container">
+                <div class="card-header">
+                  <div class="card-title">메인 레이어 팝업</div>
+                  <div class="switch-wrap">
+                    <label class="switch">
+                      <input type="checkbox" checked>
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+                <div class="card-body" style="display:flex; flex-direction:column; gap:16px;">
+                  <div class="form-group">
+                    <label class="form-label">팝업 제목</label>
+                    <input type="text" class="form-input" value="2026 하반기 신규 수강생 모집 안내">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">팝업 본문 내용</label>
+                    <textarea class="form-textarea">선착순 접수 마감이 임박했습니다. 지금 바로 프로그램 메뉴에서 신청하세요!</textarea>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">연결 링크 URL</label>
+                    <input type="text" class="form-input" value="#program">
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-container">
+                <div class="card-header">
+                  <div class="card-title">상단 고정 띠배너</div>
+                  <div class="switch-wrap">
+                    <label class="switch">
+                      <input type="checkbox" checked>
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+                <div class="card-body" style="display:flex; flex-direction:column; gap:16px;">
+                  <div class="form-group">
+                    <label class="form-label">띠배너 안내 문구</label>
+                    <input type="text" class="form-input" value="🎉 2026 프로그램 온라인 접수가 오픈되었습니다.">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">버튼 텍스트</label>
+                    <input type="text" class="form-input" value="자세히 보기 ➔">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">배너 배경 색상</label>
+                    <input type="text" class="form-input" value="#4F46E5">
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        } else if (section === 'calendar_manage') {
+          currentAdminCalTitle = '월간 캘린더';
+          root.innerHTML = generateAdminCalendarHtml(adminCalYear, adminCalMonth, '월간 캘린더');
+        } else if (section === 'settings') {
+          root.innerHTML = `
+            <div class="workspace-header">
+              <div class="workspace-title-wrap">
+                <div class="workspace-breadcrumb">설정 > 환경 설정</div>
+                <h1 class="workspace-title">기본 정보 및 환경 설정</h1>
+                <p class="workspace-desc">웹사이트의 기본 정보, 사업자 정보 및 최고 관리자 보안 설정을 관리합니다.</p>
+              </div>
+              <button class="btn btn-primary" onclick="saveSettings()">설정 저장</button>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+              <!-- 1. Site Info -->
+              <div class="card-container">
+                <div class="card-header">
+                  <div class="card-title">웹사이트 기본 정보</div>
+                </div>
+                <div class="card-body" style="display:flex; flex-direction:column; gap:16px;">
+                  <div class="form-group">
+                    <label class="form-label" for="set-site-title">사이트 명칭</label>
+                    <input type="text" id="set-site-title" class="form-input" value="${state.siteInfo?.siteTitle || 'MY WEBSITE'}">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="set-company-name">상호명 (기관명)</label>
+                    <input type="text" id="set-company-name" class="form-input" value="${state.siteInfo?.companyName || '주식회사 빌더스튜디오'}">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="set-ceo-name">대표자명</label>
+                    <input type="text" id="set-ceo-name" class="form-input" value="홍길동">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="set-contact-email">대표 이메일</label>
+                    <input type="email" id="set-contact-email" class="form-input" value="contact@domain.com">
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. Security Auth -->
+              <div class="card-container">
+                <div class="card-header">
+                  <div class="card-title">관리자 보안 및 계정 관리</div>
+                </div>
+                <div class="card-body" style="display:flex; flex-direction:column; gap:16px;">
+                  <div class="form-group">
+                    <label class="form-label" for="set-admin-id">최고 관리자 ID</label>
+                    <input type="text" id="set-admin-id" class="form-input" value="${state.adminAuth?.adminId || 'admin'}">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="set-admin-pw">관리자 비밀번호</label>
+                    <input type="password" id="set-admin-pw" class="form-input" value="${state.adminAuth?.adminPw || 'admin1234'}">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="set-admin-pw-check">비밀번호 확인</label>
+                    <input type="password" id="set-admin-pw-check" class="form-input" value="${state.adminAuth?.adminPw || 'admin1234'}">
+                  </div>
+                  <p style="font-size:12.5px; color:#64748b; line-height:1.5;">* 변경된 비밀번호는 시스템 전체에 즉시 반영되며, 다음 로그인부터 적용됩니다.</p>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      function getStatusBadge(status) {
+        switch (status) {
+          case '접수대기':
+            return `<span class="status-pill status-wait"><span class="status-dot"></span>접수대기</span>`;
+          case '승인완료':
+            return `<span class="status-pill status-approved"><span class="status-dot"></span>승인완료</span>`;
+          case '참여완료':
+            return `<span class="status-pill status-complete"><span class="status-dot"></span>참여완료</span>`;
+          case '신청취소':
+            return `<span class="status-pill status-cancelled"><span class="status-dot"></span>신청취소</span>`;
+          case '대기자':
+            return `<span class="status-pill status-rejected"><span class="status-dot"></span>대기자</span>`;
+          case '신청반려':
+            return `<span class="status-pill status-rejected"><span class="status-dot"></span>신청반려</span>`;
+          default:
+            return `<span class="status-pill status-wait"><span class="status-dot"></span>${status}</span>`;
+        }
+      }
+
+      window.updateStatus = function(id, newStatus) {
+        const applies = JSON.parse(localStorage.getItem(LOCAL_APPLIES_KEY) || '[]');
+        const target = applies.find(a => a.id === id);
+        if (target) {
+          target.status = newStatus;
+          localStorage.setItem(LOCAL_APPLIES_KEY, JSON.stringify(applies));
+          showToast(`[${target.name}] 님의 접수 상태가 [${newStatus}] 로 변경되었습니다.`);
+          renderSidebar();
+          renderWorkspace(activeSection);
+        }
+      };
+
+      window.saveSettings = function() {
+        const siteTitle = document.getElementById('set-site-title')?.value.trim();
+        const companyName = document.getElementById('set-company-name')?.value.trim();
+        const adminId = document.getElementById('set-admin-id')?.value.trim();
+        const adminPw = document.getElementById('set-admin-pw')?.value.trim();
+
+        if (state.siteInfo) {
+          state.siteInfo.siteTitle = siteTitle;
+          state.siteInfo.companyName = companyName;
+        }
+        if (state.adminAuth) {
+          state.adminAuth.adminId = adminId;
+          state.adminAuth.adminPw = adminPw;
+        }
+
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (e) {}
+
+        document.getElementById('admin-site-title').textContent = siteTitle;
+        document.getElementById('admin-display-name').textContent = `최고관리자 (${adminId})`;
+        showToast('환경 설정이 성공적으로 저장되었습니다.');
+      };
+
+      window.showNewProgramModal = function() {
+        const root = document.getElementById('admin-modal-root');
+        root.innerHTML = `
+          <div class="modal-overlay">
+            <div class="modal-box">
+              <div class="modal-header">
+                <h3 class="modal-title">신규 프로그램 개설</h3>
+                <button class="btn btn-ghost btn-xs" onclick="document.getElementById('admin-modal-root').innerHTML=''">✕</button>
+              </div>
+              <form id="form-new-program" style="display:flex; flex-direction:column; gap:14px;">
+                <div class="form-group">
+                  <label class="form-label" for="prog-title">프로그램명 *</label>
+                  <input type="text" id="prog-title" class="form-input" required value="2026 가을맞이 특별 바우처 프로그램">
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                  <div class="form-group">
+                    <label class="form-label" for="prog-quota">모집정원 (명)</label>
+                    <input type="number" id="prog-quota" class="form-input" value="20">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="prog-fee">수강료</label>
+                    <input type="text" id="prog-fee" class="form-input" value="무료">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="prog-period">접수 기간</label>
+                  <input type="text" id="prog-period" class="form-input" value="2026-09-01 ~ 2026-09-15">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="prog-time">교육 일시</label>
+                  <input type="text" id="prog-time" class="form-input" value="매주 화, 목 14:00 - 16:00">
+                </div>
+                <div class="modal-actions">
+                  <button type="button" class="btn btn-secondary" onclick="document.getElementById('admin-modal-root').innerHTML=''">취소</button>
+                  <button type="submit" class="btn btn-primary">개설 완료</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        `;
+
+        document.getElementById('form-new-program').addEventListener('submit', (e) => {
+          e.preventDefault();
+          root.innerHTML = '';
+          showToast('신규 프로그램이 성공적으로 개설되었습니다.');
+        });
+      };
+
+      window.exportCSV = function() {
+        showToast('신청자 명단 CSV 파일이 다운로드되었습니다.');
+      };
+
+      initAdmin();
+    })();
+  </script>
+</body>
+</html>

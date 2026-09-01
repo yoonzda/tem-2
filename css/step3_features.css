@@ -1,0 +1,376 @@
+/* ==========================================================================
+   Step 3: Feature Matrix (1-Column Wide C-5 + Hover Tooltips & Detail Modal)
+   ========================================================================== */
+
+.step3-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: calc(100vh - 60px);
+  margin: 0 auto;
+  padding: 48px 0 80px 0;
+  box-sizing: border-box;
+  gap: 24px;
+}
+
+/* 1-Column Wide List */
+.step3-rows-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.step3-row-card-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.step3-row-card {
+  position: relative;
+  background: #ffffff;
+  border: 2px solid #e2e8f0; /* Fixed 2px so card size never shifts on click */
+  border-radius: 14px;
+  padding: 36px 32px;
+  min-height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  user-select: none;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.step3-row-card input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+}
+
+.step3-row-card:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.step3-row-card.active {
+  background: #ffffff;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+/* Top-Right Floating Corner Badge */
+.step3-corner-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  color: #94a3b8;
+  font-size: 14px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.step3-row-card.active .step3-corner-badge {
+  background: #4f46e5;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+}
+
+/* Center Feature Title */
+.step3-tile-name {
+  font-size: 16.5px;
+  font-weight: 750;
+  color: #0f172a;
+  line-height: 1.4;
+  transition: all 0.15s ease;
+}
+
+.step3-row-card.active .step3-tile-name {
+  font-weight: 850;
+  color: #0f172a;
+}
+
+/* ==========================================================================
+   Dynamic Cursor-Tracking Speech Bubble Tooltip (시안 12-3: 소프트 라운드 삼각 꼬리)
+   ========================================================================== */
+.step3-cursor-tooltip {
+  position: fixed;
+  width: 500px;
+  max-width: calc(100vw - 32px);
+  background: #18181b;
+  border: 1px solid #3f3f46;
+  border-radius: 10px;
+  padding: 26px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.52);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.96);
+  transition: opacity 0.14s ease, transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.14s ease, background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  z-index: 9999;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  word-break: keep-all;
+}
+
+/* SVG Soft Rounded Triangle Tail (시안 12-3) */
+.step3-tooltip-arrow {
+  position: absolute;
+  top: -11px;
+  left: 28px;
+  width: 24px;
+  height: 12px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* Adaptive Direction: Tail Points Down when Tooltip is Above Cursor */
+.step3-cursor-tooltip.tail-bottom .step3-tooltip-arrow {
+  top: auto;
+  bottom: -11px;
+  transform: rotate(180deg);
+}
+
+.step3-tooltip-arrow path {
+  stroke: #3f3f46;
+  fill: #18181b;
+  transition: fill 0.18s ease, stroke 0.18s ease;
+}
+
+.step3-tooltip-arrow rect {
+  fill: #18181b;
+  transition: fill 0.18s ease;
+}
+
+/* Alternating Theme B: Even Items -> 한 단계 더 연해진 세련된 진회색 (#454954 / border #646a78) */
+.step3-cursor-tooltip.theme-even {
+  background: #454954;
+  border-color: #646a78;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.40);
+}
+
+.step3-cursor-tooltip.theme-even .step3-tooltip-arrow path {
+  stroke: #646a78;
+  fill: #454954;
+}
+
+.step3-cursor-tooltip.theme-even .step3-tooltip-arrow rect {
+  fill: #454954;
+}
+
+.step3-cursor-tooltip.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+/* Dynamic Content Swap Pop Animation when switching features */
+.step3-cursor-tooltip.content-animating .step3-tooltip-desc {
+  animation: tooltipContentPop 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.step3-cursor-tooltip.content-animating {
+  border-color: #52525b;
+}
+
+@keyframes tooltipContentPop {
+  0% {
+    opacity: 0.3;
+    transform: translateY(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step3-tooltip-desc {
+  font-size: 15px;
+  font-weight: 400;
+  color: #ffffff;
+  line-height: 1.68;
+  letter-spacing: -0.25px;
+  margin: 0;
+  text-align: left;
+  word-break: keep-all;
+}
+
+/* ==========================================================================
+   Detail Guide Modal Dialog
+   ========================================================================== */
+.step3-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.step3-modal-dialog {
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1.5px solid #e2e8f0;
+  max-width: 620px;
+  width: 100%;
+  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.2);
+  overflow: hidden;
+  animation: modalScaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes modalScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.step3-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 28px;
+  border-bottom: 1.5px solid #f1f5f9;
+  background: #f8fafc;
+}
+
+.step3-modal-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.step3-modal-badge {
+  font-size: 12px;
+  font-weight: 800;
+  background: #eef2ff;
+  color: #4338ca;
+  padding: 3px 9px;
+  border-radius: 6px;
+}
+
+.step3-modal-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.btn-modal-close {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.btn-modal-close:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.step3-modal-body {
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.modal-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-section-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.modal-text {
+  font-size: 14px;
+  color: #334155;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.modal-step-list {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  color: #334155;
+  line-height: 1.6;
+}
+
+.modal-text-sub {
+  font-size: 13.5px;
+  color: #64748b;
+  line-height: 1.6;
+  background: #f8fafc;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  margin: 0;
+}
+
+.step3-modal-footer {
+  padding: 16px 28px;
+  border-top: 1.5px solid #f1f5f9;
+  background: #f8fafc;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-modal-confirm {
+  background: #ffffff;
+  color: #0f172a;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 8px 22px;
+  font-size: 14px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-modal-confirm:hover {
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+}

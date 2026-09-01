@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로고 크기 확대(42px~50px) & 세트 B PHP 교체 비교 - BUILDER STUDIO</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #0b0f19;
+      color: #f8fafc;
+      padding: 40px 20px;
+    }
+    .gallery-container {
+      max-width: 1560px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
+    .gallery-header {
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 20px;
+    }
+    .gallery-title {
+      font-size: 28px;
+      font-weight: 850;
+      letter-spacing: -0.6px;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+    .gallery-desc {
+      font-size: 15px;
+      color: #94a3b8;
+    }
+
+    /* Size Comparison Showcase */
+    .size-showcase-box {
+      background: #0f172a;
+      border: 2px solid #6366f1;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .size-showcase-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 12px;
+    }
+    .size-showcase-title {
+      font-size: 18px;
+      font-weight: 850;
+      color: #818cf8;
+    }
+    .size-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 1100px) {
+      .size-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .size-demo-card {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .size-demo-label {
+      font-size: 12px;
+      font-weight: 800;
+      color: #4f46e5;
+      background: #eef2ff;
+      padding: 2px 8px;
+    }
+    .size-demo-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Combination List */
+    .combo-section {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .combo-card-wrapper {
+      background: #111827;
+      border: 1px solid #1f2937;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: all 0.15s ease;
+    }
+    .combo-card-wrapper:hover {
+      border-color: #6366f1;
+    }
+    .combo-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #1f2937;
+      padding-bottom: 10px;
+    }
+    .combo-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .combo-num-badge {
+      font-size: 13px;
+      font-weight: 800;
+      background: #4f46e5;
+      color: #ffffff;
+      padding: 3px 10px;
+    }
+    .combo-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: #f8fafc;
+    }
+    .combo-tag {
+      font-size: 11px;
+      color: #94a3b8;
+      background: #030712;
+      border: 1px solid #1e293b;
+      padding: 2px 7px;
+    }
+
+    /* 3-Column Realistic Step 0 Mockup with ENLARGED (42px) Icons */
+    .step0-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 960px) {
+      .step0-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .mock-card {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 20px 20px 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .mock-card.active {
+      border: 1.5px solid #4f46e5;
+      box-shadow: 0 0 0 1px #4f46e5;
+    }
+    .mock-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .mock-title-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .mock-icon-box {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .mock-icon-img {
+      max-width: 44px;
+      max-height: 42px;
+      object-fit: contain;
+      display: block;
+    }
+    .mock-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .mock-chip-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .mock-chip {
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 3px 7px;
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #e2e8f0;
+    }
+
+    .btn-apply-wrap {
+      text-align: center;
+      padding: 28px;
+      background: #111827;
+      border: 1px solid #1f2937;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn-back-main {
+      display: inline-block;
+      padding: 13px 30px;
+      background: #4f46e5;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 15px;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-back-main:hover {
+      background: #4338ca;
+    }
+  </style>
+</head>
+<body>
+  <div class="gallery-container">
+    <div class="gallery-header">
+      <h1 class="gallery-title">로고 크기 확대(42px~48px) & 세트 B 기반 PHP 교체 비교</h1>
+      <p class="gallery-desc">기존 28px이 카드 크기 대비 너무 작아 보였던 원인을 분석하고, <strong>아이콘 크기를 42px~48px로 시원하게 확대한 실물 렌더링</strong>을 제공합니다.</p>
+    </div>
+
+    <!-- ================= SIZE COMPARISON SHOWCASE ================= -->
+    <div class="size-showcase-box">
+      <div class="size-showcase-header">
+        <span class="size-showcase-title">🔍 아이콘 크기별 시각적 존재감 비교 (PHP 예시)</span>
+        <span style="font-size: 12px; color: #94a3b8;">현재 빌더에는 <strong>42px(시원한 중대형)</strong> 적용 완료</span>
+      </div>
+      <div class="size-grid">
+        <div class="size-demo-card">
+          <span class="size-demo-label">28px (이전 크기 - 왜소함)</span>
+          <div class="size-demo-content">
+            <img src="assets/logos/php/php_vectorlogo.svg" style="width: 28px; height: 28px; object-fit: contain;"/>
+            <span style="font-size: 14px; font-weight: 750; color: #0f172a;">Standard PHP</span>
+          </div>
+        </div>
+
+        <div class="size-demo-card">
+          <span class="size-demo-label">36px (표준형)</span>
+          <div class="size-demo-content">
+            <img src="assets/logos/php/php_vectorlogo.svg" style="width: 36px; height: 36px; object-fit: contain;"/>
+            <span style="font-size: 14.5px; font-weight: 750; color: #0f172a;">Standard PHP</span>
+          </div>
+        </div>
+
+        <div class="size-demo-card" style="border: 2px solid #4f46e5;">
+          <span class="size-demo-label" style="background: #4f46e5; color: #fff;">42px (강력 추천 - 황금 비례)</span>
+          <div class="size-demo-content">
+            <img src="assets/logos/php/php_vectorlogo.svg" style="width: 42px; height: 42px; object-fit: contain;"/>
+            <span style="font-size: 15.5px; font-weight: 800; color: #0f172a;">Standard PHP</span>
+          </div>
+        </div>
+
+        <div class="size-demo-card">
+          <span class="size-demo-label">48px (빅 엠블럼 - 압도적)</span>
+          <div class="size-demo-content">
+            <img src="assets/logos/php/php_vectorlogo.svg" style="width: 48px; height: 48px; object-fit: contain;"/>
+            <span style="font-size: 16px; font-weight: 800; color: #0f172a;">Standard PHP</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 42px ENLARGED SET B WITH 8 PHP OPTIONS ================= -->
+    <div class="combo-section">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0;">
+        <h2 style="font-size: 20px; font-weight: 800; color: #ffffff;">🎨 42px 확대 적용된 세트 B (HTML5 + Node.js 고정) & PHP 8종</h2>
+        <span style="font-size: 12px; color: #38bdf8; background: #0f172a; border: 1px solid #1e293b; padding: 4px 10px;">모든 아이콘 42px 시원한 고해상도 렌더링</span>
+      </div>
+
+      <!-- Option B-1: VectorLogoZone Icon (42px) -->
+      <div class="combo-card-wrapper">
+        <div class="combo-header-row">
+          <div class="combo-title-wrap">
+            <span class="combo-num-badge">B-1</span>
+            <span class="combo-name">PHP: VectorLogoZone 정밀 타원 (42px)</span>
+          </div>
+          <span class="combo-tag">선명하고 둥근 인디고 타원 · 글자 두께가 HTML5/Node와 가장 잘 맞음</span>
+        </div>
+        <div class="step0-grid">
+          <div class="mock-card active">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/php/php_vectorlogo.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Standard PHP</span>
+              </div>
+              <span style="font-size: 10px; font-weight: 700; background: #4f46e5; color: #fff; padding: 2px 6px;">기본 추천</span>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">표준 호스팅 기반 웹 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#FTP 즉시배포</span><span class="mock-chip">#SQLite 내장DB</span><span class="mock-chip">#제로빌드</span></div>
+          </div>
+          <div class="mock-card">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/html5/html5_gilbarbara.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Static HTML5</span>
+              </div>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">서버리스 정적 웹 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#GitHub Pages</span><span class="mock-chip">#LocalStorage</span><span class="mock-chip">#순수 클라이언트</span></div>
+          </div>
+          <div class="mock-card">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/nodejs/nodejs_gilbarbara_icon.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Node.js Express</span>
+              </div>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">풀스택 JavaScript 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#REST API</span><span class="mock-chip">#Docker 컨테이너</span><span class="mock-chip">#NPM 에코시스템</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B-2: Devicon Original (42px) -->
+      <div class="combo-card-wrapper">
+        <div class="combo-header-row">
+          <div class="combo-title-wrap">
+            <span class="combo-num-badge">B-2</span>
+            <span class="combo-name">PHP: Devicon Original 정통 엠블럼 (42px)</span>
+          </div>
+          <span class="combo-tag">Devicon 공식 원본 · 전형적인 php.net 표준 타원</span>
+        </div>
+        <div class="step0-grid">
+          <div class="mock-card active">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/php/php_devicon_original.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Standard PHP</span>
+              </div>
+              <span style="font-size: 10px; font-weight: 700; background: #4f46e5; color: #fff; padding: 2px 6px;">기본 추천</span>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">표준 호스팅 기반 웹 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#FTP 즉시배포</span><span class="mock-chip">#SQLite 내장DB</span><span class="mock-chip">#제로빌드</span></div>
+          </div>
+          <div class="mock-card">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/html5/html5_gilbarbara.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Static HTML5</span>
+              </div>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">서버리스 정적 웹 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#GitHub Pages</span><span class="mock-chip">#LocalStorage</span><span class="mock-chip">#순수 클라이언트</span></div>
+          </div>
+          <div class="mock-card">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/nodejs/nodejs_gilbarbara_icon.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Node.js Express</span>
+              </div>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">풀스택 JavaScript 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#REST API</span><span class="mock-chip">#Docker 컨테이너</span><span class="mock-chip">#NPM 에코시스템</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B-3: Gilbarbara Standard (42px) -->
+      <div class="combo-card-wrapper" style="border: 2px solid #4f46e5; background: #1e1b4b20;">
+        <div class="combo-header-row">
+          <div class="combo-title-wrap">
+            <span class="combo-num-badge" style="background: #10b981;">B-3 (적용됨)</span>
+            <span class="combo-name">PHP: Gilbarbara Standard 원본 (42px) ★ 현재 메인 빌더 적용 완료</span>
+          </div>
+          <span class="combo-tag" style="color: #34d399; border-color: #059669;">Gilbarbara 3대 풀 세트 통일 · 완벽한 디테일 일체감</span>
+        </div>
+        <div class="step0-grid">
+          <div class="mock-card active">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/php/php_gilbarbara.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Standard PHP</span>
+              </div>
+              <span style="font-size: 10px; font-weight: 700; background: #4f46e5; color: #fff; padding: 2px 6px;">기본 추천</span>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">표준 호스팅 기반 웹 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#FTP 즉시배포</span><span class="mock-chip">#SQLite 내장DB</span><span class="mock-chip">#제로빌드</span></div>
+          </div>
+          <div class="mock-card">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/html5/html5_gilbarbara.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Static HTML5</span>
+              </div>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">서버리스 정적 웹 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#GitHub Pages</span><span class="mock-chip">#LocalStorage</span><span class="mock-chip">#순수 클라이언트</span></div>
+          </div>
+          <div class="mock-card">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/nodejs/nodejs_gilbarbara_icon.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Node.js Express</span>
+              </div>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">풀스택 JavaScript 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#REST API</span><span class="mock-chip">#Docker 컨테이너</span><span class="mock-chip">#NPM 에코시스템</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B-4: Iconify Official (42px) -->
+      <div class="combo-card-wrapper">
+        <div class="combo-header-row">
+          <div class="combo-title-wrap">
+            <span class="combo-num-badge">B-4</span>
+            <span class="combo-name">PHP: Iconify Official 정밀 벡터 (42px)</span>
+          </div>
+          <span class="combo-tag">고해상도 다크 인디고 · 샤프한 폰트 곡선</span>
+        </div>
+        <div class="step0-grid">
+          <div class="mock-card active">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/php/php_icones.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Standard PHP</span>
+              </div>
+              <span style="font-size: 10px; font-weight: 700; background: #4f46e5; color: #fff; padding: 2px 6px;">기본 추천</span>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">표준 호스팅 기반 웹 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#FTP 즉시배포</span><span class="mock-chip">#SQLite 내장DB</span><span class="mock-chip">#제로빌드</span></div>
+          </div>
+          <div class="mock-card">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/html5/html5_gilbarbara.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Static HTML5</span>
+              </div>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">서버리스 정적 웹 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#GitHub Pages</span><span class="mock-chip">#LocalStorage</span><span class="mock-chip">#순수 클라이언트</span></div>
+          </div>
+          <div class="mock-card">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/nodejs/nodejs_gilbarbara_icon.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Node.js Express</span>
+              </div>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">풀스택 JavaScript 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#REST API</span><span class="mock-chip">#Docker 컨테이너</span><span class="mock-chip">#NPM 에코시스템</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B-5: Devicon Plain (42px) -->
+      <div class="combo-card-wrapper">
+        <div class="combo-header-row">
+          <div class="combo-title-wrap">
+            <span class="combo-num-badge">B-5</span>
+            <span class="combo-name">PHP: Devicon Plain 미니멀 플랫 (42px)</span>
+          </div>
+          <span class="combo-tag">음영 없는 솔리드 인디고 플랫</span>
+        </div>
+        <div class="step0-grid">
+          <div class="mock-card active">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/php/php_devicon_plain.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Standard PHP</span>
+              </div>
+              <span style="font-size: 10px; font-weight: 700; background: #4f46e5; color: #fff; padding: 2px 6px;">기본 추천</span>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">표준 호스팅 기반 웹 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#FTP 즉시배포</span><span class="mock-chip">#SQLite 내장DB</span><span class="mock-chip">#제로빌드</span></div>
+          </div>
+          <div class="mock-card">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/html5/html5_gilbarbara.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Static HTML5</span>
+              </div>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">서버리스 정적 웹 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#GitHub Pages</span><span class="mock-chip">#LocalStorage</span><span class="mock-chip">#순수 클라이언트</span></div>
+          </div>
+          <div class="mock-card">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/nodejs/nodejs_gilbarbara_icon.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Node.js Express</span>
+              </div>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">풀스택 JavaScript 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#REST API</span><span class="mock-chip">#Docker 컨테이너</span><span class="mock-chip">#NPM 에코시스템</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B-6: SimpleIcons (42px) -->
+      <div class="combo-card-wrapper">
+        <div class="combo-header-row">
+          <div class="combo-title-wrap">
+            <span class="combo-num-badge">B-6</span>
+            <span class="combo-name">PHP: SimpleIcons 모던 미니멀 (42px)</span>
+          </div>
+          <span class="combo-tag">배경 타원 없는 순수 글리프</span>
+        </div>
+        <div class="step0-grid">
+          <div class="mock-card active">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/php/php_simpleicons.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Standard PHP</span>
+              </div>
+              <span style="font-size: 10px; font-weight: 700; background: #4f46e5; color: #fff; padding: 2px 6px;">기본 추천</span>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">표준 호스팅 기반 웹 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#FTP 즉시배포</span><span class="mock-chip">#SQLite 내장DB</span><span class="mock-chip">#제로빌드</span></div>
+          </div>
+          <div class="mock-card">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/html5/html5_gilbarbara.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Static HTML5</span>
+              </div>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">서버리스 정적 웹 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#GitHub Pages</span><span class="mock-chip">#LocalStorage</span><span class="mock-chip">#순수 클라이언트</span></div>
+          </div>
+          <div class="mock-card">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/nodejs/nodejs_gilbarbara_icon.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Node.js Express</span>
+              </div>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">풀스택 JavaScript 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#REST API</span><span class="mock-chip">#Docker 컨테이너</span><span class="mock-chip">#NPM 에코시스템</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B-7: VectorLogoZone AR21 (42px) -->
+      <div class="combo-card-wrapper">
+        <div class="combo-header-row">
+          <div class="combo-title-wrap">
+            <span class="combo-num-badge">B-7</span>
+            <span class="combo-name">PHP: VectorLogoZone 와이드 2:1 타원 (42px)</span>
+          </div>
+          <span class="combo-tag">가로로 널찍한 와이드 타원</span>
+        </div>
+        <div class="step0-grid">
+          <div class="mock-card active">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/php/php_vectorlogo_ar21.svg" class="mock-icon-img" style="max-width: 52px;"/></div>
+                <span class="mock-title">Standard PHP</span>
+              </div>
+              <span style="font-size: 10px; font-weight: 700; background: #4f46e5; color: #fff; padding: 2px 6px;">기본 추천</span>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">표준 호스팅 기반 웹 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#FTP 즉시배포</span><span class="mock-chip">#SQLite 내장DB</span><span class="mock-chip">#제로빌드</span></div>
+          </div>
+          <div class="mock-card">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/html5/html5_gilbarbara.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Static HTML5</span>
+              </div>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">서버리스 정적 웹 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#GitHub Pages</span><span class="mock-chip">#LocalStorage</span><span class="mock-chip">#순수 클라이언트</span></div>
+          </div>
+          <div class="mock-card">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/nodejs/nodejs_gilbarbara_icon.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Node.js Express</span>
+              </div>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">풀스택 JavaScript 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#REST API</span><span class="mock-chip">#Docker 컨테이너</span><span class="mock-chip">#NPM 에코시스템</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B-8: Dashboard Icons Brand (42px) -->
+      <div class="combo-card-wrapper">
+        <div class="combo-header-row">
+          <div class="combo-title-wrap">
+            <span class="combo-num-badge">B-8</span>
+            <span class="combo-name">PHP: Dashboard Icons 대시보드 표준 (42px)</span>
+          </div>
+          <span class="combo-tag">홈서버/대시보드 표준 블루 타원</span>
+        </div>
+        <div class="step0-grid">
+          <div class="mock-card active">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/php/php_brandicons.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Standard PHP</span>
+              </div>
+              <span style="font-size: 10px; font-weight: 700; background: #4f46e5; color: #fff; padding: 2px 6px;">기본 추천</span>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">표준 호스팅 기반 웹 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#FTP 즉시배포</span><span class="mock-chip">#SQLite 내장DB</span><span class="mock-chip">#제로빌드</span></div>
+          </div>
+          <div class="mock-card">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/html5/html5_gilbarbara.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Static HTML5</span>
+              </div>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">서버리스 정적 웹 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#GitHub Pages</span><span class="mock-chip">#LocalStorage</span><span class="mock-chip">#순수 클라이언트</span></div>
+          </div>
+          <div class="mock-card">
+            <div class="mock-header">
+              <div class="mock-title-group">
+                <div class="mock-icon-box"><img src="assets/logos/nodejs/nodejs_gilbarbara_icon.svg" class="mock-icon-img"/></div>
+                <span class="mock-title">Node.js Express</span>
+              </div>
+            </div>
+            <div style="font-size: 12.5px; color: #64748b;">풀스택 JavaScript 아키텍처</div>
+            <div class="mock-chip-row"><span class="mock-chip">#REST API</span><span class="mock-chip">#Docker 컨테이너</span><span class="mock-chip">#NPM 에코시스템</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Apply Helper Info -->
+    <div class="btn-apply-wrap">
+      <h3 style="font-size: 18px; font-weight: 800; color: #ffffff;">42px 대형 크기에서 마음에 드시는 조합 번호(예: B-1, B-2 등)를 말씀해 주세요!</h3>
+      <p style="font-size: 14px; color: #9ca3af;">선택해 주신 조합을 메인 빌더(index.html) Step 0에 즉시 100% 반영해 드립니다.</p>
+      <a href="index.html" class="btn-back-main">메인 빌더 페이지로 이동</a>
+    </div>
+  </div>
+</body>
+</html>

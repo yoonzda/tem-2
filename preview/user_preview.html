@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">MY WEBSITE</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  
+  <script src="js/core.js" defer></script>
+  
+  <!-- Lenis Smooth Scroll CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.9/dist/lenis.css">
+
+  <!-- GSAP 3.12 & Lenis Smooth Scroll CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
+  
+  <link rel="stylesheet" href="css/import.css">
+</head>
+<body>
+   <header class="layout-padding">
+    <h1>
+      <a href="#home">
+        <img id="header-logo-img" src="https://placehold.co/280x64" alt="MY WEBSITE">
+      </a>
+    </h1>
+    <nav>
+      <ul id="desktop-gnb-list">
+        <li><a href="sub_page.html?cat=0&sub=0">회사 소개</a></li>
+        <li><a href="sub_page.html?cat=1&sub=0">사업 분야</a></li>
+        <li><a href="sub_page.html?cat=2&sub=0">홍보 센터</a></li>
+        <li><a href="sub_page.html?cat=3&sub=0">고객 지원</a></li>
+      </ul>
+
+      <!-- Single Persistent Sub-Bar (배경 깜빡임 없는 단일 서브바) -->
+      <div id="desktop-sub-bar" class="desktop-sub-bar">
+        <div class="layout-padding">
+          <div id="desktop-sub-bar-content" class="desktop-sub-bar-content"></div>
+        </div>
+      </div>
+    </nav>
+    <div class="mui">
+      <button type="button" class="material-symbols-outlined" id="openButton">menu</button>
+      <div id="menuPanel" class="">
+        <button type="button" class="material-symbols-outlined" id="closeButton">close</button>
+        <ul id="mobile-gnb-list" class="panel-menu-root">
+          <li><a href="sub_page.html?cat=0&sub=0">회사 소개</a></li>
+          <li><a href="sub_page.html?cat=1&sub=0">사업 분야</a></li>
+          <li><a href="sub_page.html?cat=2&sub=0">홍보 센터</a></li>
+          <li><a href="sub_page.html?cat=3&sub=0">고객 지원</a></li>
+        </ul>
+      </div>
+    </div>
+   </header>
+   <section id="home" class="layout-padding">
+    <div class="layout-max">
+      <div>
+        <h2>
+          <mark>마음</mark>을 담은 진료,
+          <span>오래도록 <b>믿을 수 있는 치과</b></span>
+        </h2>
+        <p>환자를 먼저 생각하는 마음, 신뢰로 이어지는 진료를 약속드립니다.</p>
+      </div>
+      <ol>
+        <li>
+          <h3>마음을 다하는 진료</h3>
+          <p>
+            환자의 입장에서
+            <span>먼저 생각합니다.</span>
+          </p>
+        </li>
+        <li>
+          <h3>정직한 진단</h3>
+          <p>
+            과잉진료 없이 바른
+            <span>진료를 약속합니다.</span>
+          </p>
+        </li>
+        <li>
+          <h3>신뢰를 이어가는 치과</h3>
+          <p>
+            오래도록 믿고 찾을 수
+            <span>있는 치과가 되겠습니다.</span>
+          </p>
+        </li>
+      </ol>
+    </div>
+   </section>
+   <section class="" style="padding-top: 80px; padding-bottom: 160px;">
+    <div class="titleBox align-center color-black">
+      <mark>SEOUL MAEUM DENTAL CLINIC</mark>
+      <h2>
+        서울마음치과가 드리는 <b>진료 약속</b>
+      </h2>
+      <p>정직한 진단부터 책임 있는 사후관리까지 언제나 환자를 먼저 생각하는 진료를 실천합니다.</p>
+    </div>
+    <ol class="gridBox-mix layout-padding layout-max">
+      <li>
+        <h3>정직한 진료</h3>
+        <p>
+          과잉진료 없이 꼭 필요한 진료만 제안하며,
+          <span>환자를 먼저 생각하는 진료를 약속드립니다.</span>
+        </p>
+      </li>
+      <li>
+        <h3>철저한 멸균 시스템</h3>
+        <p>
+          1인 1기구를 원칙으로 철저한 멸균과
+          <span>감염 관리 시스템으로 운영합니다.</span>
+        </p>
+      </li>
+      <li>
+        <h3>디지털 기반 정밀진료</h3>
+        <p>
+          첨단 디지털 장비를 활용하여 더 정확하고
+          <span>편안한 진료를 제공합니다.</span>
+        </p>
+      </li>
+      <li>
+        <h3>책임 보증 진료</h3>
+        <p>
+          진료가 끝난 이후에도 보증제도를 통해 끝까지
+          <span>책임지는 진료를 실천합니다.</span>
+        </p>
+      </li>
+      <li>
+        <h3>평생 주치의 시스템</h3>
+        <p>
+          나뿐 아니라 우리 가족 모두가 함께 관리 받을
+          <span>수 있는 평생 구강관리 시스템을 제공합니다.</span>
+        </p>
+      </li>
+    </ol>
+   </section>
+   <section class="bannerContainer layout-padding">
+    <div>
+      <div class="topBox">
+        <small>"다시, 자신있게 웃는 하루"</small>
+        <h2>
+          함께하는 치과
+          <b>서울마음치과</b>
+        </h2>
+      </div>
+      <div class="bottomBox">
+        <p>풍부한 임상경험과 정밀한 기술로</p>
+        <small>오래도록 믿을 수 있는 결과를 약속드립니다.</small>
+      </div>
+    </div>
+   </section>
+   <section id="doctors" class="layout-padding">
+    <div class="titleBox align-center color-black">
+      <mark>SEOUL MAEUM DENTAL CLINIC</mark>
+      <h2>
+        밝은미소를 책임지는 <b>의료진 소개</b>
+      </h2>
+      <p>풍부한 임상경험과 끊임없는 연구를 바탕으로 환자에게 가장 적합한 진료를 고민합니다.</p>
+    </div>
+    <div class="contentBox layout-max">
+      <div class="contentWrap">
+        <div>
+          <mark>통합치의학과 전문의</mark>
+          <p>
+            송문호
+            <span>대표원장</span>
+          </p>
+        </div>
+        <ul class="listDep1">
+          <li>
+            <h3>약력</h3>
+            <ol class="listDep2">
+              <li>
+                <ul class="listDep3">
+                  <li><p>보건복지부인증 통합치의학 전문의</p></li>
+                  <li><p>경북대학교 치의학전문대학원 치의학석사</p></li>
+                  <li><p>서울대학교 치의학대학원 'Peri-irrplantite' 과정 수료</p></li>
+                  <li><p>미국 Upenn 치과병원 EXTERNSHIP 수료</p></li>
+                </ul>
+              </li>
+              <li>
+                <ul class="listDep3">
+                  <li><p>前&#41; 강남 대치동 오리엔탈치과 진료과장</p></li>
+                  <li><p>前&#41; 서울감동치과 장호원점 수석원장</p></li>
+                </ul>
+              </li>
+            </ol>
+          </li>
+          <li>
+            <h3>학회 및 활동</h3>
+            <ol class="listDep2">
+              <li>
+                <ul class="listDep3">
+                  <li><p>미국치과임플란트학회(AAID) 정회원</p></li>
+                  <li><p>대한구강악언연임플란트학회 정회원</p></li>
+                  <li><p>대한심미치과학회 정회원</p></li>
+                  <li><p>대한보존치과학회 정회원</p></li>
+                  <li><p>대한장애인치과학회 정회원</p></li>
+                  <li><p>대한소아치과학회 정회원</p></li>
+                </ul>
+              </li>
+              <li>
+                <ul class="listDep3">
+                  <li><p>대한치과대학, 치의학전문대학원(KDSA) 총대표 회원</p></li>
+                  <li><p>대한치과의사협회 표창패 수상</p></li>
+                  <li><p>대한턱관절장애교육 연수회 수료</p></li>
+                  <li><p>OSSTEM  신경치료 세미나 수료</p></li>
+                  <li><p>Docors ENDO 과정 수료</p></li>
+                  <li><p>KAYA 치과병원 고정성 보철과정 수료</p></li>
+                </ul>
+              </li>
+            </ol>
+          </li>
+        </ul>
+      </div>
+    </div>
+   </section>
+   <section id="departments">
+    <div class="backWrap">
+      <div class="titleBox align-center color-white">
+        <mark>SEOUL MAEUM DENTAL CLINIC</mark>
+        <h2>
+          서울마음치과 <b>진료과목</b>
+        </h2>
+        <p>환자의 건강한 미소를 위해, 언제나 진심을 담아 최선의 진료를 이어갑니다.</p>
+      </div>
+    </div>
+    <ul class="gridBox-4 layout-padding">
+      <li>
+        <h3>임플란트</h3>
+        <p>
+          정밀한 진단과 맟춤 식립으로
+          <span>자연치아의 기능을 회복합니다.</span>
+        </p>
+      </li>
+      <li>
+        <h3>치아교정</h3>
+        <p>
+          기능과 심미를 고려한 맞춤형
+          <span>교정 치료를 설계합니다.</span>
+        </p>
+      </li>
+      <li>
+        <h3>심미보철</h3>
+        <p>
+          기능과 심미를 모두 만족시키는
+          <span>맞춤형 보철 치료를 시험합니다.</span>
+        </p>
+      </li>
+      <li>
+        <h3>충치치료</h3>
+        <p>
+          충치의 진행 정도를 정확히 진단하여
+          <span>필요한 치료를 진행합니다.</span>
+        </p>
+      </li>
+      <li>
+        <h3>사랑니발치</h3>
+        <p>
+          난이도 높은 사랑니까지 정확하게
+          <span>진단 후 안정하게 발치합니다.</span>
+        </p>
+      </li>
+      <li>
+        <h3>소아치료</h3>
+        <p>
+          성장 단계에 맞춘 예방 중심의
+          <span>소아 구강관리를 제공합니다.</span>
+        </p>
+      </li>
+      <li>
+        <h3>틀니</h3>
+        <p>
+          개인의 구강 구조를 고려한 편안한
+          <span>맞춤 틀니를 제작합니다.</span>
+        </p>
+      </li>
+      <li>
+        <h3>잇몸치료</h3>
+        <p>
+          치주 건강 회복을 위한 단계별
+          <span>맞춤 치료를 제공합니다.</span>
+        </p>
+      </li>
+      <li>
+        <h3>턱관절치료</h3>
+        <p>
+          턱관절 기능 회복과 통증 완화를
+          <span>위한 맞춤 치료를 제공합니다.</span>
+        </p>
+      </li>
+      <li>
+        <h3>치아미백</h3>
+        <p>
+          치아 손상을 최소화하면서 자연스러운
+          <span>치아 밝기를 회복합니다.</span>
+        </p>
+      </li>
+      <li>
+        <h3>신경치료</h3>
+        <p>
+          정밀한 신경치료를 통해 자연치아
+          <span>보존 기능성을 높입니다.</span>
+        </p>
+      </li>
+      <li>
+        <h3>구강검진</h3>
+        <p>
+          정기적인 검진으로 구강질환을 초기에
+          <span>발견하고 건강한 치아를 유지합니다.</span>
+        </p>
+      </li>
+    </ul>
+   </section>
+   <section id="gallery" class="layout-padding">
+    <div class="titleBox align-center color-black">
+      <mark>SEOUL MAEUM DENTAL CLINIC</mark>
+      <h2>
+        안심이 되는 치과, <b>서울마음치과</b>
+      </h2>
+      <p>환자의 안전과 편안함을 최우선으로 생각하는 진료환경을 제공합니다.</p>
+    </div>
+    <div class="slideWrap">
+      <div class="slideContent">
+        <div>
+          <img src="https://placehold.co/1280x700">
+        </div>
+        <div>
+          <img src="https://placehold.co/1280x700">
+        </div>
+        <div>
+          <img src="https://placehold.co/1280x700">
+        </div>
+      </div>
+      
+      <div class="sliderButtons">
+        <button type="button" class="prevButton material-symbols-outlined">chevron_left</button>
+        <button type="button" class="nextButton material-symbols-outlined">chevron_right</button>
+      </div>
+    </div>
+   </section>
+   <section id="location">
+     <div class="leftContent">
+      <div class="titleBox align-left">
+        <mark>SEOUL MAEUM DENTAL CLINIC</mark>
+        <h2>
+          서울마음치과 <b>진료안내/오시는길</b>
+        </h2>
+      </div>
+      <p>
+        강원도 홍천군 홍천읍 홍천로 376, 방주빌딩 3층
+        <small>/ 약초시장길2문 맞은편 방주빌딩 3층</small>
+      </p>
+      <ul class="badgeInfo">
+        <li>
+          <span>대중교통</span>
+          <p>신장다리 정류장 하차 가능 버스</p>
+        </li>
+        <li>
+          <span>농어촌</span>
+          <p>201, 220-1, 31, 601</p>
+        </li>
+        <li>
+          <span>주차안내</span>
+          <p>치과 건물 앞쪽 주차장 이용 가능</p>
+        </li>
+      </ul>
+      <ol class="iconInfo">
+        <li><a href="">네이버 지도</a></li>
+        <li><a href="">카카오지도</a></li>
+      </ol>
+      <ul class="textInfo">
+        <li>
+          <h3>진료안내</h3>
+          <ol>
+            <li class="color-black">
+              <span>평일</span>
+              <p>오전 09:00 - 오후 06:00</p>
+            </li>
+            <li class="color-yellow">
+              <span>화요일(야간진료)</span>
+              <p>오전 09:00 - 오후 07:30</p>
+            </li>
+            <li class="color-black">
+              <span>토요일</span>
+              <p>오전 09:00 - 오후 02:00</p>
+            </li>
+            <li class="color-black">
+              <span>점심시간</span>
+              <p>오후 01:00 - 오후 02:00</p>
+            </li>
+          </ol>
+          <small>* 토요일 점심시간 없이 진료 / 일요일, 공휴일 휴관입니다.</small>
+        </li>
+        <li>
+          <h3>대표번호</h3>
+          <a href="">033.434.2875</a>
+        </li>
+      </ul>
+     </div>
+     <div class="rightContent"></div>
+   </section>
+   <footer class="layout-padding">
+    <h2>
+      <img src="https://placehold.co/100x100" alt="">
+    </h2>
+    <div>
+      <span id="footer-brand-name">MY WEBSITE</span>
+      <ol>
+        <li><p id="footer-address">서울특별시 강남구 테헤란로 123</p></li>
+        <li><p id="footer-owner">대표 : 대표자</p></li>
+        <li><p>TEL : <a id="footer-phone-link" href="tel:0200000000">02-0000-0000</a></p></li>
+        <li><p id="footer-biznum">사업자등록번호 : 000-00-00000</p></li>
+      </ol>
+      <p id="footer-copyright">Copyright © MY WEBSITE ALL RIGHTS RESERVED</p>
+    </div>
+    <button type="button">비급여수가 안내</button>
+   </footer>
+
+  <!-- Live Sync with Builder Studio Store -->
+  <script>
+    (function() {
+      const STORAGE_KEY = 'WEB_BUILDER_STUDIO_STATE_V3';
+
+      function getBuilderState() {
+        try {
+          if (window.opener && window.opener.builderStore) {
+            const st = window.opener.builderStore.getState();
+            if (st) return st;
+          }
+          const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('WEB_BUILDER_STUDIO_STATE_V1');
+          if (saved) return JSON.parse(saved);
+        } catch (e) {}
+        return null;
+      }
+
+      const DEFAULT_MENUS = [
+        {
+          id: 'm1',
+          name: '회사 소개',
+          submenus: [
+            { id: 's1_1', name: '기업 개요' },
+            { id: 's1_2', name: 'CEO 인사말' },
+            { id: 's1_3', name: '연혁' },
+            { id: 's1_4', name: '조직도' },
+            { id: 's1_5', name: '오시는 길' }
+          ]
+        },
+        {
+          id: 'm2',
+          name: '사업 분야',
+          submenus: [
+            { id: 's2_1', name: '주요 사업 소개' },
+            { id: 's2_2', name: '솔루션 및 서비스' },
+            { id: 's2_3', name: '주요 실적' }
+          ]
+        },
+        {
+          id: 'm3',
+          name: '홍보 센터',
+          submenus: [
+            { id: 's3_1', name: '공지사항' },
+            { id: 's3_2', name: '월간 일정' },
+            { id: 's3_3', name: '홍보 갤러리' }
+          ]
+        },
+        {
+          id: 'm4',
+          name: '고객 지원',
+          submenus: [
+            { id: 's4_1', name: '온라인 문의' },
+            { id: 's4_2', name: '자주 묻는 질문' },
+            { id: 's4_3', name: '자료실' }
+          ]
+        }
+      ];
+
+      const SECTION_ANCHORS = ['#home', '#doctors', '#departments', '#gallery', '#location'];
+
+      function applyState() {
+        const state = getBuilderState();
+        const siteInfo = (state && state.siteInfo) ? state.siteInfo : {};
+        const menus = (state && state.menus && state.menus.length > 0) ? state.menus : DEFAULT_MENUS;
+
+        const siteTitle = siteInfo.siteTitle ? siteInfo.siteTitle.trim() : 'MY WEBSITE';
+        const companyName = siteInfo.companyName ? siteInfo.companyName.trim() : siteTitle;
+        const companyNameEn = siteInfo.companyNameEn ? siteInfo.companyNameEn.trim() : (siteInfo.siteTitle || 'MY COMPANY INC.');
+        const ownerName = siteInfo.ownerName ? siteInfo.ownerName.trim() : '대표자';
+        const phone = siteInfo.phone ? siteInfo.phone.trim() : '02-0000-0000';
+        const address = siteInfo.address ? siteInfo.address.trim() : '서울특별시 강남구 테헤란로 123';
+        const bizNum = siteInfo.bizNum ? siteInfo.bizNum.trim() : '000-00-00000';
+
+        // 1. Page Title
+        document.title = siteTitle;
+
+        // 2. Header Brand / Logo Alt
+        const logoImg = document.getElementById('header-logo-img');
+        if (logoImg) {
+          logoImg.alt = siteTitle;
+        }
+
+        // 3. Desktop GNB Main Bar & Single Persistent Sub-Bar (멀티페이지 서브페이지 연동)
+        const desktopList = document.getElementById('desktop-gnb-list');
+        const subBarContent = document.getElementById('desktop-sub-bar-content');
+        const $subBar = $('#desktop-sub-bar');
+        const $header = $('header');
+
+        if (desktopList && subBarContent) {
+          // Pre-generate sub-bar HTML map for instant, zero-flicker switching
+          const subBarMap = {};
+          menus.forEach((cat, idx) => {
+            if (cat.submenus && cat.submenus.length > 0) {
+              subBarMap[idx] = `
+                <ul class="sub-bar-list">
+                  ${cat.submenus.map((sub, subIdx) => {
+                    const subUrl = `sub_page.html?cat=${idx}&sub=${subIdx}`;
+                    return `<li><a href="${subUrl}">${sub.name}</a></li>`;
+                  }).join('')}
+                </ul>
+              `;
+            } else {
+              subBarMap[idx] = '';
+            }
+          });
+
+          // Render Main Navigation Items (Links to sub_page.html?cat=X&sub=0)
+          desktopList.innerHTML = menus.map((cat, idx) => {
+            const mainUrl = `sub_page.html?cat=${idx}&sub=0`;
+            const name = cat.name || `메뉴 ${idx + 1}`;
+            return `
+              <li class="gnb-nav-li" data-idx="${idx}">
+                <a href="${mainUrl}">${name}</a>
+              </li>
+            `;
+          }).join('');
+
+          let hideTimer = null;
+
+          function showSubBar(idx) {
+            if (hideTimer) clearTimeout(hideTimer);
+            const html = subBarMap[idx];
+            if (html) {
+              subBarContent.innerHTML = html;
+              $header.addClass('sub-open menu-hovered');
+              $subBar.addClass('open');
+              $(desktopList).find('.gnb-nav-li').removeClass('active-menu');
+              $(desktopList).find(`.gnb-nav-li[data-idx="${idx}"]`).addClass('active-menu');
+            } else {
+              hideSubBarImmediately();
+            }
+          }
+
+          function hideSubBarImmediately() {
+            if (hideTimer) clearTimeout(hideTimer);
+            $header.removeClass('sub-open menu-hovered');
+            $subBar.removeClass('open');
+            $(desktopList).find('.gnb-nav-li').removeClass('active-menu');
+          }
+
+          function scheduleHideSubBar() {
+            if (hideTimer) clearTimeout(hideTimer);
+            hideTimer = setTimeout(function() {
+              hideSubBarImmediately();
+            }, 200);
+          }
+
+          // Main Menu Hover
+          $(desktopList).find('.gnb-nav-li').on('mouseenter', function() {
+            const idx = parseInt($(this).attr('data-idx'), 10);
+            showSubBar(idx);
+          });
+
+          // Sub-bar Hover (Keeps Open)
+          $subBar.on('mouseenter', function() {
+            if (hideTimer) clearTimeout(hideTimer);
+          }).on('mouseleave', function() {
+            scheduleHideSubBar();
+          });
+
+          // Header Mouseleave
+          $header.off('mouseleave.gnb mouseenter.gnb').on('mouseleave.gnb', function() {
+            scheduleHideSubBar();
+          }).on('mouseenter.gnb', function() {
+            if (hideTimer) clearTimeout(hideTimer);
+          });
+        }
+
+        // 4. Mobile Menu Panel Accordion Submenus (서브페이지 멀티링크 연동)
+        const mobileList = document.getElementById('mobile-gnb-list');
+        if (mobileList) {
+          mobileList.innerHTML = menus.map((cat, catIdx) => {
+            const mainUrl = `sub_page.html?cat=${catIdx}&sub=0`;
+            const catName = cat.name || `메뉴 ${catIdx + 1}`;
+            const hasSub = cat.submenus && cat.submenus.length > 0;
+
+            const subHtml = hasSub
+              ? `
+                <ul class="panel-sub-list">
+                  ${cat.submenus.map((sub, subIdx) => {
+                    const subUrl = `sub_page.html?cat=${catIdx}&sub=${subIdx}`;
+                    return `
+                      <li><a href="${subUrl}" class="panel-sub-link">${sub.name}</a></li>
+                    `;
+                  }).join('')}
+                </ul>
+              `
+              : '';
+
+            return `
+              <li class="panel-menu-item" data-cat-idx="${catIdx}">
+                <div class="panel-item-header">
+                  <span class="panel-main-title">${catName}</span>
+                  ${hasSub ? `
+                    <button type="button" class="panel-sub-btn material-symbols-outlined" aria-label="${catName} 하위메뉴 열기">
+                      expand_more
+                    </button>
+                  ` : `
+                    <a href="${mainUrl}" style="text-decoration:none; color:inherit; display:flex; align-items:center;">
+                      <span class="material-symbols-outlined" style="font-size:24px; color:#999;">chevron_right</span>
+                    </a>
+                  `}
+                </div>
+                ${subHtml}
+              </li>
+            `;
+          }).join('');
+
+          // Bind click to the ENTIRE header row for effortless expansion
+          $(mobileList).find('.panel-item-header').off('click').on('click', function(e) {
+            const $item = $(this).closest('.panel-menu-item');
+            const hasSub = $item.find('.panel-sub-list').length > 0;
+            if (hasSub) {
+              e.preventDefault();
+              e.stopPropagation();
+              $item.toggleClass('open');
+            }
+          });
+
+          // Clicking submenu links closes panel
+          $(mobileList).find('.panel-sub-link').off('click').on('click', function() {
+            if (typeof activeRemove === 'function') {
+              activeRemove("#menuPanel", "active");
+            } else {
+              $("#menuPanel").removeClass("active");
+            }
+          });
+        }
+
+        // 5. Footer Info
+        const footerBrand = document.getElementById('footer-brand-name');
+        if (footerBrand) footerBrand.textContent = companyName;
+
+        const footerAddress = document.getElementById('footer-address');
+        if (footerAddress) footerAddress.textContent = address;
+
+        const footerOwner = document.getElementById('footer-owner');
+        if (footerOwner) footerOwner.textContent = '대표 : ' + ownerName;
+
+        const footerPhoneLink = document.getElementById('footer-phone-link');
+        if (footerPhoneLink) {
+          footerPhoneLink.textContent = phone;
+          footerPhoneLink.href = 'tel:' + phone.replace(/[^0-9]/g, '');
+        }
+
+        const footerBizNum = document.getElementById('footer-biznum');
+        if (footerBizNum) footerBizNum.textContent = '사업자등록번호 : ' + bizNum;
+
+        const footerCopy = document.getElementById('footer-copyright');
+        if (footerCopy) footerCopy.textContent = `Copyright © ${companyNameEn} ALL RIGHTS RESERVED`;
+      }
+
+      // Global Continuous Smooth Scroll (Lenis + GSAP)
+      let lenisInstance = null;
+
+      function initGlobalSmoothScroll() {
+        if (typeof Lenis === 'undefined') return;
+
+        if (lenisInstance) {
+          lenisInstance.destroy();
+        }
+
+        lenisInstance = new Lenis({
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          orientation: 'vertical',
+          gestureOrientation: 'vertical',
+          smoothWheel: true,
+          wheelMultiplier: 1.0,
+          touchMultiplier: 1.5,
+          infinite: false
+        });
+
+        if (typeof ScrollTrigger !== 'undefined') {
+          lenisInstance.on('scroll', ScrollTrigger.update);
+        }
+
+        gsap.ticker.add((time) => {
+          lenisInstance.raf(time * 1000);
+        });
+
+        gsap.ticker.lagSmoothing(0);
+      }
+
+      // Smart Header: 메인비주얼 구간은 항상 노출, 본문 진입 이후 스크롤 다운 시 숨김 / 업 시 등장
+      function initSmartHeader() {
+        const header = document.querySelector('header');
+        if (!header) return;
+
+        let lastScrollY = window.scrollY || 0;
+        let isHidden = false;
+
+        const onScroll = (currentY) => {
+          const scrollY = typeof currentY === 'number' ? currentY : (window.scrollY || 0);
+
+          // 1. 메인비주얼(#home)이 화면에 보이는 동안에는 헤더를 항상 100% 노출
+          const homeEl = document.getElementById('home');
+          const visualThreshold = homeEl ? (homeEl.offsetHeight - 120) : 600;
+
+          if (scrollY < visualThreshold || header.classList.contains('sub-open') || header.classList.contains('menu-hovered')) {
+            if (isHidden) {
+              header.classList.remove('header-hidden');
+              isHidden = false;
+            }
+            lastScrollY = scrollY;
+            return;
+          }
+
+          const delta = scrollY - lastScrollY;
+
+          // 2. 본문 영역에서 스크롤 방향에 따른 스마트 제어
+          if (delta > 8 && !isHidden) {
+            header.classList.add('header-hidden');
+            isHidden = true;
+          } else if (delta < -8 && isHidden) {
+            header.classList.remove('header-hidden');
+            isHidden = false;
+          }
+
+          lastScrollY = scrollY;
+        };
+
+        if (lenisInstance) {
+          lenisInstance.on('scroll', (e) => onScroll(e.scroll));
+        } else {
+          window.addEventListener('scroll', () => onScroll(window.scrollY), { passive: true });
+        }
+      }
+
+      // Initialize on load
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          applyState();
+          initGlobalSmoothScroll();
+          initSmartHeader();
+        });
+      } else {
+        applyState();
+        initGlobalSmoothScroll();
+        initSmartHeader();
+      }
+
+      // Realtime cross-tab synchronization
+      window.addEventListener('storage', (e) => {
+        if (e.key === STORAGE_KEY || e.key === 'WEB_BUILDER_STUDIO_STATE_V1') {
+          applyState();
+        }
+      });
+
+      // Window message listener
+      window.addEventListener('message', (e) => {
+        if (e.data && e.data.type === 'BUILDER_STATE_UPDATE') {
+          applyState();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
