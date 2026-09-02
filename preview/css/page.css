@@ -1941,3 +1941,353 @@ body.sub-page #sub-body-container > section:not(#home):not(.bannerContainer) {
 .context-menu-item.item-danger:hover .material-symbols-outlined {
   color: #FFFFFF;
 }
+
+/* ==========================================================================
+   조직도 (Organization / Members) 1:1 표준 스타일 시스템
+   - Semantic ul (부서) & ol (구성원) 가로 분할형 2열 플랫 반응형 그리드
+   - 좌측 고정 프로필 아바타 (정확한 200px × 240px 규격) & '+' 호버 오버레이
+   - 우측 텍스트 정보 (이름 24px, 직책/연락처/이메일/업무 16px 라벨 정렬, 기호 없는 다중 업무 목록)
+   - 부서 헤더: 32px 대형 타이포그래피 및 세련된 영문 서브 캡션 (밋밋한 라인 배제)
+   ========================================================================== */
+
+.sub-org-section {
+  padding-top: 80px;
+  padding-bottom: 140px;
+  background-color: #ffffff;
+  position: relative;
+}
+
+/* 대단위 부서 목록 (ul) */
+.org-department-list {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+.org-department-item {
+  position: relative;
+  border-bottom: 1px solid #E2E8F0;
+  padding-bottom: 64px;
+}
+
+.org-department-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* 부서 헤더 (32px 대형 타이포그래피 & 영문 서브 라벨) */
+.org-dept-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+  margin-bottom: 36px;
+  cursor: context-menu;
+}
+
+.org-dept-sub-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  color: #FBA518;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.org-dept-title {
+  font-family: 'Pretendard', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #0F172A;
+  letter-spacing: -0.7px;
+  margin: 0;
+  padding: 2px 0;
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
+}
+
+.org-dept-title:focus {
+  background-color: #FEF3C7;
+  outline: 1.5px solid #FBA518;
+}
+
+/* 부서 내 구성원 목록 (ol: 2열 가로 분할형 플랫 그리드) */
+.org-member-list {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 48px 40px;
+}
+
+@media (max-width: 960px) {
+  .org-member-list {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+/* 구성원 플랫 아이템 (좌측 200x240 사진 + 우측 정보 가로 분할) */
+.org-member-card {
+  position: relative;
+  width: 100%;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  align-items: flex-start;
+  cursor: context-menu;
+  user-select: text;
+}
+
+/* 좌측 프로필 사진 랩 (정확히 200px × 240px 고정) */
+.org-avatar-wrap {
+  position: relative;
+  width: 200px;
+  min-width: 200px;
+  height: 240px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #F1F5F9;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.org-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 호버 시 정중앙 원형 '+' 버튼 레이어 */
+.org-avatar-hover-layer {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease, visibility 0.15s ease;
+}
+
+.org-avatar-wrap:hover .org-avatar-hover-layer {
+  opacity: 1;
+  visibility: visible;
+}
+
+.org-avatar-plus-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #FBA518;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+.org-avatar-plus-circle svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+/* 우측 정보 영역 (단정하고 슬림한 핵심 정보 배치) */
+.org-info-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  justify-content: center;
+  align-self: center;
+}
+
+.org-member-name {
+  font-family: 'Pretendard', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: #0F172A;
+  letter-spacing: -0.5px;
+  margin: 0 0 4px 0;
+  line-height: 1.2;
+  padding: 1px 4px 1px 0 !important;
+  border-radius: 4px;
+}
+
+.org-info-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  line-height: 1.5;
+  width: 100%;
+  padding: 0;
+}
+
+.org-info-label {
+  min-width: 62px;
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 700;
+  color: #0F172A;
+  font-size: 16px;
+  letter-spacing: -0.2px;
+  flex-shrink: 0;
+  user-select: none;
+  padding: 0;
+}
+
+.org-info-val {
+  flex: 1;
+  font-family: 'Pretendard', sans-serif;
+  color: #334155;
+  font-size: 16px;
+  font-weight: 500;
+  word-break: keep-all;
+  padding: 1px 4px 1px 0 !important;
+  border-radius: 4px;
+}
+
+.org-member-pos {
+  color: #1E293B;
+  font-weight: 600;
+}
+
+.org-member-phone,
+.org-member-email {
+  color: #475569;
+}
+
+/* 인라인 에디터 포커스 링 */
+.org-editable-text:focus {
+  background-color: #FEF3C7 !important;
+  outline: 1.5px solid #FBA518 !important;
+}
+
+/* 우클릭 시 선택된 타겟(부서 전체 / 구성원 카드) 시각적 하이라이트 (시원하고 여유로운 캔버스 여백) */
+.org-member-card.active-target {
+  outline: 2px solid #FBA518 !important;
+  outline-offset: 16px !important;
+  border-radius: 14px !important;
+  background-color: rgba(251, 165, 24, 0.02) !important;
+  transition: none !important;
+}
+
+.org-department-item.active-target {
+  outline: 2px solid #FBA518 !important;
+  outline-offset: 32px !important;
+  border-radius: 20px !important;
+  background-color: rgba(251, 165, 24, 0.015) !important;
+  transition: none !important;
+}
+
+/* 우클릭 컨텍스트 메뉴 내 서브메뉴 스타일 (부서 이동 서브메뉴) */
+.org-ctx-menu .ctx-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  color: #E2E8F0;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+}
+
+.org-ctx-menu .ctx-item:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+}
+
+.org-ctx-menu .ctx-icon {
+  font-size: 16px;
+  color: #94A3B8;
+}
+
+.org-ctx-menu .ctx-arrow {
+  margin-left: auto;
+  font-size: 16px;
+  color: #94A3B8;
+}
+
+.org-ctx-menu .ctx-divider {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin: 4px 0;
+}
+
+.org-ctx-menu .ctx-danger {
+  color: #F87171;
+}
+
+.org-ctx-menu .ctx-danger .ctx-icon {
+  color: #F87171;
+}
+
+.org-ctx-menu .ctx-danger:hover {
+  background-color: #DC2626;
+  color: #FFFFFF;
+}
+
+.org-ctx-menu .ctx-danger:hover .ctx-icon {
+  color: #FFFFFF;
+}
+
+/* 부서 이동 서브메뉴 팝오버 */
+.org-ctx-menu .ctx-sub-menu {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  min-width: 170px;
+  background-color: #1E1F24;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 6px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.org-ctx-menu .ctx-has-sub:hover .ctx-sub-menu {
+  display: flex;
+}
+
+.org-ctx-menu .ctx-sub-item {
+  padding: 8px 10px;
+  font-size: 12.5px;
+  color: #E2E8F0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+}
+
+.org-ctx-menu .ctx-sub-item:hover {
+  background-color: #FBA518;
+  color: #1A1714;
+  font-weight: 700;
+}
+
+.org-ctx-menu .ctx-sub-empty {
+  padding: 8px 10px;
+  font-size: 12px;
+  color: #94A3B8;
+}

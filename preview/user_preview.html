@@ -518,7 +518,7 @@
                 <ul class="sub-bar-list">
                   ${cat.submenus.map((sub, subIdx) => {
                     const subUrl = `sub_page.html?cat=${idx}&sub=${subIdx}`;
-                    return `<li><a href="${subUrl}">${sub.name}</a></li>`;
+                    return `<li><a href="${subUrl}" data-cat="${idx}" data-sub="${subIdx}">${sub.name}</a></li>`;
                   }).join('')}
                 </ul>
               `;
@@ -533,10 +533,19 @@
             const name = cat.name || `메뉴 ${idx + 1}`;
             return `
               <li class="gnb-nav-li" data-idx="${idx}">
-                <a href="${mainUrl}">${name}</a>
+                <a href="${mainUrl}" data-cat="${idx}" data-sub="0">${name}</a>
               </li>
             `;
           }).join('');
+
+          // Click handler for desktop links
+          $(desktopList).find('a').on('click', function() {
+            const cat = parseInt($(this).attr('data-cat') || '0', 10);
+            const sub = parseInt($(this).attr('data-sub') || '0', 10);
+            try {
+              sessionStorage.setItem('BUILDER_SUBPAGE_TARGET', JSON.stringify({ cat, sub }));
+            } catch (e) {}
+          });
 
           let hideTimer = null;
 
@@ -579,6 +588,15 @@
             if (hideTimer) clearTimeout(hideTimer);
           }).on('mouseleave', function() {
             scheduleHideSubBar();
+          });
+
+          // Sub-bar click handler
+          $subBar.on('click', 'a', function() {
+            const cat = parseInt($(this).attr('data-cat') || '0', 10);
+            const sub = parseInt($(this).attr('data-sub') || '0', 10);
+            try {
+              sessionStorage.setItem('BUILDER_SUBPAGE_TARGET', JSON.stringify({ cat, sub }));
+            } catch (e) {}
           });
 
           // Header Mouseleave

@@ -67,9 +67,9 @@ const DEFAULT_STATE = {
     's1_1': { type: 'about', options: { layout: 'subtab', sections: ['greeting', 'vision'] } },
     's1_2': { type: 'about', options: { layout: 'subtab', sections: ['greeting'] } },
     's1_3': { type: 'history', options: { layout: 'vertical_timeline', interactive: true } },
-    's1_4': { type: 'about', options: { layout: 'subtab', sections: ['org'] } },
+    's1_4': { type: 'org', options: { layout: 'department_list', showAvatar: true, showContact: true } },
     's1_5': { type: 'map', options: { mode: 'address', transitInfo: true } },
-    's2_1': { type: 'about', options: { layout: 'grid', sections: ['vision'] } },
+    's2_1': { type: 'departments', options: { layout: 'grid', sections: ['vision'] } },
     's2_2': { type: 'board', options: { layout: 'card', attach: false, search: true, perPage: 10 } },
     's2_3': { type: 'gallery', options: { cols: 3, lightbox: true, ratio: '16:9' } },
     's3_1': { type: 'board', options: { layout: 'table', attach: true, search: true, perPage: 10 } },
@@ -167,13 +167,19 @@ class Store {
           if (name.includes('연혁') || name.includes('발자취') || name.includes('히스토리') || name.includes('history')) {
             defaultType = 'history';
             defaultOptions = { layout: 'vertical_timeline', interactive: true };
+          } else if (name.includes('조직도') || name.includes('임직원') || name.includes('구성원') || name.includes('조직') || name.includes('members') || name.includes('org')) {
+            defaultType = 'org';
+            defaultOptions = { layout: 'department_list', showAvatar: true, showContact: true };
+          } else if (name.includes('진료과목') || name.includes('사업') || name.includes('솔루션') || name.includes('서비스')) {
+            defaultType = 'departments';
+            defaultOptions = { layout: 'grid', sections: ['vision'] };
           } else if (name.includes('게시판') || name.includes('공지') || name.includes('소식') || name.includes('보도')) {
             defaultType = 'board';
             defaultOptions = { layout: 'table', attach: true, search: true, perPage: 10 };
-          } else if (name.includes('갤러리') || name.includes('사진') || name.includes('현장') || name.includes('스케치')) {
+          } else if (name.includes('갤러리') || name.includes('사진') || name.includes('현장') || name.includes('스케치') || name.includes('실적')) {
             defaultType = 'gallery';
             defaultOptions = { cols: 3, lightbox: true, ratio: '16:9' };
-          } else if (name.includes('문의') || name.includes('상담') || name.includes('신청')) {
+          } else if (name.includes('문의') || name.includes('상담') || name.includes('신청') || name.includes('예약')) {
             defaultType = 'contact';
             defaultOptions = { purpose: 'consult', fields: ['name', 'phone', 'email', 'content', 'terms'] };
           } else if (name.includes('FAQ') || name.includes('질문') || name.includes('안내')) {

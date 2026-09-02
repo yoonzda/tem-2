@@ -210,16 +210,16 @@ window.TemplateComponents = {
   },
 
   /**
-   * 3. 갤러리 / 진료과목 (#departments + #gallery) 컴포넌트
+   * 3-1. 진료과목 / 사업분야 (#departments) 컴포넌트
    */
-  gallery: function() {
+  departments: function(subName) {
     return `
       <section id="departments" style="padding-top:40px;">
         <div class="backWrap">
           <div class="titleBox align-center color-white">
             <mark>SEOUL MAEUM DENTAL CLINIC</mark>
             <h2>
-              서울마음치과 <b>진료과목</b>
+              서울마음치과 <b>${subName || '진료과목'}</b>
             </h2>
             <p>환자의 건강한 미소를 위해, 언제나 진심을 담아 최선의 진료를 이어갑니다.</p>
           </div>
@@ -243,11 +243,19 @@ window.TemplateComponents = {
           </li>
         </ul>
       </section>
-      <section id="gallery" class="layout-padding">
+    `;
+  },
+
+  /**
+   * 3-2. 갤러리 / 둘러보기 (#gallery) 컴포넌트
+   */
+  gallery: function(subName) {
+    return `
+      <section id="gallery" class="layout-padding" style="padding-top:80px; padding-bottom:120px;">
         <div class="titleBox align-center color-black">
           <mark>SEOUL MAEUM DENTAL CLINIC</mark>
           <h2>
-            안심이 되는 치과, <b>서울마음치과</b>
+            안심이 되는 치과, <b>${subName || '서울마음치과 둘러보기'}</b>
           </h2>
           <p>환자의 안전과 편안함을 최우선으로 생각하는 진료환경을 제공합니다.</p>
         </div>
@@ -544,6 +552,56 @@ window.TemplateComponents = {
             </div>
           </div>
 
+        </div>
+      </section>
+    `;
+  },
+
+  /**
+   * 5. 조직도 / 구성원 소개 (#organization) 컴포넌트
+   */
+  organization: function(siteTitle, subName) {
+    return `
+      <section class="sub-org-section">
+        <div class="titleBox align-center color-black">
+          <mark>SEOUL MAEUM DENTAL CLINIC</mark>
+          <h2>
+            ${siteTitle || '서울마음치과'} <b>${subName || '조직도'}</b>
+          </h2>
+          <p>분야별 최고의 전문성과 신뢰를 바탕으로 환자 중심의 의료 서비스를 제공합니다.</p>
+        </div>
+
+        <div class="org-main-container layout-max layout-padding">
+          <ul class="org-department-list">
+            <li class="org-department-item">
+              <div class="org-dept-header">
+                <span class="org-dept-sub-label">DEPARTMENT 01</span>
+                <h3 class="org-dept-title">임원진 및 대표원장</h3>
+              </div>
+              <ol class="org-member-list">
+                <li class="org-member-card">
+                  <div class="org-avatar-wrap">
+                    <img class="org-avatar-img" src="https://placehold.co/200x240?text=200x240" alt="송문호 대표원장">
+                  </div>
+                  <div class="org-info-wrap">
+                    <h4 class="org-member-name">송문호</h4>
+                    <div class="org-info-row">
+                      <span class="org-info-label">직책</span>
+                      <span class="org-info-val org-member-pos">대표원장 (통합치의학 전문의)</span>
+                    </div>
+                    <div class="org-info-row">
+                      <span class="org-info-label">연락처</span>
+                      <span class="org-info-val org-member-phone">02-1234-5678</span>
+                    </div>
+                    <div class="org-info-row">
+                      <span class="org-info-label">이메일</span>
+                      <span class="org-info-val org-member-email">director@company.com</span>
+                    </div>
+                  </div>
+                </li>
+              </ol>
+            </li>
+          </ul>
         </div>
       </section>
     `;

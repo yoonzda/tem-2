@@ -424,10 +424,21 @@ window.HistoryEditor = (function() {
       }
     });
 
-    // B. Text In-place Editing (contenteditable) - 좌클릭 직접 수정
+    // B. Text In-place Editing: 좌클릭 시에만 contenteditable=true 부여 후 포커스
     const editableElements = container.querySelectorAll('.history-editable-text');
     editableElements.forEach(el => {
+      // 좌클릭 시에만 편집 모드 진입
+      el.addEventListener('click', function(e) {
+        if (e.button === 0) { // 좌클릭
+          if (this.getAttribute('contenteditable') !== 'true') {
+            this.setAttribute('contenteditable', 'true');
+            this.focus();
+          }
+        }
+      });
+
       el.addEventListener('blur', function() {
+        this.removeAttribute('contenteditable');
         const type = this.getAttribute('data-type');
         const yIdx = parseInt(this.getAttribute('data-yidx'), 10);
         const mIdx = parseInt(this.getAttribute('data-midx'), 10);

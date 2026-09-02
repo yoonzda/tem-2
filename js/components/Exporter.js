@@ -282,13 +282,13 @@ $SUB_PAGE_DESCRIPTIONS = ${JSON.stringify(subDesc, null, 2)};
         { id: 'REG-2609-002', program: '2026 주간 활동 맞춤 프로그램', name: '이영희', phone: '010-9876-5432', count: 2, status: '승인완료', date: '2026-08-18' }
       ], null, 2));
 
-      // 6. Dynamic Main Templates (index.html & index.php)
-      const dynamicNavHtml = (state.menus || []).map(m => `
+      // 6. Dynamic Main Templates (index.html & sub_page.html)
+      const dynamicNavHtml = (state.menus || []).map((m, idx) => `
         <li style="position:relative; display:inline-block; margin:0 16px;">
-          <a href="#" style="color:#0f172a; text-decoration:none; font-weight:700; font-size:16px;">${m.name}</a>
+          <a href="sub_page.html?cat=${idx}&sub=0" style="color:#0f172a; text-decoration:none; font-weight:700; font-size:16px;">${m.name}</a>
           ${m.submenus && m.submenus.length ? `
             <ul style="position:absolute; top:100%; left:0; background:#ffffff; border:1px solid #e2e8f0; border-radius:8px; padding:8px 0; min-width:180px; display:none; list-style:none; box-shadow:0 10px 24px rgba(0,0,0,0.1);">
-              ${m.submenus.map(s => `<li><a href="#" style="display:block; padding:8px 16px; color:#475569; text-decoration:none; font-size:14.5px;">${s.name}</a></li>`).join('')}
+              ${m.submenus.map((s, sIdx) => `<li><a href="sub_page.html?cat=${idx}&sub=${sIdx}" style="display:block; padding:8px 16px; color:#475569; text-decoration:none; font-size:14.5px;">${s.name}</a></li>`).join('')}
             </ul>
           ` : ''}
         </li>
@@ -329,6 +329,17 @@ $SUB_PAGE_DESCRIPTIONS = ${JSON.stringify(subDesc, null, 2)};
 </html>`;
 
       zip.file('index.html', indexHtmlContent);
+
+      // 서브페이지 템플릿도 ZIP에 포함
+      try {
+        const subRes = await fetch('preview/sub_page.html');
+        if (subRes.ok) {
+          const subContent = await subRes.text();
+          zip.file('sub_page.html', subContent);
+        }
+      } catch (e) {
+        console.warn('Sub page fetch skip:', e);
+      }
 
       // 7. Assets (assets/css/style.css)
       const assetsFolder = zip.folder('assets');

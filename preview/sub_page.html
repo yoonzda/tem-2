@@ -16,6 +16,7 @@
   <script src="js/core.js"></script>
   <script src="js/template_components.js"></script>
   <script src="js/history_editor.js"></script>
+  <script src="js/org_editor.js"></script>
 </head>
 <body class="sub-page">
   <!-- Header (Main 1:1 Unified Style) -->
@@ -119,11 +120,34 @@
 
       function getUrlParams() {
         const params = new URLSearchParams(window.location.search);
-        const cat = parseInt(params.get('cat') || '0', 10);
-        const sub = parseInt(params.get('sub') || '0', 10);
+        let cat = params.has('cat') ? parseInt(params.get('cat'), 10) : null;
+        let sub = params.has('sub') ? parseInt(params.get('sub'), 10) : null;
         const menuId = params.get('menu') || '';
         const subId = params.get('subId') || '';
-        return { cat: isNaN(cat) ? 0 : cat, sub: isNaN(sub) ? 0 : sub, menuId, subId };
+
+        // If URL has valid params, cache to sessionStorage
+        if (cat !== null && !isNaN(cat)) {
+          try {
+            sessionStorage.setItem('BUILDER_SUBPAGE_TARGET', JSON.stringify({ cat, sub: (sub !== null && !isNaN(sub)) ? sub : 0 }));
+          } catch (e) {}
+        } else {
+          // If URL params are missing (e.g. server cleanUrls redirect), fallback to sessionStorage
+          try {
+            const cached = sessionStorage.getItem('BUILDER_SUBPAGE_TARGET');
+            if (cached) {
+              const parsed = JSON.parse(cached);
+              cat = parsed.cat;
+              sub = parsed.sub;
+            }
+          } catch (e) {}
+        }
+
+        return {
+          cat: (cat !== null && !isNaN(cat)) ? cat : 0,
+          sub: (sub !== null && !isNaN(sub)) ? sub : 0,
+          menuId,
+          subId
+        };
       }
 
       function renderTemplateSections(pageType, catName, subName, siteTitle, address, phone) {
@@ -142,12 +166,27 @@
             }
             break;
 
+          case 'org':
+          case 'organization':
+            if (window.OrgEditor) {
+              window.OrgEditor.init(container);
+            } else if (window.TemplateComponents) {
+              container.innerHTML = window.TemplateComponents.organization(siteTitle, subName);
+            }
+            break;
+
           case 'map':
-            container.innerHTML = window.TemplateComponents ? window.TemplateComponents.location() : '';
+            container.innerHTML = window.TemplateComponents ? window.TemplateComponents.location(address, phone) : '';
+            break;
+
+          case 'departments':
+          case 'business':
+          case 'service':
+            container.innerHTML = window.TemplateComponents ? window.TemplateComponents.departments(subName) : '';
             break;
 
           case 'gallery':
-            container.innerHTML = window.TemplateComponents ? window.TemplateComponents.gallery() : '';
+            container.innerHTML = window.TemplateComponents ? window.TemplateComponents.gallery(subName) : '';
             // Initialize Slick Slider
             if (typeof slickSlide === 'function') {
               slickSlide();
@@ -491,16 +530,18 @@
         const currentMenuId = currentSub.id || currentCat.id;
 
         // Determine Page Type from pageOptions or intelligent fallback
-        let pageType = pageOptions[currentMenuId]?.type;
+        let pageType = pageOptions[currentMenuId]?.type || pageOptions[currentSub.id]?.type;
         if (!pageType) {
           const subLower = currentSubName.toLowerCase();
           if (subLower.includes('연혁') || subLower.includes('발자취') || subLower.includes('히스토리') || subLower.includes('history')) pageType = 'history';
-          else if (subLower.includes('갤러리') || subLower.includes('사진') || subLower.includes('둘러보기') || subLower.includes('진료과목')) pageType = 'gallery';
-          else if (subLower.includes('공지') || subLower.includes('게시판') || subLower.includes('자료실') || subLower.includes('소식')) pageType = 'board';
-          else if (subLower.includes('일정') || subLower.includes('캘린더') || subLower.includes('행사')) pageType = 'calendar';
-          else if (subLower.includes('오시는길') || subLower.includes('지도') || subLower.includes('위치') || subLower.includes('진료시간')) pageType = 'map';
-          else if (subLower.includes('문의') || subLower.includes('상담') || subLower.includes('신청') || subLower.includes('예약')) pageType = 'contact';
-          else if (subLower.includes('faq') || subLower.includes('자주')) pageType = 'faq';
+          else if (subLower.includes('조직도') || subLower.includes('임직원') || subLower.includes('구성원') || subLower.includes('조직') || subLower.includes('org') || subLower.includes('member')) pageType = 'org';
+          else if (subLower.includes('오시는길') || subLower.includes('오시는 길') || subLower.includes('지도') || subLower.includes('위치') || subLower.includes('진료시간') || subLower.includes('location') || subLower.includes('map')) pageType = 'map';
+          else if (subLower.includes('진료과목') || subLower.includes('사업') || subLower.includes('솔루션') || subLower.includes('서비스') || subLower.includes('주요사업') || subLower.includes('departments') || subLower.includes('business')) pageType = 'departments';
+          else if (subLower.includes('갤러리') || subLower.includes('사진') || subLower.includes('둘러보기') || subLower.includes('gallery')) pageType = 'gallery';
+          else if (subLower.includes('공지') || subLower.includes('게시판') || subLower.includes('자료실') || subLower.includes('소식') || subLower.includes('보도') || subLower.includes('board')) pageType = 'board';
+          else if (subLower.includes('일정') || subLower.includes('캘린더') || subLower.includes('행사') || subLower.includes('calendar')) pageType = 'calendar';
+          else if (subLower.includes('문의') || subLower.includes('상담') || subLower.includes('신청') || subLower.includes('예약') || subLower.includes('contact')) pageType = 'contact';
+          else if (subLower.includes('faq') || subLower.includes('자주') || subLower.includes('질문')) pageType = 'faq';
           else pageType = 'about';
         }
 
@@ -583,7 +624,7 @@
                   ${cat.submenus.map((sub, sIdx) => {
                     const subUrl = `sub_page.html?cat=${idx}&sub=${sIdx}`;
                     const isSubActive = (idx === catIdx && sIdx === subIdx);
-                    return `<li><a href="${subUrl}" class="${isSubActive ? 'active' : ''}">${sub.name}</a></li>`;
+                    return `<li><a href="${subUrl}" class="${isSubActive ? 'active' : ''}" data-cat="${idx}" data-sub="${sIdx}">${sub.name}</a></li>`;
                   }).join('')}
                 </ul>
               `;
@@ -599,10 +640,27 @@
             const isCatActive = (idx === catIdx);
             return `
               <li class="gnb-nav-li ${isCatActive ? 'current-page' : ''}" data-idx="${idx}">
-                <a href="${mainUrl}">${name}</a>
+                <a href="${mainUrl}" data-cat="${idx}" data-sub="0">${name}</a>
               </li>
             `;
           }).join('');
+
+          // Click handler for desktop & sub-bar links
+          $(desktopList).find('a').on('click', function() {
+            const cat = parseInt($(this).attr('data-cat') || '0', 10);
+            const sub = parseInt($(this).attr('data-sub') || '0', 10);
+            try {
+              sessionStorage.setItem('BUILDER_SUBPAGE_TARGET', JSON.stringify({ cat, sub }));
+            } catch (e) {}
+          });
+
+          $subBar.on('click', 'a', function() {
+            const cat = parseInt($(this).attr('data-cat') || '0', 10);
+            const sub = parseInt($(this).attr('data-sub') || '0', 10);
+            try {
+              sessionStorage.setItem('BUILDER_SUBPAGE_TARGET', JSON.stringify({ cat, sub }));
+            } catch (e) {}
+          });
 
           let hideTimer = null;
 

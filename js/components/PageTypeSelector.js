@@ -9,15 +9,16 @@ export class PageTypeSelector {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
     this.PAGE_TYPES = [
-      { id: 'about', name: '일반 소개형' },
-      { id: 'history', name: '연혁 / 히스토리' },
-      { id: 'board', name: '일반 게시판' },
-      { id: 'gallery', name: '갤러리 게시판' },
-      { id: 'calendar', name: '월간 캘린더' },
-      { id: 'map', name: '오시는길 / 지도' },
-      { id: 'contact', name: '온라인 문의 폼' },
+      { id: 'about', name: '일반소개' },
+      { id: 'history', name: '연혁' },
+      { id: 'org', name: '구성원' },
+      { id: 'board', name: '게시판' },
+      { id: 'gallery', name: '갤러리' },
+      { id: 'calendar', name: '캘린더' },
+      { id: 'map', name: '오시는길' },
+      { id: 'contact', name: '온라인 문의' },
       { id: 'faq', name: 'FAQ' },
-      { id: 'custom', name: '맞춤형 빈 페이지' }
+      { id: 'custom', name: '빈 페이지' }
     ];
     this.activeMenuIndex = 0;
     this.init();
@@ -190,6 +191,7 @@ export class PageTypeSelector {
     switch (type) {
       case 'about': return { layout: 'subtab', sections: ['greeting', 'vision'] };
       case 'history': return { layout: 'vertical_timeline', interactive: true };
+      case 'org': return { layout: 'department_list', showAvatar: true, showContact: true };
       case 'map': return { mode: 'address', transitInfo: true };
       case 'program': return { mode: 'admin_approval', maxQuota: 20, waitlist: true, cancelEnabled: true, fields: ['name', 'phone', 'birth', 'count', 'notes', 'terms'] };
       case 'calendar': return { view: 'month', tags: ['event', 'edu', 'off', 'apply'] };
