@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MY WEBSITE</title>
-  <link rel="stylesheet" href="css/import.css">
+  <link rel="stylesheet" href="css/import.css?v=101.0">
+  <link rel="stylesheet" href="css/page.css?v=101.0">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.css">
@@ -17,6 +18,7 @@
   <script src="js/template_components.js"></script>
   <script src="js/history_editor.js"></script>
   <script src="js/org_editor.js"></script>
+  <script src="js/faq_editor.js"></script>
 </head>
 <body class="sub-page">
   <!-- Header (Main 1:1 Unified Style) -->
@@ -210,15 +212,14 @@
                   <p>서울마음치과의 주요 소식과 안내사항을 신속하게 전해드립니다.</p>
                 </div>
                 <div class="layout-max layout-padding">
-                  <div class="sub-board-search-bar">
-                    <div style="font-family:'Pretendard'; font-size:16px; color:#555; font-weight:500;">전체 총 <b style="color:#FBA518;">15</b>건의 게시글이 있습니다.</div>
+                  <div class="sub-board-search-bar" style="justify-content: flex-end;">
                     <form class="sub-board-search-form" onsubmit="event.preventDefault(); alert('검색 기능은 준비 중입니다.');">
                       <select class="sub-board-select">
                         <option value="title">제목</option>
                         <option value="content">내용</option>
                         <option value="writer">작성자</option>
                       </select>
-                      <input type="text" class="sub-board-input" placeholder="검색어를 입력하세요">
+                      <input type="text" class="sub-board-input">
                       <button type="submit" class="sub-board-btn-search">검색</button>
                     </form>
                   </div>
@@ -284,6 +285,240 @@
             `;
             break;
 
+          case 'download':
+            // Download items dataset (15 items)
+            const DOWNLOAD_ITEMS = [
+              { id: 1, title: '초진 환자 진료 사전 문진표 및 안내서', ext: 'PDF', size: '1.4 MB', date: '2026.08.20', cat: '서식/양식' },
+              { id: 2, title: '치과 수술 및 마취 동의서 양식', ext: 'HWP', size: '420 KB', date: '2026.08.18', cat: '동의서/신청서' },
+              { id: 3, title: '2026 임플란트 시술 후 주의사항 및 관리 매뉴얼', ext: 'PDF', size: '2.8 MB', date: '2026.08.15', cat: '진료안내' },
+              { id: 4, title: '진료비 세부내역서 및 영수증 발급 신청서', ext: 'PDF', size: '580 KB', date: '2026.08.12', cat: '서식/양식' },
+              { id: 5, title: '치아 교정 치료 단계별 안내서 및 체크리스트', ext: 'XLSX', size: '850 KB', date: '2026.08.10', cat: '진료안내' },
+              { id: 6, title: '개인정보 수집·이용 및 제3자 제공 동의서', ext: 'HWP', size: '380 KB', date: '2026.08.05', cat: '동의서/신청서' },
+              { id: 7, title: '진단서 및 소견서 발급 위임장 양식', ext: 'HWP', size: '490 KB', date: '2026.07.28', cat: '서식/양식' },
+              { id: 8, title: '스케일링 및 잇몸 치료 후 홈케어 가이드북', ext: 'PDF', size: '3.5 MB', date: '2026.07.20', cat: '진료안내' },
+              { id: 9, title: '원내 서식 및 환자용 각종 신청서 통합 압축본', ext: 'ZIP', size: '4.2 MB', date: '2026.07.15', cat: '서식/양식' },
+              { id: 10, title: '미성년자 진료 및 처치 동의서 양식', ext: 'HWP', size: '310 KB', date: '2026.07.08', cat: '동의서/신청서' },
+              { id: 11, title: '보철물(크라운/인레이) 장착 후 관리 안내문', ext: 'PDF', size: '1.9 MB', date: '2026.07.02', cat: '진료안내' },
+              { id: 12, title: '보험 청구용 진료 확인서 및 통원 증명 서식', ext: 'PDF', size: '620 KB', date: '2026.06.25', cat: '서식/양식' },
+              { id: 13, title: '수면마취/진정치료 전후 주의사항 안내문', ext: 'PDF', size: '1.1 MB', date: '2026.06.18', cat: '진료안내' },
+              { id: 14, title: '진료기록 열람 및 사본발급 동의서·위임장', ext: 'HWP', size: '450 KB', date: '2026.06.10', cat: '동의서/신청서' },
+              { id: 15, title: '턱관절 물리치료 및 운동요법 자가 가이드', ext: 'PDF', size: '2.3 MB', date: '2026.06.01', cat: '진료안내' }
+            ];
+
+            let currentPage = 1;
+            const itemsPerPage = 9;
+            let currentFilteredItems = [...DOWNLOAD_ITEMS];
+
+            container.innerHTML = `
+              <section class="sub-page-section">
+                <div class="titleBox align-center color-black">
+                  <mark>SEOUL MAEUM DENTAL CLINIC</mark>
+                  <h2>
+                    서울마음치과 <b>${subName || '자료실'}</b>
+                  </h2>
+                  <p>필요하신 서식 및 안내 자료를 클릭하시면 즉시 다운로드하실 수 있습니다.</p>
+                </div>
+                <div class="layout-max layout-padding">
+                  <!-- Toolbar: Search Only (Right-aligned, Flat 0-Radius) -->
+                  <div class="sub-download-toolbar">
+                    <div class="sub-download-search-wrap">
+                      <input type="text" class="sub-download-search-input" id="sub-download-keyword">
+                      <button type="button" class="sub-download-search-btn" id="btn-sub-download-search">검색</button>
+                    </div>
+                  </div>
+
+                  <!-- Card Grid (3 Columns, 9 items per page) -->
+                  <div class="sub-download-grid" id="sub-download-card-list"></div>
+
+                  <!-- Pagination (Only shown when totalPages > 1) -->
+                  <div class="sub-pagination" id="sub-download-pagination-wrap" style="display:none;"></div>
+                </div>
+              </section>
+              <div id="sub-download-toast" class="sub-download-toast">
+                <span class="material-symbols-outlined" style="font-size:20px; color:#10B981;">check_circle</span>
+                <span id="sub-download-toast-msg">다운로드가 시작되었습니다.</span>
+              </div>
+            `;
+
+            // Automatic Download Trigger
+            function triggerFileDownload(title, ext) {
+              const fileName = `${title}.${ext.toLowerCase()}`;
+              const blobContent = `[BUILDER STUDIO] ${title}\n\n서울마음치과 공식 자료실 다운로드 문서입니다.\n파일명: ${fileName}\n형식: ${ext}\n발행기관: 서울마음치과`;
+              const blob = new Blob([blobContent], { type: 'text/plain;charset=utf-8' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = fileName;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+
+              // Show Toast Notice
+              const toast = document.getElementById('sub-download-toast');
+              const toastMsg = document.getElementById('sub-download-toast-msg');
+              if (toast && toastMsg) {
+                toastMsg.textContent = `${fileName} 다운로드가 시작되었습니다.`;
+                toast.classList.add('show');
+                clearTimeout(window._dlToastTimer);
+                window._dlToastTimer = setTimeout(() => {
+                  toast.classList.remove('show');
+                }, 2800);
+              }
+            }
+
+            // Render Cards and Functional Pagination
+            function renderCardsAndPagination() {
+              const totalItems = currentFilteredItems.length;
+              const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+              if (currentPage > totalPages && totalPages > 0) currentPage = totalPages;
+              if (currentPage < 1) currentPage = 1;
+
+              const startIndex = (currentPage - 1) * itemsPerPage;
+              const pageItems = currentFilteredItems.slice(startIndex, startIndex + itemsPerPage);
+
+              const gridEl = document.getElementById('sub-download-card-list');
+              const paginationWrap = document.getElementById('sub-download-pagination-wrap');
+
+              if (!gridEl) return;
+
+              // 1. Render Cards
+              if (pageItems.length === 0) {
+                gridEl.innerHTML = `
+                  <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: #9CA3AF; font-size: 15px; background: #FFF; border-radius: 12px; border: 1.5px dashed #E5E7EB;">
+                    검색 조건에 일치하는 자료가 없습니다.
+                  </div>
+                `;
+              } else {
+                gridEl.innerHTML = pageItems.map(item => `
+                  <div class="sub-download-box" data-cat="${item.cat}" data-title="${item.title}" data-ext="${item.ext}" data-size="${item.size}">
+                    <div class="sub-download-box-header">
+                      <span class="sub-download-category">${item.cat}</span>
+                    </div>
+                    <div class="sub-download-box-title">${item.title}</div>
+                    <div class="sub-download-box-footer">
+                      <div class="sub-download-meta-line">
+                        <span class="sub-download-meta-ext">${item.ext}</span>
+                        <span class="sub-download-meta-dot">·</span>
+                        <span class="sub-download-meta-size">${item.size}</span>
+                        <span class="sub-download-meta-dot">·</span>
+                        <span class="sub-download-meta-date">${item.date}</span>
+                      </div>
+                    </div>
+                    <!-- Hover Overlay: Centered Icon + Title -->
+                    <div class="sub-download-hover-overlay">
+                      <div class="sub-download-hover-circle">
+                        <span class="material-symbols-outlined sub-download-hover-icon">download</span>
+                      </div>
+                      <div class="sub-download-hover-title">${item.title}</div>
+                    </div>
+                  </div>
+                `).join('');
+
+                // Bind Card Click (Entire box is clickable)
+                $(gridEl).find('.sub-download-box').on('click', function() {
+                  const title = $(this).attr('data-title');
+                  const ext = $(this).attr('data-ext');
+                  triggerFileDownload(title, ext);
+                });
+              }
+
+              // 2. Render Pagination: ONLY IF totalPages > 1
+              if (!paginationWrap) return;
+
+              if (totalPages <= 1) {
+                paginationWrap.innerHTML = '';
+                paginationWrap.style.display = 'none';
+              } else {
+                paginationWrap.style.display = 'flex';
+                let pageBtnsHtml = '';
+
+                // Prev Button
+                const isPrevDisabled = (currentPage === 1);
+                pageBtnsHtml += `
+                  <button type="button" class="sub-page-btn material-symbols-outlined btn-page-prev ${isPrevDisabled ? 'disabled' : ''}" style="font-size:18px;" ${isPrevDisabled ? 'disabled' : ''}>chevron_left</button>
+                `;
+
+                // Page Number Buttons
+                for (let p = 1; p <= totalPages; p++) {
+                  const isActive = (p === currentPage);
+                  pageBtnsHtml += `
+                    <button type="button" class="sub-page-btn btn-page-num ${isActive ? 'active' : ''}" data-page="${p}">${p}</button>
+                  `;
+                }
+
+                // Next Button
+                const isNextDisabled = (currentPage === totalPages);
+                pageBtnsHtml += `
+                  <button type="button" class="sub-page-btn material-symbols-outlined btn-page-next ${isNextDisabled ? 'disabled' : ''}" style="font-size:18px;" ${isNextDisabled ? 'disabled' : ''}>chevron_right</button>
+                `;
+
+                paginationWrap.innerHTML = pageBtnsHtml;
+
+                // Bind Page Number Clicks
+                $(paginationWrap).find('.btn-page-num').on('click', function() {
+                  const p = parseInt($(this).attr('data-page'), 10);
+                  if (p !== currentPage) {
+                    currentPage = p;
+                    renderCardsAndPagination();
+                    scrollToGridTop();
+                  }
+                });
+
+                // Bind Prev Button Click
+                $(paginationWrap).find('.btn-page-prev').on('click', function() {
+                  if (currentPage > 1) {
+                    currentPage -= 1;
+                    renderCardsAndPagination();
+                    scrollToGridTop();
+                  }
+                });
+
+                // Bind Next Button Click
+                $(paginationWrap).find('.btn-page-next').on('click', function() {
+                  if (currentPage < totalPages) {
+                    currentPage += 1;
+                    renderCardsAndPagination();
+                    scrollToGridTop();
+                  }
+                });
+              }
+            }
+
+            function scrollToGridTop() {
+              const el = document.getElementById('sub-download-card-list');
+              if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+              }
+            }
+
+            // Search Handler
+            function filterDownloadCards() {
+              const keyword = ($(container).find('#sub-download-keyword').val() || '').trim().toLowerCase();
+
+              currentFilteredItems = DOWNLOAD_ITEMS.filter(item => {
+                return (!keyword || item.title.toLowerCase().includes(keyword) || item.ext.toLowerCase().includes(keyword) || item.cat.toLowerCase().includes(keyword));
+              });
+
+              // Reset to page 1 on filter/search
+              currentPage = 1;
+              renderCardsAndPagination();
+            }
+
+            // Bind Search Events
+            $(container).find('#btn-sub-download-search').on('click', filterDownloadCards);
+            $(container).find('#sub-download-keyword').on('keydown', function(e) {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                filterDownloadCards();
+              }
+            });
+
+            // Initial render
+            renderCardsAndPagination();
+            break;
+
           case 'contact':
             container.innerHTML = `
               <section class="sub-page-section">
@@ -296,12 +531,39 @@
                 </div>
                 <div class="layout-max layout-padding">
                   <div class="sub-contact-card">
-                    <form class="sub-contact-form" onsubmit="event.preventDefault(); alert('문의가 성공적으로 접수되었습니다. 담당자가 확인 후 빠른 시일 내에 연락드리겠습니다.'); this.reset();">
+                    <form class="sub-contact-form" onsubmit="
+                      event.preventDefault();
+                      const selectEl = this.querySelector('.sub-form-select');
+                      const typeText = selectEl ? selectEl.options[selectEl.selectedIndex].text : '온라인 문의';
+                      const inputs = this.querySelectorAll('.sub-form-input');
+                      const name = inputs[0] ? inputs[0].value.trim() : '';
+                      const phone = inputs[1] ? inputs[1].value.trim() : '';
+                      const email = inputs[2] ? inputs[2].value.trim() : '';
+                      const title = inputs[3] ? inputs[3].value.trim() : '온라인 상담 문의';
+                      const content = this.querySelector('.sub-form-textarea') ? this.querySelector('.sub-form-textarea').value.trim() : '';
+                      
+                      const inqs = JSON.parse(localStorage.getItem('WEB_BUILDER_INQUIRIES_V1') || '[]');
+                      const newInq = {
+                        id: 'INQ-' + Date.now().toString().slice(-6),
+                        name: name,
+                        phone: phone,
+                        email: email,
+                        type: typeText,
+                        title: title,
+                        content: content,
+                        status: '접수대기',
+                        date: new Date().toISOString().slice(0, 10)
+                      };
+                      inqs.unshift(newInq);
+                      localStorage.setItem('WEB_BUILDER_INQUIRIES_V1', JSON.stringify(inqs));
+                      alert('문의가 성공적으로 접수되었습니다. 관리자 콘솔에 실시간 등록되었습니다.');
+                      this.reset();
+                    ">
                       <div class="sub-form-group">
                         <label class="sub-form-label">문의 유형<span class="req">*</span></label>
                         <select class="sub-form-select" required>
                           <option value="">문의 유형을 선택해주세요</option>
-                          <option value="service">진료 및 예약 상담 문의</option>
+                          <option value="service" selected>진료 및 예약 상담 문의</option>
                           <option value="quote">비용 및 보험 혜택 문의</option>
                           <option value="tech">온라인 이용 관련 문의</option>
                           <option value="other">기타 일반 문의</option>
@@ -310,28 +572,76 @@
                       <div class="sub-form-row-2">
                         <div class="sub-form-group">
                           <label class="sub-form-label">성함 / 환자명<span class="req">*</span></label>
-                          <input type="text" class="sub-form-input" placeholder="성함을 입력하세요" required>
+                          <input type="text" class="sub-form-input" required>
                         </div>
                         <div class="sub-form-group">
                           <label class="sub-form-label">연락처<span class="req">*</span></label>
-                          <input type="tel" class="sub-form-input" placeholder="010-0000-0000" required>
+                          <input type="tel" class="sub-form-input" required>
                         </div>
                       </div>
                       <div class="sub-form-group">
                         <label class="sub-form-label">이메일 주소<span class="req">*</span></label>
-                        <input type="email" class="sub-form-input" placeholder="example@email.com" required>
+                        <input type="email" class="sub-form-input" required>
                       </div>
                       <div class="sub-form-group">
                         <label class="sub-form-label">문의 제목<span class="req">*</span></label>
-                        <input type="text" class="sub-form-input" placeholder="문의 제목을 입력하세요" required>
+                        <input type="text" class="sub-form-input" required>
                       </div>
                       <div class="sub-form-group">
                         <label class="sub-form-label">문의 내용<span class="req">*</span></label>
-                        <textarea class="sub-form-textarea" placeholder="문의하실 내용을 상세히 기재해 주세요." required></textarea>
+                        <textarea class="sub-form-textarea" required></textarea>
                       </div>
-                      <div class="sub-agree-box">
-                        <input type="checkbox" id="agree-privacy" required>
-                        <label for="agree-privacy">개인정보 수집 및 이용 목적에 동의합니다. (상담 안내 목적 외 사용되지 않습니다.)</label>
+                      <div class="sub-agree-wrap">
+                        <div class="sub-agree-box">
+                          <input type="checkbox" id="agree-privacy" required checked>
+                          <span class="sub-agree-text">
+                            <button type="button" class="sub-privacy-link-btn" onclick="togglePrivacyTerms(event)">개인정보 수집 및 이용</button>
+                            <label for="agree-privacy">에 동의합니다.</label>
+                          </span>
+                        </div>
+                        <div id="sub-privacy-terms" class="sub-privacy-terms" style="display: none;">
+                          <div class="sub-privacy-terms-inner">
+                            <div class="sub-privacy-terms-header">
+                              <div class="sub-privacy-terms-header-left">
+                                <h4 class="sub-privacy-terms-title">개인정보 수집 및 이용 동의 안내</h4>
+                                <span class="sub-privacy-terms-badge">필수 동의</span>
+                              </div>
+                              <button type="button" class="sub-privacy-terms-close-btn" onclick="togglePrivacyTerms(event)">접기 ✕</button>
+                            </div>
+                            <div class="sub-privacy-terms-table-wrap">
+                              <table class="sub-privacy-terms-table">
+                                <thead>
+                                  <tr>
+                                    <th style="width: 26%;">수집 항목</th>
+                                    <th style="width: 44%;">수집 및 이용 목적</th>
+                                    <th style="width: 30%;">보유 및 이용 기간</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                      <strong>온라인 상담 문의</strong><br>
+                                      <span class="sub-privacy-subtext">성함 / 환자명, 연락처(휴대전화번호), 이메일 주소, 문의 제목 및 내용</span>
+                                    </td>
+                                    <td>
+                                      • 문의 접수 내역 확인 및 사실 관계 조사<br>
+                                      • 상담 답변 회신 및 예약 안내 의사소통<br>
+                                      • 서비스 이용에 따른 본인 식별
+                                    </td>
+                                    <td>
+                                      <strong>상담 처리 완료 후 3년간 보관</strong><br>
+                                      <span class="sub-privacy-subtext">(전자상거래법 등 관계 법령에 따라 3년 보관 후 지체 없이 영구 파기)</span>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div class="sub-privacy-terms-footer">
+                              <p>※ 귀하는 개인정보 수집 및 이용에 대한 동의를 거부할 권리가 있습니다. 다만, 필수 동의 항목에 동의하지 않으실 경우 온라인 상담 문의 접수 및 답변 회신 서비스 이용이 제한됩니다.</p>
+                              <button type="button" class="sub-privacy-terms-footer-close" onclick="togglePrivacyTerms(event)">닫기</button>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                       <button type="submit" class="sub-btn-submit">온라인 문의 접수하기</button>
                     </form>
@@ -339,159 +649,572 @@
                 </div>
               </section>
             `;
+
+            // Inline Privacy Terms Toggle Handler (Non-modal slideToggle)
+            window.togglePrivacyTerms = function(e) {
+              if (e) { e.preventDefault(); e.stopPropagation(); }
+              const $panel = $('#sub-privacy-terms');
+              if ($panel.length) {
+                $panel.stop(true, true).slideToggle(200);
+              }
+            };
             break;
 
           case 'calendar':
-            container.innerHTML = `
-              <section class="sub-page-section">
-                <div class="titleBox align-center color-black">
-                  <mark>SEOUL MAEUM DENTAL CLINIC</mark>
-                  <h2>
-                    서울마음치과 <b>${subName || '진료일정'}</b>
-                  </h2>
-                  <p>월간 진료 일정과 주요 클리닉 일정을 확인하실 수 있습니다.</p>
-                </div>
-                <div class="layout-max layout-padding">
-                  <div class="sub-cal-wrap">
-                    <div class="sub-cal-header">
-                      <div class="sub-cal-title-group">
-                        <button type="button" class="sub-cal-btn-nav material-symbols-outlined" onclick="alert('이전 달 일정은 준비 중입니다.')">chevron_left</button>
-                        <span class="sub-cal-current-month">2026.08</span>
-                        <button type="button" class="sub-cal-btn-nav material-symbols-outlined" onclick="alert('다음 달 일정은 준비 중입니다.')">chevron_right</button>
+            // 캘린더 전역 연/월 상태 (기본 2026년 9월)
+            window.subCalYear = window.subCalYear || 2026;
+            window.subCalMonth = window.subCalMonth || 9;
+
+            // 3대 기본 카테고리 (amber 주요 행사, blue 정기 일정, green 시스템 점검)
+            const SUB_CALENDAR_EVENTS = {
+              '2026-07': [
+                { id: 'ev-jul-1', day: 10, title: '하반기 핵심 전략 세미나', tag: '주요 행사', color: 'amber', time: '13:00 ~ 18:00', loc: '본관 3층 대회의실', desc: '하반기 핵심 사업 추진 전략 및 신규 프로젝트 로드맵을 공유합니다.' },
+                { id: 'ev-jul-2', day: 22, endDay: 23, title: '정보시스템 정기 보안 점검', tag: '시스템 점검', color: 'green', time: '22:00 ~ 익일 06:00 (2일간)', loc: '전산 시스템 센터', desc: '안정적인 서비스 운영을 위한 인프라 정기 점검 및 무중단 보안 패치 작업입니다.' }
+              ],
+              '2026-08': [
+                { id: 'ev-aug-1', day: 6, title: '신규 솔루션 파트너스 상담회', tag: '정기 일정', color: 'blue', time: '14:00 ~ 16:30', loc: '비즈니스 라운지', desc: '파트너사 협력 모델 구축 및 1:1 맞춤형 사업 상담회가 열립니다.' },
+                { id: 'ev-aug-2', day: 19, title: '사내 직무 역량 강화 교육', tag: '정기 일정', color: 'blue', time: '10:00 ~ 12:00', loc: '세미나실 1호', desc: '업무 효율성 증대를 위한 실무 디지털 툴 활용 교육 세션입니다.' },
+                { id: 'ev-aug-3', day: 27, title: '3분기 사업 공모 마감', tag: '주요 행사', color: 'amber', time: '18:00 마감', loc: '온라인 접수 창구', desc: '3분기 프로젝트 기획안 제출이 오늘 18시 부로 최종 마감됩니다.' }
+              ],
+              '2026-09': [
+                { id: 'ev-sep-1', day: 4, title: '2026 하반기 정기 세미나', tag: '주요 행사', color: 'amber', time: '14:00 ~ 17:00', loc: '본관 3층 대회의실 (온라인 동시 송출)', desc: '하반기 핵심 사업 추진 전략 및 신규 프로젝트 로드맵을 공유합니다. 사전 등록자 대상 자료집이 제공됩니다.' },
+                { id: 'ev-sep-2', day: 8, endDay: 10, title: '2026 글로벌 파트너스 비즈니스 위크', tag: '정기 일정', color: 'blue', time: '09:00 ~ 18:00 (3일간)', loc: '글로벌 컨벤션 센터 2F', desc: '국내외 협력사 및 파트너사가 한자리에 모여 상생 비즈니스 모델 구축 및 1:1 매칭 상담회를 3일간 집중 진행합니다.' },
+                { id: 'ev-sep-3', day: 15, title: '신규 프로젝트 설명회', tag: '정기 일정', color: 'blue', time: '15:00 ~ 18:00', loc: '비즈니스 라운지', desc: '협력사 및 파트너사와의 상생 협력 모델 구축과 1:1 맞춤형 사업 상담회가 열립니다.' },
+                { id: 'ev-sep-4', day: 16, title: '사내 정기 기획 회의', tag: '정기 일정', color: 'blue', time: '10:30 ~ 12:00', loc: '소회의실 1호', desc: '월간 주차별 업무 진척 현황 및 부서별 현안 공유 회의입니다.' },
+                { id: 'ev-sep-5', day: 22, endDay: 23, title: '서버 정기 보안 점검 및 DB 최적화', tag: '시스템 점검', color: 'green', time: '23:00 ~ 익일 06:00 (2일간)', loc: '전산 시스템 센터', desc: '안정적인 서비스 운영을 위한 서버 정기 점검 및 대용량 데이터베이스 무중단 보안 패치 작업이 진행됩니다.' },
+                { id: 'ev-sep-6', day: 24, title: '보안 패치 최종 검증', tag: '시스템 점검', color: 'green', time: '23:00 ~ 익일 04:00', loc: '전산 시스템 센터', desc: '네트워크 무결성 검증 및 전 서비스 정상 가동 상태 최종 확인 작업이 진행됩니다.' },
+                { id: 'ev-cross-sep-oct', day: 28, endMonth: 10, endDay: 2, title: '2026 글로벌 파트너십 위크', tag: '주요 행사', color: 'amber', time: '09:00 ~ 18:00 (5일간)', loc: '글로벌 비즈니스 센터 & 온라인', desc: '9월 28일부터 10월 2일까지 5일간 온·오프라인으로 동시 진행되는 하반기 최대 글로벌 비즈니스 파트너십 위크입니다.' }
+              ],
+              '2026-10': [
+                { id: 'ev-cross-sep-oct', startMonth: 9, startDay: 28, day: 1, endDay: 2, isCrossContinuation: true, title: '2026 글로벌 파트너십 위크', tag: '주요 행사', color: 'amber', time: '09:00 ~ 18:00 (5일간)', loc: '글로벌 비즈니스 센터 & 온라인', desc: '9월 28일부터 10월 2일까지 5일간 온·오프라인으로 동시 진행되는 하반기 최대 글로벌 비즈니스 파트너십 위크입니다. (9월에서 이어짐)' },
+                { id: 'ev-oct-1', day: 14, title: '추계 정기 컨퍼런스', tag: '주요 행사', color: 'amber', time: '10:00 ~ 17:00', loc: '컨벤션 홀 A', desc: '업계 최신 기술 동향 및 비즈니스 혁신 사례 발표 세션이 진행됩니다.' },
+                { id: 'ev-oct-2', day: 21, title: '기업 파트너십 네트워킹 데이', tag: '정기 일정', color: 'blue', time: '15:00 ~ 18:00', loc: '비즈니스 라운지', desc: '참여 기업 간의 비즈니스 교류 및 공동 사업 협력 방안 모색을 위한 네트워킹 자리입니다.' },
+                { id: 'ev-oct-3', day: 28, endDay: 29, title: '클라우드 인프라 정기 점검', tag: '시스템 점검', color: 'green', time: '23:00 ~ 익일 05:00 (2일간)', loc: '데이터 센터', desc: '대용량 데이터 분산 백업 및 시스템 무중단 정기 점검 작업입니다.' }
+              ],
+              '2026-11': [
+                { id: 'ev-nov-1', day: 5, title: '디지털 혁신 전략 포럼', tag: '주요 행사', color: 'amber', time: '13:00 ~ 17:30', loc: '국제회의실', desc: '차세대 디지털 전환 전략 및 글로벌 우수 사례 공유 포럼입니다.' },
+                { id: 'ev-nov-2', day: 18, title: '신규 입사자 OJT 멘토링', tag: '정기 일정', color: 'blue', time: '14:00 ~ 16:00', loc: '인재개발원', desc: '조직 문화 적응 및 업무 역량 강화를 위한 1:1 멘토링 프로그램입니다.' },
+                { id: 'ev-nov-3', day: 26, title: '동계 시설 안전 종합 점검', tag: '시스템 점검', color: 'green', time: '10:00 ~ 17:00', loc: '사옥 전체', desc: '동절기 한파 및 화재 대비 시설물 종합 안전점검입니다.' }
+              ],
+              '2026-12': [
+                { id: 'ev-dec-1', day: 10, title: '2026 연간 비즈니스 성과 발표회', tag: '주요 행사', color: 'amber', time: '14:00 ~ 17:00', loc: '본관 대회의실', desc: '올 한 해 주요 성과를 되돌아보고 차기년도 비전 및 목표를 공유하는 자리입니다.' },
+                { id: 'ev-dec-2', day: 22, title: '연말 데이터베이스 종합 정기 마감', tag: '시스템 점검', color: 'green', time: '22:00 ~ 익일 06:00', loc: '중앙 전산실', desc: '회계 및 전산 시스템 연간 마감 결산 데이터 안전 백업 작업입니다.' },
+                { id: 'ev-dec-3', day: 31, title: '종무식 및 단축 운영', tag: '정기 일정', color: 'blue', time: '09:00 ~ 12:00', loc: '사옥 전체', desc: '2026년 업무를 마무리하는 종무식 행사 진행 및 단축 운영 안내입니다.' }
+              ]
+            };
+
+            function getMonthEvents(year, month) {
+              const monthKey = `${year}-${String(month).padStart(2, '0')}`;
+              let baseList = SUB_CALENDAR_EVENTS[monthKey] ? [...SUB_CALENDAR_EVENTS[monthKey]] : [];
+
+              // Merge with live events registered in Admin Console
+              try {
+                const adminCal = JSON.parse(localStorage.getItem('WEB_BUILDER_CALENDAR_EVENTS_V1') || '{}');
+                const adminEvents = adminCal[monthKey] || [];
+                adminEvents.forEach(item => {
+                  if (!baseList.some(e => e.id === item.id || (e.title === item.title && e.day === item.day))) {
+                    baseList.push(item);
+                  }
+                });
+              } catch(e) {}
+
+              if (baseList.length > 0) {
+                baseList.sort((a, b) => a.day - b.day);
+                return baseList;
+              }
+
+              // 정의되지 않은 과거나 미래 월 fallback 자동 생성
+              return [
+                { id: `ev-fb-${monthKey}-1`, day: 8, title: `${month}월 사내 정기 기획 회의`, tag: '정기 일정', color: 'blue', time: '10:30 ~ 12:00', loc: '본관 회의실', desc: '월간 주차별 업무 진척 현황 및 주요 추진 과제 점검 회의입니다.' },
+                { id: `ev-fb-${monthKey}-2`, day: 15, title: `${month}월 주요 사업 추진 세미나`, tag: '주요 행사', color: 'amber', time: '14:00 ~ 17:00', loc: '컨퍼런스홀', desc: '사업부문별 주요 실적 점검 및 협력사 파트너십 강화 세미나입니다.' },
+                { id: `ev-fb-${monthKey}-3`, day: 25, title: '정기 인프라 및 전산 보안 점검', tag: '시스템 점검', color: 'green', time: '22:00 ~ 익일 04:00', loc: '전산 시스템 센터', desc: '안정적인 서비스 운영을 위한 서버 정기 점검 및 보안 패치 작업입니다.' }
+              ];
+            }
+
+            function buildCalendarGrid(year, month, events) {
+              const firstDayOfWeek = new Date(year, month - 1, 1).getDay();
+              const totalDays = new Date(year, month, 0).getDate();
+              const prevTotalDays = new Date(year, month - 1, 0).getDate();
+
+              const dayEventsMap = {};
+              for (let d = 1; d <= totalDays; d++) {
+                dayEventsMap[d] = [];
+              }
+              const nextMonthEventsMap = {};
+
+              events.forEach(ev => {
+                if (ev.endMonth && ev.endMonth > month) {
+                  // 다음 달로 이어지는 일정 (예: 9월 28일 ~ 10월 2일)
+                  const startDay = ev.day;
+                  for (let d = startDay; d <= totalDays; d++) {
+                    let rType = (d === startDay) ? 'start' : 'mid';
+                    dayEventsMap[d].push({ ev, type: rType, crossNext: true });
+                  }
+                  // 다음 달 잔여 일수 칸(1, 2, ... ev.endDay)
+                  for (let nd = 1; nd <= ev.endDay; nd++) {
+                    if (!nextMonthEventsMap[nd]) nextMonthEventsMap[nd] = [];
+                    let rType = (nd === ev.endDay) ? 'end' : 'mid';
+                    nextMonthEventsMap[nd].push({ ev, type: rType, isNextMonthDim: true });
+                  }
+                } else if (ev.isCrossContinuation) {
+                  // 이전 달에서 넘어온 일정 (10월 화면의 10월 1일~2일)
+                  for (let d = 1; d <= ev.endDay; d++) {
+                    let rType = (d === 1) ? 'cont-start' : (d === ev.endDay ? 'end' : 'mid');
+                    dayEventsMap[d].push({ ev, type: rType, continued: true });
+                  }
+                } else {
+                  // 일반 연속 또는 단일 일정
+                  const startDay = ev.day;
+                  const endDay = ev.endDay || ev.day;
+                  if (startDay === endDay) {
+                    if (dayEventsMap[startDay]) {
+                      dayEventsMap[startDay].push({ ev, type: 'single' });
+                    }
+                  } else {
+                    for (let d = startDay; d <= endDay; d++) {
+                      if (dayEventsMap[d]) {
+                        let rType = 'mid';
+                        if (d === startDay) rType = 'start';
+                        else if (d === endDay) rType = 'end';
+                        dayEventsMap[d].push({ ev, type: rType });
+                      }
+                    }
+                  }
+                }
+              });
+
+              let rowsHtml = '';
+              let currentCellIndex = 0;
+              let currentRowHtml = '<tr>';
+
+              // 이전 달 잔여 일수
+              for (let i = 0; i < firstDayOfWeek; i++) {
+                const prevDayNum = prevTotalDays - firstDayOfWeek + 1 + i;
+                const isSun = i === 0;
+                currentRowHtml += `<td class="dim"><div class="sub-cal-day-top"><span class="sub-cal-day-num ${isSun ? 'sun' : ''}">${prevDayNum}</span></div></td>`;
+                currentCellIndex++;
+              }
+
+              // 현재 월 일수
+              for (let day = 1; day <= totalDays; day++) {
+                const dayOfWeek = (firstDayOfWeek + day - 1) % 7;
+                const isSun = dayOfWeek === 0;
+                const isSat = dayOfWeek === 6;
+                const isToday = (year === 2026 && month === 9 && day === 16);
+
+                const dayItems = dayEventsMap[day] || [];
+                let pillsHtml = '';
+
+                dayItems.forEach(item => {
+                  const ev = item.ev;
+                  const rType = item.type;
+                  let ribbonClass = '';
+                  let displayText = ev.title;
+
+                  if (rType === 'start') {
+                    ribbonClass = 'cal-pill-start';
+                  } else if (rType === 'cont-start') {
+                    ribbonClass = 'cal-pill-cont-start';
+                    displayText = ev.title;
+                  } else if (rType === 'mid') {
+                    ribbonClass = 'cal-pill-mid';
+                    displayText = '&nbsp;';
+                  } else if (rType === 'end') {
+                    ribbonClass = 'cal-pill-end';
+                    displayText = '&nbsp;';
+                  }
+
+                  let periodText = '';
+                  if (ev.endMonth && ev.endMonth !== month) {
+                    periodText = `${year}.${String(month).padStart(2,'0')}.${String(ev.day).padStart(2,'0')} ~ ${String(ev.endMonth).padStart(2,'0')}.${String(ev.endDay).padStart(2,'0')} (5일간)`;
+                  } else if (ev.startMonth && ev.startMonth !== month) {
+                    periodText = `${year}.${String(ev.startMonth).padStart(2,'0')}.${String(ev.startDay).padStart(2,'0')} ~ ${String(month).padStart(2,'0')}.${String(ev.endDay).padStart(2,'0')} (5일간)`;
+                  } else if (ev.endDay && ev.endDay !== ev.day) {
+                    periodText = `${year}.${String(month).padStart(2,'0')}.${String(ev.day).padStart(2,'0')} ~ ${String(ev.endDay).padStart(2,'0')} (${ev.endDay - ev.day + 1}일간)`;
+                  } else {
+                    periodText = `${year}.${String(month).padStart(2,'0')}.${String(ev.day).padStart(2,'0')}`;
+                  }
+
+                  pillsHtml += `
+                    <span class="sub-cal-event-pill ${ev.color} ${ribbonClass}"
+                          data-event-id="${ev.id}"
+                          data-title="${ev.title}"
+                          data-tag="${ev.tag}"
+                          data-color="${ev.color}"
+                          data-period="${periodText}"
+                          data-time="${ev.time}"
+                          data-loc="${ev.loc}"
+                          data-desc="${ev.desc}">
+                      ${displayText}
+                    </span>
+                  `;
+                });
+
+                const numClass = isToday ? 'today-badge' : (isSun ? 'sun' : (isSat ? 'sat' : ''));
+                const cellClass = isToday ? 'is-today' : '';
+
+                currentRowHtml += `
+                  <td class="${cellClass}">
+                    <div class="sub-cal-day-top">
+                      <span class="sub-cal-day-num ${numClass}">${day}</span>
+                    </div>
+                    ${pillsHtml}
+                  </td>
+                `;
+                currentCellIndex++;
+
+                if (currentCellIndex % 7 === 0 && day < totalDays) {
+                  currentRowHtml += '</tr>';
+                  rowsHtml += currentRowHtml;
+                  currentRowHtml = '<tr>';
+                }
+              }
+
+              // 다음 달 잔여 일수
+              let nextMonthDay = 1;
+              while (currentCellIndex % 7 !== 0) {
+                const dayOfWeek = currentCellIndex % 7;
+                const isSat = dayOfWeek === 6;
+                const nextItems = nextMonthEventsMap[nextMonthDay] || [];
+                let nextPillsHtml = '';
+
+                nextItems.forEach(item => {
+                  const ev = item.ev;
+                  const rType = item.type;
+                  let ribbonClass = (rType === 'end') ? 'cal-pill-end' : 'cal-pill-mid';
+                  let displayText = '&nbsp;';
+                  const endMonthPad = String(ev.endMonth).padStart(2, '0');
+                  const endDayPad = String(ev.endDay).padStart(2, '0');
+                  const periodText = `${year}.${String(month).padStart(2,'0')}.${String(ev.day).padStart(2,'0')} ~ ${endMonthPad}.${endDayPad} (5일간)`;
+
+                  nextPillsHtml += `
+                    <span class="sub-cal-event-pill ${ev.color} ${ribbonClass} dim-pill"
+                          data-event-id="${ev.id}"
+                          data-title="${ev.title}"
+                          data-tag="${ev.tag}"
+                          data-color="${ev.color}"
+                          data-period="${periodText}"
+                          data-time="${ev.time}"
+                          data-loc="${ev.loc}"
+                          data-desc="${ev.desc}">
+                      ${displayText}
+                    </span>
+                  `;
+                });
+
+                currentRowHtml += `
+                  <td class="dim">
+                    <div class="sub-cal-day-top">
+                      <span class="sub-cal-day-num ${isSat ? 'sat' : ''}">${nextMonthDay}</span>
+                    </div>
+                    ${nextPillsHtml}
+                  </td>
+                `;
+                nextMonthDay++;
+                currentCellIndex++;
+              }
+              currentRowHtml += '</tr>';
+              rowsHtml += currentRowHtml;
+
+              return rowsHtml;
+            }
+
+            function buildMobileAccordionList(year, month, events) {
+              if (!events || events.length === 0) {
+                return `<div class="sub-cal-mobile-empty">해당 월에 등록된 일정이 없습니다.</div>`;
+              }
+
+              const daysOfWeekKo = ['일', '월', '화', '수', '목', '금', '토'];
+
+              // 연속 일정 중복 제거하여 단 1개의 통합 카드로 생성
+              const uniqueEvents = [];
+              const seenIds = new Set();
+              events.forEach(ev => {
+                if (!seenIds.has(ev.id)) {
+                  seenIds.add(ev.id);
+                  uniqueEvents.push(ev);
+                }
+              });
+
+              uniqueEvents.sort((a, b) => a.day - b.day);
+
+              return uniqueEvents.map(ev => {
+                const startDate = new Date(year, month - 1, ev.day);
+                const startDayKo = daysOfWeekKo[startDate.getDay()];
+                let dateHtml = `${String(month).padStart(2, '0')}.${String(ev.day).padStart(2, '0')} <span class="sub-cal-accordion-day">${startDayKo}</span>`;
+
+                if (ev.endMonth && ev.endMonth !== month) {
+                  const endDate = new Date(year, ev.endMonth - 1, ev.endDay);
+                  const endDayKo = daysOfWeekKo[endDate.getDay()];
+                  dateHtml = `${String(month).padStart(2, '0')}.${String(ev.day).padStart(2, '0')} <span class="sub-cal-accordion-day">${startDayKo}</span> - ${String(ev.endMonth).padStart(2, '0')}.${String(ev.endDay).padStart(2, '0')} <span class="sub-cal-accordion-day">${endDayKo}</span>`;
+                } else if (ev.startMonth && ev.startMonth !== month) {
+                  const realStartDate = new Date(year, ev.startMonth - 1, ev.startDay);
+                  const realStartDayKo = daysOfWeekKo[realStartDate.getDay()];
+                  const endDate = new Date(year, month - 1, ev.endDay);
+                  const endDayKo = daysOfWeekKo[endDate.getDay()];
+                  dateHtml = `${String(ev.startMonth).padStart(2, '0')}.${String(ev.startDay).padStart(2, '0')} <span class="sub-cal-accordion-day">${realStartDayKo}</span> - ${String(month).padStart(2, '0')}.${String(ev.endDay).padStart(2, '0')} <span class="sub-cal-accordion-day">${endDayKo}</span>`;
+                } else if (ev.endDay && ev.endDay !== ev.day) {
+                  const endDate = new Date(year, month - 1, ev.endDay);
+                  const endDayKo = daysOfWeekKo[endDate.getDay()];
+                  dateHtml = `${String(month).padStart(2, '0')}.${String(ev.day).padStart(2, '0')} <span class="sub-cal-accordion-day">${startDayKo}</span> - ${String(month).padStart(2, '0')}.${String(ev.endDay).padStart(2, '0')} <span class="sub-cal-accordion-day">${endDayKo}</span>`;
+                }
+
+                return `
+                  <div class="sub-cal-accordion-item">
+                    <button type="button" class="sub-cal-accordion-trigger">
+                      <div class="sub-cal-accordion-info">
+                        <span class="sub-cal-accordion-date">${dateHtml}</span>
+                        <span class="sub-cal-accordion-title">${ev.title}</span>
                       </div>
-                      <div style="display:flex; gap:12px; font-size:13px;">
-                        <span style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:10px; border-radius:2px; background:#FEF3C7; border:1px solid #92400E;"></span> 주요진료</span>
-                        <span style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:10px; border-radius:2px; background:#DBEAFE; border:1px solid #1E40AF;"></span> 야간진료</span>
+                      <span class="sub-cal-accordion-icon material-symbols-outlined">expand_more</span>
+                    </button>
+                    <div class="sub-cal-accordion-body">
+                      <div class="sub-cal-accordion-inner">
+                        <div class="sub-cal-accordion-meta">
+                          <div class="sub-cal-accordion-row">
+                            <span class="material-symbols-outlined">schedule</span>
+                            <span>${ev.time}</span>
+                          </div>
+                          <div class="sub-cal-accordion-row">
+                            <span class="material-symbols-outlined">location_on</span>
+                            <span>${ev.loc}</span>
+                          </div>
+                          ${ev.desc ? `<p class="sub-cal-accordion-desc">${ev.desc}</p>` : ''}
+                          <div class="sub-cal-accordion-actions">
+                            <button type="button" class="sub-cal-accordion-detail-btn" onclick="alert('일정 상세 안내 페이지로 이동합니다.')">
+                              <span>자세히보기</span>
+                              <span class="material-symbols-outlined">arrow_forward</span>
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <table class="sub-cal-table">
-                      <thead>
-                        <tr>
-                          <th class="sun">SUN</th>
-                          <th>MON</th>
-                          <th>TUE</th>
-                          <th>WED</th>
-                          <th>THU</th>
-                          <th>FRI</th>
-                          <th class="sat">SAT</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td class="dim"><div class="sub-cal-day-num">26</div></td>
-                          <td class="dim"><div class="sub-cal-day-num">27</div></td>
-                          <td class="dim"><div class="sub-cal-day-num">28</div></td>
-                          <td class="dim"><div class="sub-cal-day-num">29</div></td>
-                          <td class="dim"><div class="sub-cal-day-num">30</div></td>
-                          <td class="dim"><div class="sub-cal-day-num">31</div></td>
-                          <td><div class="sub-cal-day-num" style="color:#3B82F6;">1</div></td>
-                        </tr>
-                        <tr>
-                          <td><div class="sub-cal-day-num" style="color:#EF4444;">2</div></td>
-                          <td><div class="sub-cal-day-num">3</div></td>
-                          <td>
-                            <div class="sub-cal-day-num">4</div>
-                            <span class="sub-cal-event-pill blue">화요 야간진료</span>
-                          </td>
-                          <td><div class="sub-cal-day-num" style="color:#3B82F6;">5</div></td>
-                          <td><div class="sub-cal-day-num">6</div></td>
-                          <td><div class="sub-cal-day-num">7</div></td>
-                          <td><div class="sub-cal-day-num" style="color:#3B82F6;">8</div></td>
-                        </tr>
-                        <tr>
-                          <td><div class="sub-cal-day-num" style="color:#EF4444;">9</div></td>
-                          <td><div class="sub-cal-day-num">10</div></td>
-                          <td>
-                            <div class="sub-cal-day-num">11</div>
-                            <span class="sub-cal-event-pill blue">화요 야간진료</span>
-                          </td>
-                          <td><div class="sub-cal-day-num" style="color:#3B82F6;">12</div></td>
-                          <td><div class="sub-cal-day-num">13</div></td>
-                          <td><div class="sub-cal-day-num">14</div></td>
-                          <td>
-                            <div class="sub-cal-day-num" style="color:#3B82F6;">15</div>
-                            <span class="sub-cal-event-pill">광복절 휴진</span>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><div class="sub-cal-day-num" style="color:#EF4444;">16</div></td>
-                          <td><div class="sub-cal-day-num">17</div></td>
-                          <td>
-                            <div class="sub-cal-day-num">18</div>
-                            <span class="sub-cal-event-pill blue">화요 야간진료</span>
-                          </td>
-                          <td>
-                            <div class="sub-cal-day-num">19</div>
-                            <span class="sub-cal-event-pill">정기 멸균소독</span>
-                          </td>
-                          <td><div class="sub-cal-day-num" style="color:#3B82F6;">20</div></td>
-                          <td><div class="sub-cal-day-num">21</div></td>
-                          <td><div class="sub-cal-day-num" style="color:#3B82F6;">22</div></td>
-                        </tr>
-                        <tr>
-                          <td><div class="sub-cal-day-num" style="color:#EF4444;">23</div></td>
-                          <td><div class="sub-cal-day-num">24</div></td>
-                          <td>
-                            <div class="sub-cal-day-num">25</div>
-                            <span class="sub-cal-event-pill blue">화요 야간진료</span>
-                          </td>
-                          <td>
-                            <div class="sub-cal-day-num" style="font-weight:900; color:#FBA518;">26 (오늘)</div>
-                            <span class="sub-cal-event-pill">정상 진료</span>
-                          </td>
-                          <td><div class="sub-cal-day-num" style="color:#3B82F6;">27</div></td>
-                          <td><div class="sub-cal-day-num">28</div></td>
-                          <td><div class="sub-cal-day-num" style="color:#3B82F6;">29</div></td>
-                        </tr>
-                      </tbody>
-                    </table>
                   </div>
+                `;
+              }).join('');
+            }
+
+            const companyDisplay = siteTitle || '서울마음치과';
+            const pageSubTitle = subName || '월간 일정';
+
+            container.innerHTML = `
+              <section class="sub-page-section">
+                <div class="layout-max layout-padding">
+                  <div class="titleBox align-center color-black">
+                    <mark>${siteTitle || 'SEOUL MAEUM DENTAL CLINIC'}</mark>
+                    <h2>
+                      ${companyDisplay} <b>${pageSubTitle}</b>
+                    </h2>
+                    <p>주요 업무 일정과 월간 행사 안내 사항을 확인하실 수 있습니다.</p>
+                  </div>
+                  <div id="sub-cal-root" class="sub-cal-wrap"></div>
                 </div>
               </section>
             `;
+
+            // 호버 툴팁 싱글톤 인스턴스
+            let $tooltip = $('#cal-event-tooltip');
+            if (!$tooltip.length) {
+              $tooltip = $('<div id="cal-event-tooltip"></div>').appendTo('body');
+            } else if ($tooltip.parent()[0] !== document.body) {
+              $tooltip.appendTo('body');
+            }
+
+            let hideTimeout = null;
+            let currentActiveEventId = null;
+
+            function positionTooltip(targetEl) {
+              const rect = targetEl.getBoundingClientRect();
+              const ttWidth = $tooltip.outerWidth();
+              const ttHeight = $tooltip.outerHeight();
+
+              let left = rect.left + (rect.width / 2) - (ttWidth / 2);
+              let top = rect.top - ttHeight - 10;
+
+              if (left < 16) left = 16;
+              if (left + ttWidth > $(window).width() - 16) {
+                left = $(window).width() - ttWidth - 16;
+              }
+
+              if (top < 16) {
+                top = rect.bottom + 10;
+              }
+
+              $tooltip.css({
+                left: Math.round(left) + 'px',
+                top: Math.round(top) + 'px'
+              });
+            }
+
+            function showTooltip(targetEl) {
+              if (hideTimeout) {
+                clearTimeout(hideTimeout);
+                hideTimeout = null;
+              }
+
+              const $el = $(targetEl);
+              const eventId = $el.attr('data-event-id');
+
+              // 연속 일정 리본 간 이동 시 툴팁 깜빡임/재오픈 방지
+              if (eventId && eventId === currentActiveEventId && $tooltip.hasClass('is-visible')) {
+                return;
+              }
+              currentActiveEventId = eventId;
+
+              const title = $el.attr('data-title') || $el.text().trim();
+              const tag = $el.attr('data-tag') || '일정';
+              const color = $el.attr('data-color') || 'blue';
+              const period = $el.attr('data-period') || '';
+              const time = $el.attr('data-time') || '시간 미정';
+              const loc = $el.attr('data-loc') || '장소 미정';
+              const desc = $el.attr('data-desc') || '';
+
+              $tooltip.html(`
+                <div class="cal-tooltip-header">
+                  <div class="cal-tooltip-category">
+                    <span class="cal-tooltip-dot tag-${color}"></span>
+                    <span class="cal-tooltip-category-name">${tag}</span>
+                  </div>
+                  <h4 class="cal-tooltip-title">${title}</h4>
+                </div>
+                <div class="cal-tooltip-body">
+                  ${period ? `
+                  <div class="cal-tooltip-row">
+                    <span class="material-symbols-outlined">calendar_today</span>
+                    <span style="font-weight:600;">${period}</span>
+                  </div>` : ''}
+                  <div class="cal-tooltip-row">
+                    <span class="material-symbols-outlined">schedule</span>
+                    <span>${time}</span>
+                  </div>
+                  <div class="cal-tooltip-row">
+                    <span class="material-symbols-outlined">location_on</span>
+                    <span>${loc}</span>
+                  </div>
+                  ${desc ? `<p class="cal-tooltip-desc">${desc}</p>` : ''}
+                </div>
+                <div class="cal-tooltip-actions">
+                  <button type="button" class="cal-tooltip-btn primary" onclick="alert('일정 상세 안내 페이지로 이동합니다.')">
+                    <span>자세히보기</span>
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                  </button>
+                </div>
+              `).addClass('is-visible');
+
+              positionTooltip(targetEl);
+            }
+
+            function scheduleHide() {
+              if (hideTimeout) clearTimeout(hideTimeout);
+              hideTimeout = setTimeout(function() {
+                $tooltip.removeClass('is-visible');
+                currentActiveEventId = null;
+              }, 220);
+            }
+
+            function bindTooltipEvents() {
+              $('#sub-cal-root').find('.sub-cal-event-pill')
+                .off('mouseenter mouseleave')
+                .on('mouseenter', function() {
+                  showTooltip(this);
+                }).on('mouseleave', function() {
+                  scheduleHide();
+                });
+            }
+
+            $tooltip.off('mouseenter mouseleave')
+              .on('mouseenter', function() {
+                if (hideTimeout) {
+                  clearTimeout(hideTimeout);
+                  hideTimeout = null;
+                }
+              }).on('mouseleave', function() {
+                scheduleHide();
+              });
+
+            function renderCalendarView() {
+              const year = window.subCalYear;
+              const month = window.subCalMonth;
+              const monthFormatted = `${year}.${String(month).padStart(2, '0')}`;
+              const events = getMonthEvents(year, month);
+              const gridRowsHtml = buildCalendarGrid(year, month, events);
+              const mobileListHtml = buildMobileAccordionList(year, month, events);
+
+              const $root = $('#sub-cal-root');
+              $root.html(`
+                <div class="sub-cal-header">
+                  <div class="sub-cal-month-center">
+                    <button type="button" class="sub-cal-btn-nav material-symbols-outlined" onclick="window.navigateSubCalendar(-1)">chevron_left</button>
+                    <span class="sub-cal-current-month">${monthFormatted}</span>
+                    <button type="button" class="sub-cal-btn-nav material-symbols-outlined" onclick="window.navigateSubCalendar(1)">chevron_right</button>
+                  </div>
+                  <div class="sub-cal-legend">
+                    <span class="sub-cal-legend-item"><span class="sub-cal-legend-dot amber"></span> 주요 행사</span>
+                    <span class="sub-cal-legend-item"><span class="sub-cal-legend-dot blue"></span> 정기 일정</span>
+                    <span class="sub-cal-legend-item"><span class="sub-cal-legend-dot green"></span> 시스템 점검</span>
+                  </div>
+                </div>
+                <div class="sub-cal-table-responsive">
+                  <table class="sub-cal-table">
+                    <thead>
+                      <tr>
+                        <th class="sun">SUN</th>
+                        <th>MON</th>
+                        <th>TUE</th>
+                        <th>WED</th>
+                        <th>THU</th>
+                        <th>FRI</th>
+                        <th class="sat">SAT</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${gridRowsHtml}
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- 모바일 전용 일정 목록 (아코디언 상세 보기) -->
+                <div class="sub-cal-mobile-wrap">
+                  <div class="sub-cal-mobile-header">
+                    <h3 class="sub-cal-mobile-title">${monthFormatted}</h3>
+                  </div>
+                  <div class="sub-cal-accordion-list">
+                    ${mobileListHtml}
+                  </div>
+                </div>
+              `);
+
+              // 모바일 아코디언 인터랙션 바인딩 (순수 CSS Grid 0fr -> 1fr 하드웨어 가속 트랜지션)
+              $root.find('.sub-cal-accordion-trigger').off('click').on('click', function(e) {
+                e.preventDefault();
+                const $item = $(this).closest('.sub-cal-accordion-item');
+                $item.toggleClass('is-open');
+              });
+
+              // 데스크톱 툴팁 이벤트 바인딩
+              bindTooltipEvents();
+            }
+
+            window.navigateSubCalendar = function(direction) {
+              window.subCalMonth += direction;
+              if (window.subCalMonth < 1) {
+                window.subCalMonth = 12;
+                window.subCalYear -= 1;
+              } else if (window.subCalMonth > 12) {
+                window.subCalMonth = 1;
+                window.subCalYear += 1;
+              }
+              renderCalendarView();
+            };
+
+            // 최초 달력 뷰 렌더링
+            renderCalendarView();
             break;
 
           case 'faq':
-            container.innerHTML = `
-              <section class="sub-page-section">
-                <div class="titleBox align-center color-black">
-                  <mark>SEOUL MAEUM DENTAL CLINIC</mark>
-                  <h2>
-                    서울마음치과 <b>${subName || '자주 묻는 질문'}</b>
-                  </h2>
-                  <p>자주 묻는 질문을 확인하시고 궁금한 사항을 빠르게 해결하세요.</p>
-                </div>
-                <div class="layout-max layout-padding">
-                  <div class="sub-faq-list">
-                    ${[
-                      { q: `서울마음치과의 초진 예약은 어떻게 진행되나요?`, a: '온라인 문의 접수 또는 대표전화(02-1234-5678)를 통해 원하시는 날짜와 시간을 사전 예약하시면 대기 시간을 최소화하여 편안하게 진료받으실 수 있습니다.' },
-                      { q: '야간 진료나 주말 진료도 가능한가요?', a: '네, 매주 화요일은 오후 7시 30분까지 야간 진료를 운영하며, 토요일은 점심시간 없이 오후 2시까지 진료하고 있습니다.' },
-                      { q: '과잉진료 없이 투명하게 치료 계획을 안내받을 수 있나요?', a: '저희는 1인 1기구 원칙과 디지털 정밀 진료를 바탕으로 과잉진료 없이 꼭 필요한 치료만을 정직하게 설명드리고 진행합니다.' },
-                      { q: '주차 공간이 마련되어 있나요?', a: '건물 전용 주차장을 이용하실 수 있으며, 방문 고객께 무료 주차권을 제공해 드립니다.' },
-                      { q: '치료 후 사후 관리 및 보증 제도가 있나요?', a: '임플란트 및 보철 치료 등 주요 진료에 대해 책임 진료 보증제를 실시하여 사후 정기 검진을 체계적으로 지원합니다.' }
-                    ].map((item, idx) => `
-                      <div class="sub-faq-item ${idx === 0 ? 'open' : ''}">
-                        <div class="sub-faq-question">
-                          <span class="sub-faq-q-text">
-                            <span class="sub-faq-q-badge">Q.</span>
-                            ${item.q}
-                          </span>
-                          <span class="material-symbols-outlined sub-faq-chevron">expand_more</span>
-                        </div>
-                        <div class="sub-faq-answer">
-                          ${item.a}
-                        </div>
-                      </div>
-                    `).join('')}
-                  </div>
-                </div>
-              </section>
-            `;
-            // Bind FAQ accordion click
-            $(container).find('.sub-faq-question').on('click', function() {
-              const $item = $(this).closest('.sub-faq-item');
-              $item.toggleClass('open');
-            });
+            if (window.FaqEditor) {
+              window.FaqEditor.init(container, subName);
+            }
             break;
 
           case 'about':
@@ -507,8 +1230,22 @@
       }
 
       function applySubPageState() {
-        const state = getState();
-        if (!state) return;
+        let state = getState();
+        if (!state) {
+          state = {
+            siteInfo: { siteTitle: '서울마음치과', companyName: '서울마음치과' },
+            menus: [
+              { id: 'm1', name: '회사소개', submenus: [{ id: 's1_1', name: '인사말' }, { id: 's1_2', name: '연혁' }, { id: 's1_3', name: '조직도' }, { id: 's1_4', name: '오시는길' }] },
+              { id: 'm2', name: '사업분야', submenus: [{ id: 's2_1', name: '주요사업' }, { id: 's2_2', name: '솔루션' }, { id: 's2_3', name: '갤러리' }] },
+              { id: 'm3', name: '홍보센터', submenus: [{ id: 's3_1', name: '공지사항' }, { id: 's3_2', name: '월간 일정' }, { id: 's3_3', name: '자료실' }] },
+              { id: 'm4', name: '고객지원', submenus: [{ id: 's4_1', name: '온라인 문의' }, { id: 's4_2', name: '자주 묻는 질문' }] }
+            ],
+            pageOptions: {
+              's3_2': { type: 'calendar' },
+              's3_3': { type: 'download' }
+            }
+          };
+        }
 
         const siteTitle = state.siteInfo?.siteTitle || 'MY WEBSITE';
         const companyName = state.siteInfo?.companyName || siteTitle;
@@ -531,14 +1268,21 @@
 
         // Determine Page Type from pageOptions or intelligent fallback
         let pageType = pageOptions[currentMenuId]?.type || pageOptions[currentSub.id]?.type;
+        const subLower = currentSubName.toLowerCase();
+
+        // If pageType is unset or was previously saved as generic 'board' for download/archive menus, upgrade to 'download'
+        if ((!pageType || pageType === 'board') && (subLower.includes('자료') || subLower.includes('다운로드') || subLower.includes('서식') || subLower.includes('양식') || subLower.includes('download'))) {
+          pageType = 'download';
+        }
+
         if (!pageType) {
-          const subLower = currentSubName.toLowerCase();
           if (subLower.includes('연혁') || subLower.includes('발자취') || subLower.includes('히스토리') || subLower.includes('history')) pageType = 'history';
           else if (subLower.includes('조직도') || subLower.includes('임직원') || subLower.includes('구성원') || subLower.includes('조직') || subLower.includes('org') || subLower.includes('member')) pageType = 'org';
           else if (subLower.includes('오시는길') || subLower.includes('오시는 길') || subLower.includes('지도') || subLower.includes('위치') || subLower.includes('진료시간') || subLower.includes('location') || subLower.includes('map')) pageType = 'map';
           else if (subLower.includes('진료과목') || subLower.includes('사업') || subLower.includes('솔루션') || subLower.includes('서비스') || subLower.includes('주요사업') || subLower.includes('departments') || subLower.includes('business')) pageType = 'departments';
           else if (subLower.includes('갤러리') || subLower.includes('사진') || subLower.includes('둘러보기') || subLower.includes('gallery')) pageType = 'gallery';
-          else if (subLower.includes('공지') || subLower.includes('게시판') || subLower.includes('자료실') || subLower.includes('소식') || subLower.includes('보도') || subLower.includes('board')) pageType = 'board';
+          else if (subLower.includes('자료') || subLower.includes('다운로드') || subLower.includes('서식') || subLower.includes('양식') || subLower.includes('download')) pageType = 'download';
+          else if (subLower.includes('공지') || subLower.includes('게시판') || subLower.includes('소식') || subLower.includes('보도') || subLower.includes('board')) pageType = 'board';
           else if (subLower.includes('일정') || subLower.includes('캘린더') || subLower.includes('행사') || subLower.includes('calendar')) pageType = 'calendar';
           else if (subLower.includes('문의') || subLower.includes('상담') || subLower.includes('신청') || subLower.includes('예약') || subLower.includes('contact')) pageType = 'contact';
           else if (subLower.includes('faq') || subLower.includes('자주') || subLower.includes('질문')) pageType = 'faq';
@@ -938,7 +1682,7 @@
 
       // Realtime cross-tab synchronization
       window.addEventListener('storage', (e) => {
-        if (e.key === STORAGE_KEY || e.key === 'WEB_BUILDER_STUDIO_STATE_V1') {
+        if (e.key === STORAGE_KEY || e.key === 'WEB_BUILDER_STUDIO_STATE_V1' || e.key === 'WEB_BUILDER_CALENDAR_EVENTS_V1' || e.key === 'WEB_BUILDER_CUSTOM_HISTORY_V1' || e.key === 'WEB_BUILDER_CUSTOM_ORG_V1' || e.key === 'WEB_BUILDER_CUSTOM_FAQ_V1') {
           applySubPageState();
         }
       });

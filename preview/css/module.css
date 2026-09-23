@@ -31,6 +31,24 @@
 
 @media screen and (max-width: 767px){
   .layout-padding{padding-inline: 4%;}
+  .titleBox.align-center {
+    padding-block: 42px 24px;
+  }
+  .titleBox mark {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .titleBox h2 {
+    font-size: 28px;
+    margin-bottom: 12px;
+    line-height: 1.35;
+    word-break: keep-all;
+  }
+  .titleBox p {
+    font-size: 15px;
+    line-height: 1.55;
+    word-break: keep-all;
+  }
 }
 @media screen and (min-width: 768px) and (max-width: 1279px){
   .layout-padding{padding-inline: 4%;}

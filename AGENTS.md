@@ -16,6 +16,7 @@
   6. **NO Hover Floating / Lift Effects (호버 시 떠오르는 효과 절대 금지)**: 모든 카드, 버튼, 뱃지, 아이템 등 UI 요소에 마우스 호버(`:hover`) 시 물리적으로 위로 떠오르거나 확대되는 모션(`transform: translateY(-...)`, `transform: scale(...)` 등) 추가 절대 금지. 색상, 테두리, 미세한 그림자 등 정적이고 안정적인 인터랙션만 사용.
   7. **Subpage Standard Grid & 1280px Alignment Frozen**: 모든 서브페이지의 레이아웃은 `.layout-max` (1620px) 및 `.layout-padding` (1280px 이상 `padding-inline: 8%`, 1280px 미만 `4%`) 표준 규칙을 적용하며, 서브 컨테이너에 하드코딩된 좌우 패딩(`padding: ... 0 ... 0;`)으로 `.layout-padding`을 무효화하는 것을 절대 금지.
   8. **In-Place Live Editor & Context Menu Standards Frozen**: 모든 인라인 편집 가능한 텍스트는 간결한 `title="수정하기"` 툴팁을 사용하고, 우클릭 시에는 텍스트 포커스 대신 미니멀한 컨텍스트 메뉴(`[수정하기], [위로 추가], [아래로 추가], [삭제]`)를 제공하며, UI 전체에서 이모지(Emoji) 사용은 100% 금지하고 Material Symbols Outlined 벡터 아이콘만 사용.
+  9. **NO Item/Member Count Badges (수량/건수 뱃지 표기 절대 금지)**: UI 전역(관리자 및 사용자 화면 전체)에서 `총 N건`, `N건`, `총 N명`, `N개` 등 수량이나 건수를 알리는 불필요한 뱃지/텍스트 표기 100% 금지.
 - 새로운 수정 작업을 진행할 때, 위 확정 사항이 손상되지 않도록 100% 보존합니다.
 
 ### 3. Surgical Precision Editing (정밀 국소 수정 원칙)

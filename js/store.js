@@ -69,7 +69,7 @@ const DEFAULT_STATE = {
     's1_3': { type: 'history', options: { layout: 'vertical_timeline', interactive: true } },
     's1_4': { type: 'org', options: { layout: 'department_list', showAvatar: true, showContact: true } },
     's1_5': { type: 'map', options: { mode: 'address', transitInfo: true } },
-    's2_1': { type: 'departments', options: { layout: 'grid', sections: ['vision'] } },
+    's2_1': { type: 'about', options: { layout: 'subtab', sections: ['greeting', 'vision'] } },
     's2_2': { type: 'board', options: { layout: 'card', attach: false, search: true, perPage: 10 } },
     's2_3': { type: 'gallery', options: { cols: 3, lightbox: true, ratio: '16:9' } },
     's3_1': { type: 'board', options: { layout: 'table', attach: true, search: true, perPage: 10 } },
@@ -77,7 +77,7 @@ const DEFAULT_STATE = {
     's3_3': { type: 'gallery', options: { cols: 3, lightbox: true, ratio: '16:9' } },
     's4_1': { type: 'contact', options: { purpose: 'consult', fields: ['name', 'phone', 'email', 'content', 'terms'] } },
     's4_2': { type: 'faq', options: { categories: ['전체', '이용안내', '비용/환불', '기타'], mode: 'single', search: true } },
-    's4_3': { type: 'board', options: { layout: 'table', attach: true, search: true, perPage: 10 } }
+    's4_3': { type: 'download', options: { layout: 'card_grid', search: true, perPage: 9 } }
   },
   features: {
     kakaoChat: { enabled: false, channelUrl: '' },
@@ -171,8 +171,8 @@ class Store {
             defaultType = 'org';
             defaultOptions = { layout: 'department_list', showAvatar: true, showContact: true };
           } else if (name.includes('진료과목') || name.includes('사업') || name.includes('솔루션') || name.includes('서비스')) {
-            defaultType = 'departments';
-            defaultOptions = { layout: 'grid', sections: ['vision'] };
+            defaultType = 'about';
+            defaultOptions = { layout: 'subtab', sections: ['vision'] };
           } else if (name.includes('게시판') || name.includes('공지') || name.includes('소식') || name.includes('보도')) {
             defaultType = 'board';
             defaultOptions = { layout: 'table', attach: true, search: true, perPage: 10 };
@@ -188,9 +188,9 @@ class Store {
           } else if (name.includes('오시는길') || name.includes('지도') || name.includes('위치')) {
             defaultType = 'map';
             defaultOptions = { mode: 'address', transitInfo: true };
-          } else if (name.includes('자료') || name.includes('다운로드') || name.includes('서식')) {
-            defaultType = 'board';
-            defaultOptions = { layout: 'table', attach: true, search: true, perPage: 10 };
+          } else if (name.includes('자료') || name.includes('다운로드') || name.includes('서식') || name.includes('양식')) {
+            defaultType = 'download';
+            defaultOptions = { layout: 'card_grid', search: true, perPage: 9 };
           }
 
           updatedOptions[sub.id] = { type: defaultType, options: defaultOptions };

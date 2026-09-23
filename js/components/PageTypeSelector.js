@@ -13,6 +13,7 @@ export class PageTypeSelector {
       { id: 'history', name: '연혁' },
       { id: 'org', name: '구성원' },
       { id: 'board', name: '게시판' },
+      { id: 'download', name: '자료실' },
       { id: 'gallery', name: '갤러리' },
       { id: 'calendar', name: '캘린더' },
       { id: 'map', name: '오시는길' },
@@ -81,7 +82,8 @@ export class PageTypeSelector {
                   </div>
                   <div class="step2-segment-track">
                     ${this.PAGE_TYPES.map(pt => {
-                      const currentType = pageOptions[currentMain.id]?.type || 'about';
+                      const rawType = pageOptions[currentMain.id]?.type || 'about';
+                      const currentType = (rawType === 'departments' || rawType === 'business' || rawType === 'service') ? 'about' : rawType;
                       const isMatch = pt.id === currentType;
                       return `
                         <button type="button" class="step2-seg-pill ${isMatch ? 'active' : ''}" data-type-id="${pt.id}" data-menu-id="${currentMain.id}">
@@ -93,7 +95,8 @@ export class PageTypeSelector {
                 </div>
               ` : submenus.map((sub, sIdx) => {
                 const config = pageOptions[sub.id] || { type: 'about' };
-                const currentType = config.type || 'about';
+                const rawType = config.type || 'about';
+                const currentType = (rawType === 'departments' || rawType === 'business' || rawType === 'service') ? 'about' : rawType;
 
                 return `
                   <div class="step2-sub-row" data-sub-id="${sub.id}">

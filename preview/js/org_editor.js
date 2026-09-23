@@ -99,6 +99,15 @@ window.OrgEditor = (function() {
       const rawCustom = localStorage.getItem(ORG_STORAGE_KEY);
       if (rawCustom) {
         currentOrgData = JSON.parse(rawCustom);
+        if (Array.isArray(currentOrgData)) {
+          let totalMems = 0;
+          currentOrgData.forEach(d => { totalMems += (d.members ? d.members.length : 0); });
+          if (currentOrgData.length === 2 && totalMems === 4) {
+            currentOrgData = JSON.parse(JSON.stringify(DEFAULT_ORG_DATA));
+            localStorage.setItem(ORG_STORAGE_KEY, JSON.stringify(currentOrgData));
+            return currentOrgData;
+          }
+        }
         currentOrgData.forEach(dept => {
           (dept.members || []).forEach(m => {
             if (m.avatar && m.avatar.includes('placehold.co')) {
@@ -112,6 +121,12 @@ window.OrgEditor = (function() {
       if (rawState) {
         const parsedState = JSON.parse(rawState);
         if (parsedState && parsedState.customOrgData && Array.isArray(parsedState.customOrgData)) {
+          let totalMems = 0;
+          parsedState.customOrgData.forEach(d => { totalMems += (d.members ? d.members.length : 0); });
+          if (parsedState.customOrgData.length === 2 && totalMems === 4) {
+            currentOrgData = JSON.parse(JSON.stringify(DEFAULT_ORG_DATA));
+            return currentOrgData;
+          }
           currentOrgData = parsedState.customOrgData;
           return currentOrgData;
         }
@@ -136,6 +151,7 @@ window.OrgEditor = (function() {
       if (window.opener && window.opener.builderStore && typeof window.opener.builderStore.updateState === 'function') {
         window.opener.builderStore.updateState({ customOrgData: currentOrgData });
       }
+      window.dispatchEvent(new Event('storage'));
     } catch (e) {
       console.warn('OrgEditor save error:', e);
     }
@@ -164,7 +180,6 @@ window.OrgEditor = (function() {
                 
                 <!-- 부서 헤더 -->
                 <div class="org-dept-header" data-target-type="dept" data-dept-idx="${dIdx}">
-                  <span class="org-dept-sub-label">DEPARTMENT ${dIdx < 9 ? '0' + (dIdx + 1) : (dIdx + 1)}</span>
                   <h3 class="org-dept-title org-editable-text" data-type="dept-title" data-dept-idx="${dIdx}" title="수정하기" spellcheck="false">${dept.name}</h3>
                 </div>
 

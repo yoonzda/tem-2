@@ -575,7 +575,6 @@ window.TemplateComponents = {
           <ul class="org-department-list">
             <li class="org-department-item">
               <div class="org-dept-header">
-                <span class="org-dept-sub-label">DEPARTMENT 01</span>
                 <h3 class="org-dept-title">임원진 및 대표원장</h3>
               </div>
               <ol class="org-member-list">
