@@ -168,8 +168,11 @@ export class FeatureMatrix {
 
     this.container.innerHTML = `
       <div class="step3-container">
-        
-        <!-- 1-Column Wide C-5 Style Rows List -->
+        <div class="onepage-zone-header">
+          <h2 class="onepage-zone-title">부가 기능 선택</h2>
+        </div>
+
+        <!-- 2-Column Compact Toggle Grid -->
         <div class="step3-rows-list">
           ${this.FEATURES.map((feat, idx) => {
             const isChecked = !!(f[feat.id]?.enabled);
@@ -182,26 +185,15 @@ export class FeatureMatrix {
                     data-feat="${feat.id}" 
                     ${isChecked ? 'checked' : ''} 
                   />
+                  <div class="step3-card-left">
+                    <span class="step3-feat-cat">${feat.category}</span>
+                    <span class="step3-tile-name">${feat.name}</span>
+                  </div>
                   <span class="step3-corner-badge">${isChecked ? '✓' : '+'}</span>
-                  <span class="step3-tile-name">${feat.name}</span>
                 </label>
               </div>
             `;
           }).join('')}
-        </div>
-
-        <!-- Step 3 Bottom Action Button -->
-        <div class="step-bottom-action-wrap">
-          <button class="btn-step-next" id="btn-step3-next" type="button">
-            <span class="linear-infill-layer"></span>
-            <span class="btn-content-inner">
-              <span class="btn-text">다음 단계</span>
-              <span class="linear-chevron-group">
-                <svg class="linear-ch1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-                <svg class="linear-ch2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-              </span>
-            </span>
-          </button>
         </div>
 
       </div>
@@ -254,19 +246,19 @@ export class FeatureMatrix {
 
     bodyEl.innerHTML = `
       <div class="modal-section">
-        <h4 class="modal-section-title">💡 기능 핵심 혜택 및 목적</h4>
+        <h4 class="modal-section-title">기능 핵심 혜택 및 목적</h4>
         <p class="modal-text">${feat.details.benefit}</p>
       </div>
 
       <div class="modal-section">
-        <h4 class="modal-section-title">⚙️ 실전 연동 및 동작 프로세스</h4>
+        <h4 class="modal-section-title">실전 연동 및 동작 프로세스</h4>
         <ol class="modal-step-list">
           ${feat.details.steps.map(step => `<li>${step}</li>`).join('')}
         </ol>
       </div>
 
       <div class="modal-section">
-        <h4 class="modal-section-title">🔒 기술 사양 및 운영 관리</h4>
+        <h4 class="modal-section-title">기술 사양 및 운영 관리</h4>
         <p class="modal-text-sub">${feat.details.techNotes}</p>
       </div>
     `;
@@ -284,18 +276,7 @@ export class FeatureMatrix {
   }
 
   bindEvents() {
-    // 1. Next Step Button
-    const nextBtn = this.container.querySelector('#btn-step3-next');
-    if (nextBtn) {
-      nextBtn.addEventListener('click', () => {
-        const success = window.builderStore.setStep(4);
-        if (success) {
-          window.scrollTo(0, 0);
-        }
-      });
-    }
-
-    // 2. Row Checkbox Toggle
+    // 1. Row Checkbox Toggle
     this.container.querySelectorAll('input[type="checkbox"]').forEach(input => {
       input.addEventListener('change', () => {
         const featId = input.getAttribute('data-feat');

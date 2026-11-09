@@ -120,6 +120,156 @@ html, body {
   width: 100%;
 }
 
+.onepage-sticky-bar-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  padding-top: 16px;
+  background: linear-gradient(180deg, var(--bg-primary) 75%, rgba(248, 250, 252, 0) 100%);
+}
+
+.onepage-top-action-bar {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 12px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+  flex-wrap: wrap;
+}
+
+.top-bar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.top-bar-logo-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.16);
+}
+
+.top-bar-title {
+  font-size: 16.5px;
+  font-weight: 850;
+  color: #0f172a;
+  letter-spacing: -0.3px;
+}
+
+.top-bar-stack-badge {
+  font-size: 12.5px;
+  font-weight: 750;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
+.top-bar-stack-badge.is-selected {
+  background: #eef2ff;
+  color: #4f46e5;
+  border-color: #c7d2fe;
+}
+
+.top-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.top-bar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  padding: 0 15px;
+  border-radius: 9px;
+  font-size: 13.5px;
+  font-weight: 750;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.top-bar-btn.btn-guide {
+  background: #f8fafc;
+  color: #475569;
+  border: 1.5px solid #e2e8f0;
+}
+
+.top-bar-btn.btn-guide:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+.top-bar-btn.btn-preview {
+  background: #ffffff;
+  color: #0f172a;
+  border: 1.5px solid #cbd5e1;
+}
+
+.top-bar-btn.btn-preview:hover {
+  background: #f8fafc;
+  border-color: #4f46e5;
+  color: #4f46e5;
+}
+
+.top-bar-btn.btn-download-primary {
+  background: #4f46e5;
+  color: #ffffff;
+  border: 1.5px solid #4338ca;
+  padding: 0 18px;
+}
+
+.top-bar-btn.btn-download-primary:hover {
+  background: #4338ca;
+  border-color: #3730a3;
+}
+
+.top-bar-btn.btn-download-primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.onepage-setup-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  padding: 24px 0 72px 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.onepage-section {
+  width: 100%;
+}
+
+.onepage-zone-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.onepage-zone-title {
+  font-size: 17.5px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.3px;
+}
+
 /* =========================================================================
    Right Side Fixed Floating Stepper Rail (Proposal 6: Right-Anchored Node & Left-Expanding Text)
    ========================================================================= */

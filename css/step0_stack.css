@@ -8,13 +8,12 @@
   gap: 14px;
   width: 100%;
   margin: 0 auto;
-  padding: calc(50vh - 120px) 0 80px 0;
+  padding: 0;
   box-sizing: border-box;
-  transition: padding-top 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .step0-container.has-started {
-  padding-top: 24px;
+  padding-top: 0;
 }
 
 /* 10-A: Segment Floating Pill Track + Indicator Dot Chips Frame */
@@ -163,52 +162,64 @@
 
 .step0-top-utility {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
-.horizontal-form-list {
+.step0-compact-form-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 24px 28px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.step0-grid-form {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 18px 20px;
+  width: 100%;
+}
+
+.step0-grid-field {
   display: flex;
   flex-direction: column;
+  gap: 7px;
 }
 
-.horizontal-form-row {
-  display: none;
-  align-items: center;
-  gap: 24px;
-  margin-bottom: 16px;
-  padding: 4px 0;
+.step0-grid-field.span-2 {
+  grid-column: span 2;
 }
 
-.horizontal-form-row.toss-reveal {
-  display: flex;
-  animation: tossRowEnter 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.step0-grid-field.span-3 {
+  grid-column: span 3;
 }
 
-@keyframes tossRowEnter {
-  0% {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
+.step0-grid-field.span-4 {
+  grid-column: span 4;
+}
+
+@media (max-width: 1024px) {
+  .step0-grid-field.span-2,
+  .step0-grid-field.span-3,
+  .step0-grid-field.span-4 {
+    grid-column: span 3;
   }
 }
 
-@media (max-width: 768px) {
-  .horizontal-form-row.toss-reveal {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
+@media (max-width: 640px) {
+  .step0-grid-field.span-2,
+  .step0-grid-field.span-3,
+  .step0-grid-field.span-4 {
+    grid-column: span 6;
   }
 }
 
-.horizontal-label {
-  width: 180px;
-  min-width: 180px;
-  font-size: 16px;
+.step0-field-label {
+  font-size: 14.5px;
   font-weight: 700;
   color: #1e293b;
   display: flex;
@@ -217,28 +228,28 @@
   user-select: none;
 }
 
-.horizontal-input-wrap {
-  flex: 1;
-  width: 100%;
-}
-
-.horizontal-input-wrap .form-input,
-.horizontal-input-wrap .form-select {
+.step0-grid-field .form-input,
+.step0-grid-field .form-select {
   width: 100%;
   border: 1.5px solid #cbd5e1;
-  border-radius: 12px;
-  padding: 13px 18px;
-  font-size: 16px;
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 15px;
   font-weight: 500;
   color: #0f172a;
   background: #ffffff;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.horizontal-input-wrap .form-input:focus,
-.horizontal-input-wrap .form-select:focus {
+.step0-grid-field .form-input:focus,
+.step0-grid-field .form-select:focus {
   border-color: #4f46e5;
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.step0-pw-wrap {
+  position: relative;
+  width: 100%;
 }
 
 .btn-toggle-pw, .password-toggle-btn {

@@ -51,20 +51,6 @@ export class MegaMenuEditor {
             <button class="btn-hz-add-main" id="btn-hz-add-main" type="button">+ 대메뉴 추가</button>
           </div>
         </div>
-
-        <!-- Step 1 Bottom Action Button -->
-        <div class="step-bottom-action-wrap">
-          <button class="btn-step-next" id="btn-step1-next" type="button">
-            <span class="linear-infill-layer"></span>
-            <span class="btn-content-inner">
-              <span class="btn-text">다음 단계</span>
-              <span class="linear-chevron-group">
-                <svg class="linear-ch1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-                <svg class="linear-ch2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-              </span>
-            </span>
-          </button>
-        </div>
       </div>
     `;
 
@@ -72,16 +58,6 @@ export class MegaMenuEditor {
   }
 
   bindEvents() {
-    // Next Step Button
-    const nextBtn = this.container.querySelector('#btn-step1-next');
-    if (nextBtn) {
-      nextBtn.addEventListener('click', () => {
-        const success = builderStore.setStep(2);
-        if (success) {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      });
-    }
     // 1. Direct ContentEditable Edit for Submenus (IME Safe)
     this.container.querySelectorAll('.hz-chip-name[contenteditable="true"]').forEach(span => {
       let isComposing = false;

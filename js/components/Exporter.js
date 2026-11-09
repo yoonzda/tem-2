@@ -12,61 +12,92 @@ export class Exporter {
   }
 
   init() {
+    this.lastTechStack = window.builderStore.getState().techStack;
     this.render();
+
+    window.builderStore.subscribe((state) => {
+      if (state.techStack !== this.lastTechStack) {
+        this.lastTechStack = state.techStack;
+        this.render();
+      }
+    });
   }
 
   render() {
     const state = window.builderStore.getState();
     const stack = state.techStack || 'php';
+    const stackLabels = {
+      php: 'Standard PHP',
+      static: 'Static HTML5',
+      node: 'Node.js Express'
+    };
+    const activeStackLabel = state.techStack ? stackLabels[state.techStack] : '아키텍처 선택 대기';
 
     this.container.innerHTML = `
-      <div class="step4-container" style="display:flex; flex-direction:column; gap:28px;">
-        <!-- Top Preview Buttons -->
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
-          <a href="preview/user_preview.html" id="btn-preview-user" target="_blank" class="btn" style="padding:18px; font-size:18px; font-weight:700; text-align:center; justify-content:center; text-decoration:none;">
-            [ 사용자 페이지 미리보기 ]
-          </a>
-          <a href="preview/admin_preview.html" id="btn-preview-admin" target="_blank" class="btn" style="padding:18px; font-size:18px; font-weight:700; text-align:center; justify-content:center; text-decoration:none;">
-            [ 관리자 페이지 미리보기 ]
-          </a>
+      <header class="onepage-top-action-bar">
+        <div class="top-bar-brand">
+          <span class="top-bar-logo-dot"></span>
+          <span class="top-bar-title">BUILDER STUDIO</span>
+          <span class="top-bar-stack-badge ${state.techStack ? 'is-selected' : ''}">${activeStackLabel}</span>
         </div>
 
-        <div style="border-top:1px solid var(--border-color); margin:10px 0;"></div>
-
-        <!-- Guide 1 -->
-        <div class="content-section" style="margin-bottom:0;">
-          <div style="font-size:18px; font-weight:700; color:var(--text-primary); margin-bottom:16px;">
-            [가이드 1. 내 컴퓨터(로컬 PC)에서 더블클릭 1초 만에 실행하여 확인하는 법]
-          </div>
-          <div style="font-size:16px; color:var(--text-secondary); line-height:1.85;">
-            <div>1. 다운로드받은 <strong>[프로젝트명]_standalone_package.zip</strong> 압축을 해제합니다.</div>
-            <div>2. 폴더 내 동봉된 <strong>run_local.bat</strong> (윈도우) 파일을 더블클릭합니다. (Mac/Linux: <strong>./run_local.sh</strong>)</div>
-            <div>3. 시스템 환경(PHP / Node.js / Python)을 자동 감지하여 <strong>http://localhost:8000</strong>으로 로컬 개발 서버가 즉시 1초 만에 실행됩니다.</div>
-          </div>
-        </div>
-
-        <!-- Guide 2 -->
-        <div class="content-section" style="margin-bottom:0;">
-          <div style="font-size:18px; font-weight:700; color:var(--text-primary); margin-bottom:16px;">
-            [가이드 2. 실제 호스팅 서버 배포 및 운영 가이드 (선택한 기술스택 맞춤형)]
-          </div>
-          <div style="font-size:16px; color:var(--text-secondary); line-height:1.85;">
-            ${stack === 'php' ? `<div>• Standard PHP: 카페24 / 가비아 / AWS 웹루트(<strong>public_html/</strong>)에 FTP 업로드 ➔ 즉시 실운영 가동</div>` : ''}
-            ${stack === 'static' ? `<div>• Static HTML5: GitHub Pages / Vercel 에 폴더 드래그 앤 드롭 정적 배포</div>` : ''}
-            ${stack === 'node' ? `<div>• Node.js: 서버 터미널에서 <strong>node local_server.js</strong> 또는 <strong>pm2 start local_server.js</strong> 구동</div>` : ''}
-          </div>
-        </div>
-
-        <div style="border-top:1px solid var(--border-color); margin:10px 0;"></div>
-
-        <!-- Bottom Single Download Button -->
-        <div class="btn-download-project-wrap">
-          <button class="btn-download-project-main" id="btn-download-project" type="button">
-            <div class="dl-roll-track">
-              <span class="dl-roll-item item-top" id="download-btn-label-top">프로젝트 다운로드</span>
-              <span class="dl-roll-item item-main" id="download-btn-label-main">프로젝트 다운로드</span>
-            </div>
+        <div class="top-bar-actions">
+          <button type="button" class="btn-autofill" id="btn-autofill-sample" title="테스트 데이터 자동 입력">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9"></path>
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+            </svg>
           </button>
+
+          <button type="button" class="top-bar-btn btn-guide" id="btn-open-deploy-guide">
+            배포 가이드
+          </button>
+
+          <a href="preview/user_preview.html" id="btn-preview-user" target="_blank" class="top-bar-btn btn-preview">
+            사용자 페이지 미리보기
+          </a>
+
+          <a href="preview/admin_preview.html" id="btn-preview-admin" target="_blank" class="top-bar-btn btn-preview">
+            관리자 페이지 미리보기
+          </a>
+
+          <button class="top-bar-btn btn-download-primary" id="btn-download-project" type="button">
+            <span id="download-btn-label-main">프로젝트 다운로드</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Deploy Guide Modal -->
+      <div id="deploy-guide-modal" class="step3-modal-backdrop" style="display:none;">
+        <div class="step3-modal-dialog" style="max-width:680px;">
+          <div class="step3-modal-header">
+            <div class="step3-modal-title-wrap">
+              <span class="step3-modal-badge">${stackLabels[stack]}</span>
+              <h3 class="step3-modal-title">로컬 실행 및 호스팅 서버 배포 가이드</h3>
+            </div>
+            <button type="button" class="btn-modal-close" id="btn-close-deploy-guide" title="닫기">✕</button>
+          </div>
+          <div class="step3-modal-body">
+            <div class="modal-section">
+              <h4 class="modal-section-title">가이드 1. 내 컴퓨터(로컬 PC)에서 더블클릭 1초 만에 실행하여 확인하는 법</h4>
+              <ol class="modal-step-list">
+                <li>다운로드받은 <strong>[프로젝트명]_standalone_package.zip</strong> 압축을 해제합니다.</li>
+                <li>폴더 내 동봉된 <strong>run_local.bat</strong> (윈도우) 파일을 더블클릭합니다. (Mac/Linux: <strong>./run_local.sh</strong>)</li>
+                <li>시스템 환경(PHP / Node.js / Python)을 자동 감지하여 <strong>http://localhost:8000</strong>으로 로컬 개발 서버가 즉시 1초 만에 실행됩니다.</li>
+              </ol>
+            </div>
+            <div class="modal-section">
+              <h4 class="modal-section-title">가이드 2. 실제 호스팅 서버 배포 및 운영 가이드 (${stackLabels[stack]} 맞춤형)</h4>
+              <div class="modal-text-sub">
+                ${stack === 'php' ? `• <strong>Standard PHP</strong>: 카페24 / 가비아 / AWS 웹루트(<strong>public_html/</strong>)에 FTP 업로드 시 별도 빌드 없이 즉시 실운영 가동됩니다.` : ''}
+                ${stack === 'static' ? `• <strong>Static HTML5</strong>: GitHub Pages / Vercel / Netlify에 압축 해제한 폴더를 드래그 앤 드롭하여 정적 배포합니다.` : ''}
+                ${stack === 'node' ? `• <strong>Node.js Express</strong>: 서버 터미널에서 <strong>node local_server.js</strong> 또는 <strong>pm2 start local_server.js</strong>로 즉시 구동합니다.` : ''}
+              </div>
+            </div>
+          </div>
+          <div class="step3-modal-footer">
+            <button type="button" class="btn-modal-confirm" id="btn-confirm-deploy-guide">확인 완료</button>
+          </div>
         </div>
       </div>
     `;
@@ -75,21 +106,56 @@ export class Exporter {
   }
 
   bindEvents() {
-    const previewUserBtn = document.getElementById('btn-preview-user');
+    const autofillBtn = this.container.querySelector('#btn-autofill-sample');
+    if (autofillBtn) {
+      autofillBtn.addEventListener('click', () => {
+        if (window.app && window.app.sections && window.app.sections.techStack) {
+          window.app.sections.techStack.autofillSample();
+        }
+      });
+    }
+
+    const guideModal = this.container.querySelector('#deploy-guide-modal');
+    const openGuideBtn = this.container.querySelector('#btn-open-deploy-guide');
+    const closeGuideBtn = this.container.querySelector('#btn-close-deploy-guide');
+    const confirmGuideBtn = this.container.querySelector('#btn-confirm-deploy-guide');
+
+    const closeGuide = () => {
+      if (guideModal) {
+        guideModal.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    };
+
+    if (openGuideBtn && guideModal) {
+      openGuideBtn.addEventListener('click', () => {
+        guideModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      });
+    }
+    if (closeGuideBtn) closeGuideBtn.addEventListener('click', closeGuide);
+    if (confirmGuideBtn) confirmGuideBtn.addEventListener('click', closeGuide);
+    if (guideModal) {
+      guideModal.addEventListener('click', (e) => {
+        if (e.target === guideModal) closeGuide();
+      });
+    }
+
+    const previewUserBtn = this.container.querySelector('#btn-preview-user');
     if (previewUserBtn) {
       previewUserBtn.addEventListener('click', () => {
         window.builderStore.saveState();
       });
     }
 
-    const previewAdminBtn = document.getElementById('btn-preview-admin');
+    const previewAdminBtn = this.container.querySelector('#btn-preview-admin');
     if (previewAdminBtn) {
       previewAdminBtn.addEventListener('click', () => {
         window.builderStore.saveState();
       });
     }
 
-    const downloadBtn = document.getElementById('btn-download-project');
+    const downloadBtn = this.container.querySelector('#btn-download-project');
     if (downloadBtn) {
       downloadBtn.addEventListener('click', () => this.generateAndDownloadBundle());
     }

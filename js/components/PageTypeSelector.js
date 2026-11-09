@@ -34,66 +34,41 @@ export class PageTypeSelector {
     const menus = state.menus || [];
     const pageOptions = state.pageOptions || {};
 
-    if (menus.length === 0) {
-      this.container.innerHTML = `
-        <div class="step2-container">
-          <div class="step2-empty-notice">
-            <p>등록된 메뉴가 없습니다. 이전 단계에서 메뉴를 먼저 구성해 주세요.</p>
-          </div>
-        </div>
-      `;
-      return;
-    }
-
     if (this.activeMenuIndex >= menus.length) {
-      this.activeMenuIndex = 0;
+      this.activeMenuIndex = Math.max(0, menus.length - 1);
     }
 
     const currentMain = menus[this.activeMenuIndex];
-    const submenus = currentMain.submenus || [];
+    const submenus = currentMain ? (currentMain.submenus || []) : [];
 
     this.container.innerHTML = `
       <div class="step2-container">
-        
-        <!-- Step 0 Style Unified Frame (tech-10a-frame 1:1 Match) -->
+        <div class="onepage-zone-header">
+          <h2 class="onepage-zone-title">메뉴 구성 및 페이지 유형</h2>
+        </div>
+
         <div class="step2-10a-frame">
-          
-          <!-- 1. Category Segment Header (Step 0 tech-10a-header 1:1 Match) -->
-          <div class="step2-10a-header" style="grid-template-columns: repeat(${menus.length}, 1fr);">
-            ${menus.map((main, idx) => {
-              const isActive = idx === this.activeMenuIndex;
-              return `
-                <div class="step2-10a-tab ${isActive ? 'active' : ''}" data-cat-idx="${idx}">
-                  <span class="step2-tab-code">0${idx + 1}</span>
-                  <span class="step2-tab-name">${main.name}</span>
-                </div>
-              `;
-            }).join('')}
+          <!-- 1. Unified Main Category Header Bar (Select / Rename / Add / Delete Main Menu) -->
+          <div class="step2-10a-header">
+            <div class="step2-tabs-track">
+              ${menus.map((main, idx) => {
+                const isActive = idx === this.activeMenuIndex;
+                return `
+                  <div class="step2-10a-tab ${isActive ? 'active' : ''}" data-cat-idx="${idx}">
+                    <span class="step2-tab-code">0${idx + 1}</span>
+                    <span class="step2-tab-name" ${isActive ? 'contenteditable="true" spellcheck="false" title="수정하기"' : ''} data-cat-idx="${idx}">${main.name}</span>
+                    ${menus.length > 1 ? `<button type="button" class="btn-delete-x cat-del" data-action="del-cat" data-cat-idx="${idx}" title="대메뉴 삭제">✕</button>` : ''}
+                  </div>
+                `;
+              }).join('')}
+            </div>
+            <button type="button" class="btn-unified-add-main" id="btn-unified-add-main">+ 대메뉴 추가</button>
           </div>
 
-          <!-- 2. Submenu Rows with Step 0 Segmented Pill Tracks -->
+          <!-- 2. Submenu Rows + Page Type Pill Track -->
           <div class="step2-10a-body">
             <div class="step2-sub-rows">
-              ${submenus.length === 0 ? `
-                <div class="step2-sub-row" data-sub-id="${currentMain.id}">
-                  <div class="step2-sub-title-wrap">
-                    <span class="step2-sub-idx">1</span>
-                    <span class="step2-sub-title">${currentMain.name}</span>
-                  </div>
-                  <div class="step2-segment-track">
-                    ${this.PAGE_TYPES.map(pt => {
-                      const rawType = pageOptions[currentMain.id]?.type || 'about';
-                      const currentType = (rawType === 'departments' || rawType === 'business' || rawType === 'service') ? 'about' : rawType;
-                      const isMatch = pt.id === currentType;
-                      return `
-                        <button type="button" class="step2-seg-pill ${isMatch ? 'active' : ''}" data-type-id="${pt.id}" data-menu-id="${currentMain.id}">
-                          ${pt.name}
-                        </button>
-                      `;
-                    }).join('')}
-                  </div>
-                </div>
-              ` : submenus.map((sub, sIdx) => {
+              ${submenus.map((sub, sIdx) => {
                 const config = pageOptions[sub.id] || { type: 'about' };
                 const rawType = config.type || 'about';
                 const currentType = (rawType === 'departments' || rawType === 'business' || rawType === 'service') ? 'about' : rawType;
@@ -102,7 +77,8 @@ export class PageTypeSelector {
                   <div class="step2-sub-row" data-sub-id="${sub.id}">
                     <div class="step2-sub-title-wrap">
                       <span class="step2-sub-idx">${sIdx + 1}</span>
-                      <span class="step2-sub-title">${sub.name}</span>
+                      <span class="step2-sub-title" contenteditable="true" spellcheck="false" data-cat-idx="${this.activeMenuIndex}" data-sub-idx="${sIdx}" title="수정하기">${sub.name}</span>
+                      ${submenus.length > 1 ? `<button type="button" class="btn-delete-x sub-del" data-action="del-sub" data-cat-idx="${this.activeMenuIndex}" data-sub-idx="${sIdx}" title="하위메뉴 삭제">✕</button>` : ''}
                     </div>
                     <div class="step2-segment-track">
                       ${this.PAGE_TYPES.map(pt => {
@@ -118,24 +94,13 @@ export class PageTypeSelector {
                 `;
               }).join('')}
             </div>
+
+            <!-- Add Submenu Action Row -->
+            <div class="step2-add-sub-wrap">
+              <button type="button" class="btn-unified-add-sub" id="btn-unified-add-sub" data-cat-idx="${this.activeMenuIndex}">+ 하위메뉴 추가</button>
+            </div>
           </div>
-
         </div>
-
-        <!-- 3. Next Step Button -->
-        <div class="step-bottom-action-wrap">
-          <button class="btn-step-next" id="btn-step2-next" type="button">
-            <span class="linear-infill-layer"></span>
-            <span class="btn-content-inner">
-              <span class="btn-text">다음 단계</span>
-              <span class="linear-chevron-group">
-                <svg class="linear-ch1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-                <svg class="linear-ch2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-              </span>
-            </span>
-          </button>
-        </div>
-
       </div>
     `;
 
@@ -143,20 +108,10 @@ export class PageTypeSelector {
   }
 
   bindEvents() {
-    // 1. Next Step Button
-    const nextBtn = this.container.querySelector('#btn-step2-next');
-    if (nextBtn) {
-      nextBtn.addEventListener('click', () => {
-        const success = window.builderStore.setStep(3);
-        if (success) {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      });
-    }
-
-    // 2. Category Segment Tab Switch
+    // 1. Category Tab Switch
     this.container.querySelectorAll('.step2-10a-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
+      tab.addEventListener('click', (e) => {
+        if (e.target.closest('[data-action="del-cat"]')) return;
         const catIdx = parseInt(tab.getAttribute('data-cat-idx'), 10);
         if (this.activeMenuIndex !== catIdx) {
           this.activeMenuIndex = catIdx;
@@ -165,7 +120,160 @@ export class PageTypeSelector {
       });
     });
 
-    // 3. Segment Pill Click
+    // 2. Main Category Name Inline Edit (IME Safe)
+    this.container.querySelectorAll('.step2-tab-name[contenteditable="true"]').forEach(span => {
+      let isComposing = false;
+      span.addEventListener('compositionstart', () => { isComposing = true; });
+      span.addEventListener('compositionend', () => { isComposing = false; });
+      span.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !isComposing) {
+          e.preventDefault();
+          span.blur();
+        }
+      });
+      span.addEventListener('blur', () => {
+        const catIdx = parseInt(span.getAttribute('data-cat-idx'), 10);
+        const menus = JSON.parse(JSON.stringify(window.builderStore.getState().menus));
+        const curCat = menus[catIdx];
+        if (!curCat) return;
+
+        const originalText = curCat.name;
+        const newText = span.textContent.trim();
+        if (!newText) {
+          span.textContent = originalText;
+          return;
+        }
+        if (newText !== originalText) {
+          curCat.name = newText;
+          window.builderStore.updateState({ menus });
+        }
+      });
+    });
+
+    // 3. Submenu Name Inline Edit (IME Safe)
+    this.container.querySelectorAll('.step2-sub-title[contenteditable="true"]').forEach(span => {
+      let isComposing = false;
+      span.addEventListener('compositionstart', () => { isComposing = true; });
+      span.addEventListener('compositionend', () => { isComposing = false; });
+      span.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !isComposing) {
+          e.preventDefault();
+          span.blur();
+        }
+      });
+      span.addEventListener('blur', () => {
+        const catIdx = parseInt(span.getAttribute('data-cat-idx'), 10);
+        const subIdx = parseInt(span.getAttribute('data-sub-idx'), 10);
+        const menus = JSON.parse(JSON.stringify(window.builderStore.getState().menus));
+        const curCat = menus[catIdx];
+        if (!curCat || !curCat.submenus || !curCat.submenus[subIdx]) return;
+
+        const originalText = curCat.submenus[subIdx].name;
+        const newText = span.textContent.trim();
+        if (!newText) {
+          span.textContent = originalText;
+          return;
+        }
+        if (newText !== originalText) {
+          curCat.submenus[subIdx].name = newText;
+          window.builderStore.updateState({ menus });
+        }
+      });
+    });
+
+    // 4. Add Main Category
+    const btnAddMain = this.container.querySelector('#btn-unified-add-main');
+    if (btnAddMain) {
+      btnAddMain.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const menus = JSON.parse(JSON.stringify(window.builderStore.getState().menus));
+        const newMainId = `m_${Date.now()}`;
+        const newSubId = `s_${Date.now()}_1`;
+        menus.push({
+          id: newMainId,
+          name: '새 대메뉴',
+          submenus: [
+            { id: newSubId, name: '기본 메뉴' }
+          ]
+        });
+
+        const pageOptions = { ...window.builderStore.getState().pageOptions };
+        pageOptions[newSubId] = { type: 'about', options: { layout: 'subtab', sections: ['greeting'] } };
+
+        this.activeMenuIndex = menus.length - 1;
+        window.builderStore.updateState({ menus, pageOptions });
+        this.render();
+
+        const newSpan = this.container.querySelector(`.step2-tab-name[data-cat-idx="${this.activeMenuIndex}"]`);
+        if (newSpan) this.focusContentEditable(newSpan);
+      });
+    }
+
+    // 5. Delete Main Category
+    this.container.querySelectorAll('[data-action="del-cat"]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
+        const menus = JSON.parse(JSON.stringify(window.builderStore.getState().menus));
+        if (menus.length <= 1) {
+          window.builderStore.showToast('최소 1개 이상의 대메뉴가 필요합니다.', 'warning');
+          return;
+        }
+        menus.splice(catIdx, 1);
+        if (this.activeMenuIndex >= menus.length) {
+          this.activeMenuIndex = Math.max(0, menus.length - 1);
+        }
+        window.builderStore.updateState({ menus });
+        this.render();
+      });
+    });
+
+    // 6. Add Submenu
+    const btnAddSub = this.container.querySelector('#btn-unified-add-sub');
+    if (btnAddSub) {
+      btnAddSub.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const catIdx = parseInt(btnAddSub.getAttribute('data-cat-idx'), 10);
+        const menus = JSON.parse(JSON.stringify(window.builderStore.getState().menus));
+        const curCat = menus[catIdx];
+        if (!curCat) return;
+
+        const newSubId = `s_${Date.now()}`;
+        if (!curCat.submenus) curCat.submenus = [];
+        curCat.submenus.push({ id: newSubId, name: '새 메뉴' });
+
+        const pageOptions = { ...window.builderStore.getState().pageOptions };
+        pageOptions[newSubId] = { type: 'about', options: { layout: 'subtab', sections: ['greeting'] } };
+
+        window.builderStore.updateState({ menus, pageOptions });
+        this.render();
+
+        const newSubIdx = curCat.submenus.length - 1;
+        const newSpan = this.container.querySelector(`.step2-sub-title[data-cat-idx="${catIdx}"][data-sub-idx="${newSubIdx}"]`);
+        if (newSpan) this.focusContentEditable(newSpan);
+      });
+    }
+
+    // 7. Delete Submenu
+    this.container.querySelectorAll('[data-action="del-sub"]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const catIdx = parseInt(btn.getAttribute('data-cat-idx'), 10);
+        const subIdx = parseInt(btn.getAttribute('data-sub-idx'), 10);
+        const menus = JSON.parse(JSON.stringify(window.builderStore.getState().menus));
+        const curCat = menus[catIdx];
+        if (!curCat || !curCat.submenus) return;
+        if (curCat.submenus.length <= 1) {
+          window.builderStore.showToast('최소 1개 이상의 하위메뉴가 필요합니다.', 'warning');
+          return;
+        }
+        curCat.submenus.splice(subIdx, 1);
+        window.builderStore.updateState({ menus });
+        this.render();
+      });
+    });
+
+    // 8. Segment Pill Click (Page Type Selection)
     this.container.querySelectorAll('.step2-seg-pill').forEach(btn => {
       btn.addEventListener('click', () => {
         const menuId = btn.getAttribute('data-menu-id');
@@ -179,7 +287,6 @@ export class PageTypeSelector {
 
         window.builderStore.updateState({ pageOptions });
 
-        // Update active class on pills in this row
         const row = btn.closest('.step2-sub-row');
         if (row) {
           row.querySelectorAll('.step2-seg-pill').forEach(b => {
@@ -188,6 +295,15 @@ export class PageTypeSelector {
         }
       });
     });
+  }
+
+  focusContentEditable(el) {
+    el.focus();
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
   }
 
   getDefaultOptionsForType(type) {

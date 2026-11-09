@@ -47,26 +47,11 @@ export class TechStackSelector {
     const escapeHtml = (str) => (str || '').toString().replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
     const hasStack = !!currentStack;
-    const hasSiteTitle = hasStack && (!!siteInfo.siteTitle);
-    const hasCompanyName = hasSiteTitle && (!!siteInfo.companyName);
-    const hasCompanyNameEn = hasCompanyName && (!!siteInfo.companyNameEn);
-    const hasOwnerName = hasCompanyNameEn && (!!siteInfo.ownerName);
-    const hasBizNum = hasOwnerName && (!!siteInfo.bizNum);
-    const hasPhone = hasBizNum && (!!siteInfo.phone);
-    const hasAddress = hasPhone && (!!siteInfo.address);
-    const hasAdminId = hasAddress && (!!adminAuth.adminId);
-    const hasAdminPw = hasAdminId && (!!adminAuth.adminPw);
 
     this.container.innerHTML = `
-      <div class="step0-container ${hasStack ? 'has-started' : ''}" style="${hasStack ? 'padding-top: 20px;' : ''}">
-        <!-- Top Floating Utility (Autofill Sample Button) -->
-        <div class="step0-top-utility">
-          <button type="button" class="btn-autofill" id="btn-autofill-sample" title="테스트 데이터 자동 입력">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 20h9"></path>
-              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-            </svg>
-          </button>
+      <div class="step0-container has-started">
+        <div class="onepage-zone-header">
+          <h2 class="onepage-zone-title">기본 환경 및 사이트 정보</h2>
         </div>
 
         <!-- 1. Tech Stack (10-A Segment Floating Pill Track) -->
@@ -99,134 +84,98 @@ export class TechStackSelector {
           </div>
         </div>
 
-        <!-- 2. Unboxed Linear Form Stream (Single Progressive Flow - Toss Style) -->
-        <div class="horizontal-form-list">
-          <!-- Row 1: 사이트명 -->
-          <div class="horizontal-form-row ${hasStack ? 'toss-reveal' : ''}" id="row-site-title">
-            <label class="horizontal-label" for="input-site-title">
-              사이트명 <span class="required-star">*</span>
-            </label>
-            <div class="horizontal-input-wrap">
+        <!-- 2. Compact Multi-Column Basic Info Grid Card -->
+        <div class="step0-compact-form-card">
+          <div class="step0-grid-form">
+            <!-- Row 1: 사이트명 / 업체명(한글) / 업체명(영문) -->
+            <div class="step0-grid-field span-2" id="row-site-title">
+              <label class="step0-field-label" for="input-site-title">
+                사이트명 <span class="required-star">*</span>
+              </label>
               <input type="text" id="input-site-title" class="form-input" value="${escapeHtml(siteInfo.siteTitle || '')}" autocomplete="off" />
             </div>
-          </div>
 
-          <!-- Row 2: 업체명 (한글) -->
-          <div class="horizontal-form-row ${hasSiteTitle ? 'toss-reveal' : ''}" id="row-company-name">
-            <label class="horizontal-label" for="input-company-name">
-              업체명 (한글) <span class="required-star">*</span>
-            </label>
-            <div class="horizontal-input-wrap">
+            <div class="step0-grid-field span-2" id="row-company-name">
+              <label class="step0-field-label" for="input-company-name">
+                업체명 (한글) <span class="required-star">*</span>
+              </label>
               <input type="text" id="input-company-name" class="form-input" value="${escapeHtml(siteInfo.companyName || '')}" autocomplete="off" />
             </div>
-          </div>
 
-          <!-- Row 3: 업체명 (영문) -->
-          <div class="horizontal-form-row ${hasCompanyName ? 'toss-reveal' : ''}" id="row-company-name-en">
-            <label class="horizontal-label" for="input-company-name-en">
-              업체명 (영문) <span class="required-star">*</span>
-            </label>
-            <div class="horizontal-input-wrap">
+            <div class="step0-grid-field span-2" id="row-company-name-en">
+              <label class="step0-field-label" for="input-company-name-en">
+                업체명 (영문) <span class="required-star">*</span>
+              </label>
               <input type="text" id="input-company-name-en" class="form-input" value="${escapeHtml(siteInfo.companyNameEn || '')}" autocomplete="off" />
             </div>
-          </div>
 
-          <!-- Row 4: 대표자명 -->
-          <div class="horizontal-form-row ${hasCompanyNameEn ? 'toss-reveal' : ''}" id="row-owner-name">
-            <label class="horizontal-label" for="input-owner-name">
-              대표자명 <span class="required-star">*</span>
-            </label>
-            <div class="horizontal-input-wrap">
+            <!-- Row 2: 대표자명 / 사업자 등록번호 / 대표 전화번호 -->
+            <div class="step0-grid-field span-2" id="row-owner-name">
+              <label class="step0-field-label" for="input-owner-name">
+                대표자명 <span class="required-star">*</span>
+              </label>
               <input type="text" id="input-owner-name" class="form-input" value="${escapeHtml(siteInfo.ownerName || '')}" autocomplete="off" />
             </div>
-          </div>
 
-          <!-- Row 4: 사업자 등록번호 -->
-          <div class="horizontal-form-row ${hasOwnerName ? 'toss-reveal' : ''}" id="row-biz-num">
-            <label class="horizontal-label" for="input-biz-num">
-              사업자 등록번호 <span class="required-star">*</span>
-            </label>
-            <div class="horizontal-input-wrap">
+            <div class="step0-grid-field span-2" id="row-biz-num">
+              <label class="step0-field-label" for="input-biz-num">
+                사업자 등록번호 <span class="required-star">*</span>
+              </label>
               <input type="text" id="input-biz-num" class="form-input" value="${escapeHtml(siteInfo.bizNum || '')}" autocomplete="off" />
             </div>
-          </div>
 
-          <!-- Row 5: 대표 전화번호 -->
-          <div class="horizontal-form-row ${hasBizNum ? 'toss-reveal' : ''}" id="row-phone">
-            <label class="horizontal-label" for="input-phone">
-              대표 전화번호 <span class="required-star">*</span>
-            </label>
-            <div class="horizontal-input-wrap">
+            <div class="step0-grid-field span-2" id="row-phone">
+              <label class="step0-field-label" for="input-phone">
+                대표 전화번호 <span class="required-star">*</span>
+              </label>
               <input type="text" id="input-phone" class="form-input" value="${escapeHtml(siteInfo.phone || '')}" autocomplete="off" />
             </div>
-          </div>
 
-          <!-- Row 6: 사업장 주소 -->
-          <div class="horizontal-form-row ${hasPhone ? 'toss-reveal' : ''}" id="row-address">
-            <label class="horizontal-label" for="input-address">
-              사업장 주소 <span class="required-star">*</span>
-            </label>
-            <div class="horizontal-input-wrap">
+            <!-- Row 3: 사업장 주소 (span 4) / 문자셋·인코딩 (span 2) -->
+            <div class="step0-grid-field span-4" id="row-address">
+              <label class="step0-field-label" for="input-address">
+                사업장 주소 <span class="required-star">*</span>
+              </label>
               <input type="text" id="input-address" class="form-input" value="${escapeHtml(siteInfo.address || '')}" autocomplete="off" />
             </div>
-          </div>
 
-          <!-- Row 7: 문자셋 / 인코딩 -->
-          <div class="horizontal-form-row ${hasAddress ? 'toss-reveal' : ''}" id="row-charset">
-            <label class="horizontal-label" for="input-charset">
-              문자셋 / 인코딩 <span class="required-star">*</span>
-            </label>
-            <div class="horizontal-input-wrap">
+            <div class="step0-grid-field span-2" id="row-charset">
+              <label class="step0-field-label" for="input-charset">
+                문자셋 / 인코딩 <span class="required-star">*</span>
+              </label>
               <select id="input-charset" class="form-select">
                 <option value="UTF-8" ${(siteInfo.charset || 'UTF-8') === 'UTF-8' ? 'selected' : ''}>UTF-8 (글로벌 표준 - 권장)</option>
                 <option value="EUC-KR" ${siteInfo.charset === 'EUC-KR' ? 'selected' : ''}>EUC-KR (레거시 한국어)</option>
               </select>
             </div>
-          </div>
 
-          <!-- Row 8: 관리자 아이디 -->
-          <div class="horizontal-form-row ${hasAddress ? 'toss-reveal' : ''}" id="row-admin-id">
-            <label class="horizontal-label" for="input-admin-id">
-              관리자 아이디 <span class="required-star">*</span>
-            </label>
-            <div class="horizontal-input-wrap">
+            <!-- Row 4: 관리자 아이디 (span 3) / 관리자 비밀번호 (span 3) -->
+            <div class="step0-grid-field span-3" id="row-admin-id">
+              <label class="step0-field-label" for="input-admin-id">
+                관리자 아이디 <span class="required-star">*</span>
+              </label>
               <input type="text" id="input-admin-id" class="form-input" value="${escapeHtml(adminAuth.adminId || '')}" autocomplete="off" />
             </div>
-          </div>
 
-          <!-- Row 9: 관리자 비밀번호 -->
-          <div class="horizontal-form-row ${hasAdminId ? 'toss-reveal' : ''}" id="row-admin-pw">
-            <label class="horizontal-label" for="input-admin-pw">
-              관리자 비밀번호 <span class="required-star">*</span>
-            </label>
-            <div class="horizontal-input-wrap" style="position: relative;">
-              <input type="password" id="input-admin-pw" class="form-input" value="${escapeHtml(adminAuth.adminPw || '')}" autocomplete="off" />
-              <button type="button" class="btn-toggle-pw" id="btn-toggle-pw" title="비밀번호 표시/숨김">
-                <svg class="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                  <circle cx="12" cy="12" r="3"></circle>
-                </svg>
-                <svg class="eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
-                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                  <line x1="1" y1="1" x2="23" y2="23"></line>
-                </svg>
-              </button>
+            <div class="step0-grid-field span-3" id="row-admin-pw">
+              <label class="step0-field-label" for="input-admin-pw">
+                관리자 비밀번호 <span class="required-star">*</span>
+              </label>
+              <div class="step0-pw-wrap">
+                <input type="password" id="input-admin-pw" class="form-input" value="${escapeHtml(adminAuth.adminPw || '')}" autocomplete="off" />
+                <button type="button" class="btn-toggle-pw" id="btn-toggle-pw" title="비밀번호 표시/숨김">
+                  <svg class="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                  <svg class="eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-
-        <!-- Row 10: Step 0 Next Step Button -->
-        <div class="step-bottom-action-wrap ${hasAdminPw ? 'toss-reveal' : ''}" id="row-next-action">
-          <button class="btn-step-next" id="btn-step0-next" type="button">
-            <span class="linear-infill-layer"></span>
-            <span class="btn-content-inner">
-              <span class="btn-text">다음 단계</span>
-              <span class="linear-chevron-group">
-                <svg class="linear-ch1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-                <svg class="linear-ch2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-              </span>
-            </span>
-          </button>
         </div>
       </div>
     `;
@@ -234,22 +183,6 @@ export class TechStackSelector {
   }
 
   bindEvents() {
-    // Next Step Button
-    const nextBtn = this.container.querySelector('#btn-step0-next');
-    if (nextBtn) {
-      nextBtn.addEventListener('click', () => {
-        const state = window.builderStore.getState();
-        if (!state.techStack) {
-          window.builderStore.showToast('기술 스택을 먼저 선택해주세요.', 'warning');
-          return;
-        }
-        const success = window.builderStore.setStep(1);
-        if (success) {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      });
-    }
-
     // Site Info Inputs Elements
     const siteTitleInput = this.container.querySelector('#input-site-title');
     const companyNameInput = this.container.querySelector('#input-company-name');
@@ -262,44 +195,6 @@ export class TechStackSelector {
     const adminIdInput = this.container.querySelector('#input-admin-id');
     const adminPwInput = this.container.querySelector('#input-admin-pw');
     const togglePwBtn = this.container.querySelector('#btn-toggle-pw');
-
-    let currentPaddingTop = null;
-
-    const advanceProgressiveStep = (element, shouldFocus = true) => {
-      if (!element) return;
-
-      const targetInput = element.querySelector('input, select, button');
-      if (shouldFocus && targetInput) {
-        targetInput.focus({ preventScroll: true });
-      }
-
-      const container = this.container.querySelector('.step0-container');
-      if (!container) return;
-
-      const viewportHeight = window.innerHeight;
-
-      if (currentPaddingTop === null) {
-        currentPaddingTop = Math.round((viewportHeight / 2) - 120);
-      }
-
-      // Smoothly reduce padding-top down to 24px (natural top)
-      if (currentPaddingTop > 24) {
-        currentPaddingTop = Math.max(24, currentPaddingTop - 60);
-        container.style.paddingTop = `${currentPaddingTop}px`;
-      }
-
-      // Smoothly scroll window if element is below vertical center
-      requestAnimationFrame(() => {
-        const rect = element.getBoundingClientRect();
-        const absoluteElementTop = rect.top + window.pageYOffset;
-        const targetScrollY = absoluteElementTop - (viewportHeight / 2) + (rect.height / 2);
-
-        window.scrollTo({
-          top: Math.max(0, targetScrollY),
-          behavior: 'smooth'
-        });
-      });
-    };
 
     // Tech Stack Tabs Selection
     this.container.querySelectorAll('.tech-10a-tab').forEach(tab => {
@@ -325,16 +220,6 @@ export class TechStackSelector {
             document.getElementById('tech-10a-badge').textContent = info.badge;
             document.getElementById('tech-10a-desc').textContent = info.desc;
             document.getElementById('tech-10a-chips').innerHTML = info.chips.map(chip => `<span class="tech-10a-dot-chip">${chip}</span>`).join('');
-          }
-        }
-
-        // Auto reveal Row 1 (사이트명) and smoothly position to center
-        const row1 = this.container.querySelector('#row-site-title');
-        if (row1) {
-          const isNew = !row1.classList.contains('toss-reveal');
-          if (isNew) {
-            row1.classList.add('toss-reveal');
-            advanceProgressiveStep(row1, true);
           }
         }
       });
@@ -364,144 +249,39 @@ export class TechStackSelector {
       });
     };
 
-    // Sequential 1-Row-at-a-Time Progression
-    const setupProgressiveRow = (currentInput, nextRowId) => {
-      if (!currentInput) return;
-      
-      currentInput.addEventListener('input', () => {
+    [
+      siteTitleInput,
+      companyNameInput,
+      companyNameEnInput,
+      ownerNameInput,
+      bizNumInput,
+      phoneInput,
+      addressInput,
+      adminIdInput,
+      adminPwInput
+    ].forEach((input, idx, arr) => {
+      if (!input) return;
+      input.addEventListener('input', () => {
         updateSiteInfo();
         updateAdminAuth();
       });
-
-      currentInput.addEventListener('keydown', (e) => {
+      input.addEventListener('blur', () => {
+        updateSiteInfo();
+        updateAdminAuth();
+      });
+      input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
           e.preventDefault();
           updateSiteInfo();
           updateAdminAuth();
-          if (currentInput.value.trim().length > 0) {
-            const nextRow = this.container.querySelector(nextRowId);
-            if (nextRow) {
-              const isNew = !nextRow.classList.contains('toss-reveal');
-              if (isNew) {
-                nextRow.classList.add('toss-reveal');
-                advanceProgressiveStep(nextRow, true);
-              } else {
-                const nextInput = nextRow.querySelector('input, select, button');
-                if (nextInput) nextInput.focus();
-              }
-            }
-          }
+          const nextInput = arr[idx + 1];
+          if (nextInput) nextInput.focus();
         }
       });
-
-      currentInput.addEventListener('blur', () => {
-        updateSiteInfo();
-        updateAdminAuth();
-        if (currentInput.value.trim().length > 0) {
-          const nextRow = this.container.querySelector(nextRowId);
-          if (nextRow && !nextRow.classList.contains('toss-reveal')) {
-            nextRow.classList.add('toss-reveal');
-          }
-        }
-      });
-    };
-
-    setupProgressiveRow(siteTitleInput, '#row-company-name');
-    setupProgressiveRow(companyNameInput, '#row-company-name-en');
-    setupProgressiveRow(companyNameEnInput, '#row-owner-name');
-    setupProgressiveRow(ownerNameInput, '#row-biz-num');
-    setupProgressiveRow(bizNumInput, '#row-phone');
-    setupProgressiveRow(phoneInput, '#row-address');
-    
-    if (addressInput) {
-      addressInput.addEventListener('input', () => updateSiteInfo());
-      addressInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          updateSiteInfo();
-          if (addressInput.value.trim().length > 0) {
-            const nextRow = this.container.querySelector('#row-charset');
-            if (nextRow) {
-              const isNew = !nextRow.classList.contains('toss-reveal');
-              if (isNew) {
-                nextRow.classList.add('toss-reveal');
-                advanceProgressiveStep(nextRow, true);
-              } else {
-                const nextInput = nextRow.querySelector('input, select, button');
-                if (nextInput) nextInput.focus();
-              }
-            }
-          }
-        }
-      });
-      addressInput.addEventListener('blur', () => {
-        updateSiteInfo();
-        if (addressInput.value.trim().length > 0) {
-          const nextRow = this.container.querySelector('#row-charset');
-          if (nextRow && !nextRow.classList.contains('toss-reveal')) {
-            nextRow.classList.add('toss-reveal');
-          }
-        }
-      });
-    }
+    });
 
     if (charsetInput) {
-      const advanceFromCharset = (fromEnter = false) => {
-        updateSiteInfo();
-        const nextRow = this.container.querySelector('#row-admin-id');
-        if (nextRow) {
-          const isNew = !nextRow.classList.contains('toss-reveal');
-          if (isNew) {
-            nextRow.classList.add('toss-reveal');
-            advanceProgressiveStep(nextRow, true);
-          } else if (fromEnter) {
-            const nextInput = nextRow.querySelector('input, select, button');
-            if (nextInput) nextInput.focus();
-          }
-        }
-      };
-
-      charsetInput.addEventListener('change', () => advanceFromCharset(false));
-      charsetInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          advanceFromCharset(true);
-        }
-      });
-    }
-
-    setupProgressiveRow(adminIdInput, '#row-admin-pw');
-
-    if (adminPwInput) {
-      adminPwInput.addEventListener('input', () => updateAdminAuth());
-      adminPwInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          updateAdminAuth();
-          if (adminPwInput.value.trim().length > 0) {
-            const nextRow = this.container.querySelector('#row-next-action');
-            if (nextRow) {
-              const isNew = !nextRow.classList.contains('toss-reveal');
-              if (isNew) {
-                nextRow.classList.add('toss-reveal');
-                advanceProgressiveStep(nextRow, true);
-              } else {
-                const nextBtn = nextRow.querySelector('button');
-                if (nextBtn) nextBtn.focus();
-              }
-            }
-          }
-        }
-      });
-      adminPwInput.addEventListener('blur', () => {
-        updateAdminAuth();
-        if (adminPwInput.value.trim().length > 0) {
-          const nextRow = this.container.querySelector('#row-next-action');
-          if (nextRow && !nextRow.classList.contains('toss-reveal')) {
-            nextRow.classList.add('toss-reveal');
-          }
-        }
-      });
+      charsetInput.addEventListener('change', () => updateSiteInfo());
     }
 
     // Toggle Password Visibility
@@ -509,101 +289,41 @@ export class TechStackSelector {
       togglePwBtn.addEventListener('click', () => {
         const isPw = adminPwInput.type === 'password';
         adminPwInput.type = isPw ? 'text' : 'password';
-        const eyeIcon = togglePwBtn.querySelector('.icon-eye');
-        const eyeOffIcon = togglePwBtn.querySelector('.icon-eye-off');
+        const eyeIcon = togglePwBtn.querySelector('.eye-open');
+        const eyeOffIcon = togglePwBtn.querySelector('.eye-closed');
         if (eyeIcon && eyeOffIcon) {
           eyeIcon.style.display = isPw ? 'none' : 'block';
           eyeOffIcon.style.display = isPw ? 'block' : 'none';
         }
       });
     }
+  }
 
-    // Sample Autofill Button
-    const autofillBtn = this.container.querySelector('#btn-autofill-sample');
-    if (autofillBtn) {
-      autofillBtn.addEventListener('click', () => {
-        const state = window.builderStore.getState();
-        if (!state.techStack) {
-          window.builderStore.updateState({ techStack: 'php' });
-          const phpTab = this.container.querySelector('.tech-10a-tab[data-stack="php"]');
-          if (phpTab) {
-            this.container.querySelectorAll('.tech-10a-tab').forEach(t => {
-              t.classList.remove('active');
-              const title = t.querySelector('.tech-tab-title');
-              if (title) title.style.color = '#64748b';
-            });
-            phpTab.classList.add('active');
-            const title = phpTab.querySelector('.tech-tab-title');
-            if (title) title.style.color = '#0f172a';
-          }
-          const bodyEl = this.container.querySelector('#tech-10a-body');
-          if (bodyEl) {
-            bodyEl.classList.add('active-body');
-            const d = stackInfoMap.php;
-            document.getElementById('tech-10a-title').textContent = d.title;
-            document.getElementById('tech-10a-badge').textContent = d.badge;
-            document.getElementById('tech-10a-desc').textContent = d.desc;
-            document.getElementById('tech-10a-chips').innerHTML = d.chips.map(chip => `<span class="tech-10a-dot-chip">${chip}</span>`).join('');
-          }
-        }
+  autofillSample() {
+    const state = window.builderStore.getState();
+    const targetStack = state.techStack || 'php';
 
-        const sampleSiteInfo = {
-          siteTitle: 'FLOWLY',
-          companyName: '(주)플로울리',
-          companyNameEn: 'FLOWLY Inc.',
-          ownerName: '홍길동',
-          bizNum: '123-45-67890',
-          phone: '02-1234-5678',
-          address: '서울특별시 강남구 테헤란로 123, 플로울리 타워 8층',
-          charset: 'UTF-8'
-        };
-        const sampleAdminAuth = {
-          adminId: 'admin',
-          adminPw: 'admin1234'
-        };
+    const sampleSiteInfo = {
+      siteTitle: 'FLOWLY',
+      companyName: '(주)플로울리',
+      companyNameEn: 'FLOWLY Inc.',
+      ownerName: '홍길동',
+      bizNum: '123-45-67890',
+      phone: '02-1234-5678',
+      address: '서울특별시 강남구 테헤란로 123, 플로울리 타워 8층',
+      charset: 'UTF-8'
+    };
+    const sampleAdminAuth = {
+      adminId: 'admin',
+      adminPw: 'admin1234'
+    };
 
-        if (siteTitleInput) siteTitleInput.value = sampleSiteInfo.siteTitle;
-        if (companyNameInput) companyNameInput.value = sampleSiteInfo.companyName;
-        if (companyNameEnInput) companyNameEnInput.value = sampleSiteInfo.companyNameEn;
-        if (ownerNameInput) ownerNameInput.value = sampleSiteInfo.ownerName;
-        if (bizNumInput) bizNumInput.value = sampleSiteInfo.bizNum;
-        if (phoneInput) phoneInput.value = sampleSiteInfo.phone;
-        if (addressInput) addressInput.value = sampleSiteInfo.address;
-        if (charsetInput) charsetInput.value = sampleSiteInfo.charset;
-        if (adminIdInput) adminIdInput.value = sampleAdminAuth.adminId;
-        if (adminPwInput) adminPwInput.value = sampleAdminAuth.adminPw;
+    window.builderStore.updateState({
+      techStack: targetStack,
+      siteInfo: sampleSiteInfo,
+      adminAuth: sampleAdminAuth
+    });
 
-        window.builderStore.updateState({
-          siteInfo: sampleSiteInfo,
-          adminAuth: sampleAdminAuth
-        });
-
-        // Reveal all sequential rows immediately
-        [
-          '#row-site-title', '#row-company-name', '#row-company-name-en', '#row-owner-name',
-          '#row-biz-num', '#row-phone', '#row-address',
-          '#row-charset', '#row-admin-id', '#row-admin-pw',
-          '#row-next-action'
-        ].forEach(selector => {
-          const row = this.container.querySelector(selector);
-          if (row && !row.classList.contains('toss-reveal')) {
-            row.classList.add('toss-reveal');
-          }
-        });
-
-        const container = this.container.querySelector('.step0-container');
-        if (container) container.style.paddingTop = '24px';
-        const nextActionRow = this.container.querySelector('#row-next-action');
-        if (nextActionRow) {
-          setTimeout(() => {
-            const elRect = nextActionRow.getBoundingClientRect();
-            const targetScrollY = window.scrollY + elRect.top - (window.innerHeight / 2) + (elRect.height / 2);
-            if (targetScrollY > 0) {
-              window.scrollTo({ top: Math.max(0, targetScrollY), behavior: 'smooth' });
-            }
-          }, 80);
-        }
-      });
-    }
+    this.render();
   }
 }
